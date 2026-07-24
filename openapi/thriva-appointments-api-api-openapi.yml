@@ -1,0 +1,575 @@
+openapi: 3.0.2
+info:
+  title: Platform API V1 Appointments API API
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+tags:
+- name: Appointments API
+paths:
+  /v1/appointments:
+    post:
+      summary: Create an Appointment
+      description: Creates an Appointment for a sample collection visit. You must provide either an `order_id` or a `user_id`, but not both. When using `user_id`, you must also provide an address (either `address_id` or inline `address`). A `remote` provider type means a practitioner visits the patient at their home or office (i.e. not at a clinic). The collection methods supported depend on the provider — for example, `remote-appt-a` currently supports venous collection only.
+      tags:
+      - Appointments API
+      requestBody:
+        $ref: '#/components/requestBodies/AppointmentCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/AppointmentResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: unsupported provider
+                        detail:
+                          type: string
+                          example: 'Provider ''acme'' is not supported. Supported providers: remote-appt-a'
+                        source:
+                          type: object
+                          properties:
+                            pointer:
+                              type: string
+                              example: /data/attributes/provider_type
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: collection method not supported
+                        detail:
+                          type: string
+                          example: The provider does not currently support this collection method for appointments
+                        source:
+                          type: object
+                          properties:
+                            pointer:
+                              type: string
+                              example: /data/attributes/order_id
+    get:
+      summary: Fetch Appointments
+      description: Lists all of your appointments, sorted by most recently created
+      tags:
+      - Appointments API
+      parameters:
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/appointments/{appointment_id}:
+    get:
+      summary: Fetch an Appointment
+      description: Fetch a single Appointment by its ID
+      tags:
+      - Appointments API
+      parameters:
+      - name: appointment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an Appointment
+          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+components:
+  parameters:
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+  schemas:
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    Appointment:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: The unique identifier for the Appointment
+          type: string
+          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
+        type:
+          type: string
+          enum:
+          - appointment
+        attributes:
+          type: object
+          properties:
+            status:
+              description: The current status of the Appointment
+              type: string
+              enum:
+              - pending
+              - appointment_created
+              - scheduled
+              - in_progress
+              - completed
+              - cancelled
+              - failed
+              example: pending
+            provider_type:
+              description: The appointment provider. A `remote` provider means a practitioner visits the patient at their home or office rather than at a clinic.
+              type: string
+              enum:
+              - remote-appt-a
+              example: remote-appt-a
+            order_id:
+              description: The reference of the associated Order
+              type: string
+              example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
+            user_id:
+              description: The ID of the associated User
+              type: string
+              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            address_id:
+              description: The ID to the address used for the appointment
+              type: string
+              nullable: true
+              example: AD-12345678-1234-1234-1234-123456789012
+            metadata:
+              description: Custom metadata attached to the appointment
+              type: object
+              nullable: true
+              example:
+                task_id: tsk_custom_123
+            notes:
+              description: Notes for the appointment
+              type: string
+              nullable: true
+              example: Morning appointment preferred
+            scheduling_url:
+              description: URL for the patient to schedule their appointment
+              type: string
+              example: https://provider.example.com/schedule/abc123
+            scheduled_at:
+              description: The date and time the appointment is scheduled for
+              type: string
+              format: date-time
+              nullable: true
+              example: '2026-03-27T09:00:00Z'
+            practitioner_name:
+              description: The name of the assigned practitioner
+              type: string
+              nullable: true
+              example: Dr Alice Green
+            completed_at:
+              description: The date and time the appointment was completed
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            cancelled_at:
+              description: The date and time the appointment was cancelled
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            cancellation_reason:
+              description: The reason for cancellation, if applicable
+              type: string
+              nullable: true
+              example: null
+            failed_at:
+              description: The date and time the appointment failed
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            failure_reason:
+              description: The reason for failure, if applicable
+              type: string
+              nullable: true
+              example: null
+            last_synced_at:
+              description: The date and time the appointment data was last synced with the provider
+              type: string
+              format: date-time
+              nullable: true
+              example: '2026-03-25T10:30:00Z'
+            created_at:
+              description: The date and time the Appointment was created
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+            updated_at:
+              description: The date and time the Appointment was last updated
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    Meta:
+      type: object
+      required:
+      - pagination
+      properties:
+        pagination:
+          type: object
+          required:
+          - current
+          - records
+          properties:
+            current:
+              type: number
+              description: The current page number of the request
+              example: 5
+            records:
+              type: number
+              description: The total number of records based on current filters
+              example: 100
+            first:
+              type: number
+              description: The first page number
+              example: 1
+            prev:
+              type: number
+              description: The the previous page number
+              example: 4
+            next:
+              type: number
+              description: The next page number
+              example: 6
+            last:
+              type: number
+              description: The last page number
+              example: 10
+    Pagination:
+      type: object
+      required:
+      - self
+      - current
+      properties:
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
+  responses:
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    AppointmentResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Appointment'
+    AppointmentsResponse:
+      description: An array of Appointments
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+  requestBodies:
+    AppointmentCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - type
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: appointment
+                  attributes:
+                    type: object
+                    required:
+                    - provider_type
+                    properties:
+                      provider_type:
+                        description: The appointment provider to use. A `remote` provider means a practitioner visits the patient at their home or office rather than at a clinic.
+                        type: string
+                        enum:
+                        - remote-appt-a
+                        example: remote-appt-a
+                      order_id:
+                        description: The reference of the Order to create an appointment for. Mutually exclusive with `user_id` — you must provide one or the other.
+                        type: string
+                        example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
+                      user_id:
+                        description: The ID of an existing User to create an appointment for. Mutually exclusive with `order_id` — you must provide one or the other. When using `user_id`, you must also provide either `address_id` or `address`.
+                        type: string
+                        example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      address_id:
+                        description: A reference to an existing address. Cannot be used together with `address`.
+                        type: string
+                        example: AD-12345678-1234-1234-1234-123456789012
+                      address:
+                        description: An inline address for the appointment. Cannot be used together with `address_id`.
+                        type: object
+                        required:
+                        - line1
+                        - city
+                        - postcode
+                        - country
+                        properties:
+                          line1:
+                            description: First line of the address
+                            type: string
+                            example: 123 Test Street
+                          line2:
+                            description: Second line of the address
+                            type: string
+                            example: Suite 100
+                          city:
+                            description: City
+                            type: string
+                            example: London
+                          state:
+                            description: State or county
+                            type: string
+                            example: England
+                          postcode:
+                            description: Postal code
+                            type: string
+                            example: SW1A 1AA
+                          country:
+                            description: ISO 3166-1 alpha-2 country code
+                            type: string
+                            minLength: 2
+                            maxLength: 2
+                            example: GB
+                      phone_number:
+                        description: Contact phone number for the appointment
+                        type: string
+                        example: '+447123456789'
+                      metadata:
+                        description: Custom metadata to attach to the appointment
+                        type: object
+                        example:
+                          task_id: tsk_custom_123
+                      notes:
+                        description: Notes for the appointment
+                        type: string
+                        example: Morning appointment preferred

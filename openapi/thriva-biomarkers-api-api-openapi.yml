@@ -1,0 +1,280 @@
+openapi: 3.0.2
+info:
+  title: Platform API V1 Appointments API Biomarkers API API
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+tags:
+- name: Biomarkers API
+paths:
+  /v1/test-profiles:
+    get:
+      summary: Fetch available Test Profiles
+      tags:
+      - Biomarkers API
+      parameters:
+      - $ref: '#/components/parameters/TestProfileIncludes'
+      - in: query
+        name: filter[code_in]
+        schema:
+          type: string
+        description: An array of test profile codes used to filter the response
+        example: LFT,LIPP,VIDC
+        required: false
+      responses:
+        '200':
+          $ref: '#/components/responses/TestProfileCollectionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+components:
+  schemas:
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    TestProfile:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Immutable identifier for Test Profile
+          type: string
+          example: AB12
+        type:
+          type: string
+          example: test_profile
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: B12 (Active)
+            code:
+              type: string
+              example: AB12
+            description:
+              type: string
+              example: This is a short description of the test profile, how it affects the human body, and why it is helpful to be monitored.
+            sample_type:
+              type: string
+              enum:
+              - blood
+              - saliva
+            collection_methods:
+              type: array
+              items:
+                example:
+                - finger_prick
+                - venous
+            collection_tube:
+              type: string
+              description: The collection tube needed to test this test profile
+              example: EDTA/Purple tube
+        relationships:
+          type: object
+          properties:
+            biomarkers:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Biomarker ID
+                        type: string
+                        example: ALP
+                      type:
+                        type: string
+                        example: biomarker
+    Biomarker:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Biomarker
+          type: string
+          example: ALP
+        type:
+          type: string
+          example: biomarker
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Alkaline phosphatase
+            code:
+              type: string
+              example: ALP
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+  responses:
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    TestProfileCollectionResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestProfile'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Biomarker'
+  parameters:
+    TestProfileIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: biomarkers

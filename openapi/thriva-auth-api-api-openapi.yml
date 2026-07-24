@@ -1,0 +1,155 @@
+openapi: 3.0.2
+info:
+  title: Platform API V1 Appointments API Auth API API
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+tags:
+- name: Auth API
+paths:
+  /oauth/token:
+    servers:
+    - url: https://auth.thriva.io
+      description: Authorization server subdomain
+    post:
+      summary: Create OAuth Token
+      tags:
+      - Auth API
+      requestBody:
+        $ref: '#/components/requestBodies/OAuthTokenCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/OAuthTokenResponse'
+        '400':
+          $ref: '#/components/responses/OAuthBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/OAuthUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/OAuthForbiddenResponse'
+components:
+  requestBodies:
+    OAuthTokenCreate:
+      content:
+        application/json:
+          schema:
+            required:
+            - grant_type
+            - client_id
+            - client_secret
+            - audience
+            properties:
+              grant_type:
+                description: The type of OAuth Grant
+                type: string
+                example: client_credentials
+              client_id:
+                description: The client id provided to you by Thriva
+                type: string
+                example: Q3TaSO2SBRJq3ZzGJ7cwGbwIw889SIjo
+              client_secret:
+                description: The client secret provided to you by Thriva
+                type: string
+                example: iOZAHcJH8xf-rB7-AsB6XwEg2_1JO4MCXsa14ZuFmnkBr72c_zTG2BwOCYTun5Ps
+              audience:
+                description: API URL
+                type: string
+                example: https://api.euw2.thriva.io
+  schemas:
+    OAuthToken:
+      type: object
+      required:
+      - access_token
+      - scope
+      - expires_in
+      - token_type
+      properties:
+        access_token:
+          description: The JWT Token
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlUtQ3Brdmtaem9OLXhYeFE1bmpyVSJ9.eyJodHRwczovL3Rocml2YS5pby9vcmdhbml6YXRpb24iOiJ0ZXN0LW9yZ2FuaXNhdGlvbiIsImlzcyI6Imh0dHBzOi8vYXV0aC50aHJpdmEuaW8vIiwic3ViIjoiSzJXYVNPM1NCUkpxM1J6R0o1Y3dDYndJdzg3NFNJam9AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmV1dzIudGhyaXZhLmlvIiwiaWF0IjoxNjU2MzIwODY1LCJleHAiOjE2NTYzMzE2NjUsImF6cCI6IlEyVGFTTzNTQlJVcTNaekdKNWN3R2J3SXc4OMKjU0lqbyIsInNjb3BlIjoib3JkZXI6Y3JlYXRlIG9yZGVyOnJlYWQgdGVzdF9wcm9maWxlOnJlYWQgcmVzdWx0X3NldDpyZWFkIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.ADyC6-FZQu7hb-QTXifoECy3Nhmf58KIu0skAs2G7EGGgNIk3SNeS0QVSY7AOp9qWsfnqb6y3jakobkNHwXUwW_MYNePernmyOYGalXG-pGw0p2v-R0QwHQ_GKfcZCiF4Pzpu1EywHQuuqE68IWy4H8mCox32BsIQZRFTCPp3eaVML2huicrWDgGCFoT5PWwloLSrBpuZkPeP7pZvV6SM_pJoChL26QqdPBJ09pG3_6trJvummyadGptkupV84K4wuxfKXDg0TUSQhKJWJENTYDyj8WG5OlR5a4IQ-u6xRixxahD_Wc4S5Y4LYTSCfWPstRQvrHJxAy4d2sFaF1Ztg
+        scope:
+          description: The permissions of the token
+          type: string
+          example: order:create order:read test_profile:read result_set:read
+        expires_in:
+          description: Length of time in seconds within which the token expires
+          type: integer
+          example: 10800
+        token_type:
+          description: Description of what type of token this is
+          type: string
+          example: Bearer
+    OAuthBadRequestError:
+      type: object
+      required:
+      - error
+      - error_description
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: invalid_request
+        error_description:
+          type: string
+          description: Error description
+          example: 'Missing required parameter: grant_type'
+    OAuthUnauthorizedError:
+      type: object
+      required:
+      - error
+      - error_description
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: access_denied
+        error_description:
+          type: string
+          description: Error description
+          example: Unauthorized
+    OAuthForbiddenError:
+      type: object
+      required:
+      - error
+      - error_description
+      - error_uri
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: unauthorized_client
+        error_description:
+          type: string
+          description: Error description
+          example: Grant type 'incorrect_grant_type' not allowed for the client.
+        error_uri:
+          type: string
+          description: URI for the documentation
+          example: https://auth0.com/docs/clients/client-grant-types
+  responses:
+    OAuthTokenResponse:
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthToken'
+    OAuthBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthBadRequestError'
+    OAuthUnauthorizedResponse:
+      description: Unauthorized request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthUnauthorizedError'
+    OAuthForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthForbiddenError'

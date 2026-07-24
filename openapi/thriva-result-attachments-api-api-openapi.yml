@@ -1,0 +1,223 @@
+openapi: 3.0.2
+info:
+  title: Platform API V1 Appointments API Result attachments API API
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+tags:
+- name: Result attachments API
+paths:
+  /v1/result-sets/{result_set_id}/attachments:
+    post:
+      summary: Create a ResultSetAttachment
+      description: Request a PDF of a customers results, once the PDF has been created a webhook will fire notifying you to then request it
+      tags:
+      - Result attachments API
+      parameters:
+      - name: result_set_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The result set ID
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      requestBody:
+        $ref: '#/components/requestBodies/ResultSetAttachmentCreate'
+      responses:
+        '202':
+          description: ACCEPTED
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+  /v1/result-sets/{result_set_id}/attachments/{attachment_id}:
+    get:
+      summary: Fetch a Result Set Attachment
+      tags:
+      - Result attachments API
+      parameters:
+      - name: result_set_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The result set ID
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Request a PDF of a customers results, once the PDF has been created a webhook will fire notifying you to then request it
+          example: 7S660UN25PBMEWU9
+      responses:
+        '200':
+          $ref: '#/components/responses/ResultSetAttachmentResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+components:
+  requestBodies:
+    ResultSetAttachmentCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: result_set_attachment
+                  attributes:
+                    type: object
+                    required:
+                    - name
+                    - content_type
+                    properties:
+                      name:
+                        description: This will be the name of the generated pdf file
+                        type: string
+                        example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      content_type:
+                        description: Currently application/pdf is the only supported content-type
+                        type: string
+                        example: application/pdf
+  schemas:
+    ResultSetAttachment:
+      type: string
+      format: binary
+      example: '%PDF-1.5
+
+        %âãÏÓ
+
+        3 0 obj
+
+        <<
+
+        /Producer (PDF-XChange Printer 2012 \(5.5 build 313.1\) [Windows 8 Professional x64 \(Build 9200\)])
+
+        /Title (ASET Pathology report)
+
+        /Subject (Pathology report)
+
+        /Keywords (ASET Pathology)
+
+        /Creator (ASET)
+
+        /CreationDate (D:20220619080645+01''00'')
+
+        >>
+
+        endobj
+
+        5 0 obj
+
+        <<
+
+        /Type /XObject
+
+        /Subtype /Image
+
+        /Width 162
+
+        /Height 92
+
+        /BitsPerComponent 8
+
+        /ColorSpace /DeviceRGB
+
+        /Length 2831
+
+        /Filter [/FlateDecode /DCTDecode]
+
+        >>'
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+  responses:
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ResultSetAttachmentResponse:
+      description: ResultSetAttachment PDF
+      content:
+        application/pdf:
+          schema:
+            $ref: '#/components/schemas/ResultSetAttachment'
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+            description: Used only with `application/pdf` responses
+            example: attachment; filename="name.pdf"

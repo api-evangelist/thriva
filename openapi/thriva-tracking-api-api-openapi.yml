@@ -1,0 +1,173 @@
+openapi: 3.0.2
+info:
+  title: Platform API V1 Appointments API Tracking API API
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+tags:
+- name: Tracking API
+paths:
+  /v1/tracking/{tracking_code}:
+    get:
+      summary: List Tracking Events for a tracking code
+      description: Returns the tracking history for a tracking code, in ascending chronological order by `occurred_at`. Covers two journeys - outbound kit delivery and inbound sample return (see the `tracking_code` parameter and `status` for detail). Returns an empty collection if no events are available, including when the feature is not yet enabled for your organisation.
+      tags:
+      - Tracking API
+      parameters:
+      - name: tracking_code
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The tracking code to look up. For the outbound (kit delivery) journey, this is the outbound_tracking_code from an Order; for the inbound (sample return) journey, it is the inbound_tracking_code from a Test.
+          example: AA123456789US
+      responses:
+        '200':
+          $ref: '#/components/responses/TrackingEventsResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+components:
+  responses:
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    TrackingEventsResponse:
+      description: An array of Tracking Events
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingEvent'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+  schemas:
+    TrackingEvent:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Unique identifier for the tracking event
+          type: string
+          format: uuid
+          example: 0190a7c2-4b1f-7c3a-9f00-1c9b3a2d4e10
+        type:
+          type: string
+          enum:
+          - tracking_event
+          example: tracking_event
+        attributes:
+          type: object
+          required:
+          - status
+          - location
+          - occurred_at
+          - details
+          properties:
+            status:
+              description: Carrier tracking status of the kit/sample, reflecting its movement through the delivery carrier's network. `kit_*` values are outbound events (the kit being delivered from Thriva to the customer); `sample_*` values are inbound events (the sample being returned from the customer to the lab).
+              type: string
+              enum:
+              - kit_in_transit
+              - kit_delivered
+              - kit_delivery_attempted
+              - kit_exception
+              - sample_in_transit
+              - sample_delivery_attempted
+              - sample_delivered_to_lab
+              - sample_exception
+              example: kit_in_transit
+            location:
+              description: Location reported by the carrier, when available
+              type: string
+              nullable: true
+              example: MOUNT PLEASANT MC
+            occurred_at:
+              description: The date and time, in ISO 8601 format (UTC), at which the event occurred
+              type: string
+              format: date-time
+              example: '2026-03-29T09:15:00Z'
+            details:
+              description: Human-readable description of the status, suitable for display
+              type: string
+              example: Your kit is on its way.
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
