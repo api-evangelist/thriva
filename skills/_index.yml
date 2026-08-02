@@ -1,0 +1,37 @@
+generated: '2026-07-21'
+method: generated
+notes: >-
+  No provider-published Agent Skills or AGENTS.md were found (searched docs.thriva.io
+  2026-07-21). These skills are generated from the harvested OpenAPI plus the captured
+  conventions, sandbox, webhook and error artifacts. The spec declares no operationIds, so
+  operations are referenced as METHOD /path verbatim from the spec.
+skills:
+  - file: thriva-order-test-and-get-results.md
+    name: Order an at-home test and retrieve results
+    api: openapi/thriva-platform-api-openapi.yml
+    operations:
+      - POST /oauth/token
+      - POST /v1/users
+      - GET /v1/test-profiles
+      - POST /v1/orders
+      - GET /v1/orders/{order_id}
+      - GET /v1/orders/{order_id}/tests
+      - GET /v1/result-sets/{result_set_id}
+  - file: thriva-bulk-order-flow.md
+    name: Bulk-order kits and register samples
+    api: openapi/thriva-platform-api-openapi.yml
+    operations:
+      - POST /oauth/token
+      - POST /v1/bulk-orders
+      - GET /v1/bulk-orders
+      - GET /v1/bulk-orders/{bulk_order_id}
+      - GET /v1/bulk-orders/sample-references/{sample_reference}
+      - POST /v1/bulk-orders/tests
+      - GET /v1/tests/{test_id}
+  - file: thriva-handle-clinical-escalations.md
+    name: Handle clinical escalations
+    api: openapi/thriva-platform-api-openapi.yml
+    operations:
+      - POST /oauth/token
+      - GET /v1/result-sets/{result_set_id}
+      - POST /v1/escalations/{escalation_id}/acknowledge

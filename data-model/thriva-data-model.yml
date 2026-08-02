@@ -1,0 +1,296 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/thriva-platform-api-openapi.yml
+notes: Entity-relationship graph derived from the Platform API component schemas.
+  Resources are JSON:API objects (id/type/attributes/relationships); fields come from
+  attributes.properties, belongs_to edges from *_id attributes, and named edges from
+  the JSON:API relationships blocks (expandable via include=).
+entities:
+  Order:
+    jsonapi_type: order
+    fields:
+    - delivery_address
+    - fulfillment_orders
+    - tests
+    - outbound_tracking_code
+    - placed_at
+    - fulfilled_at
+  BulkOrder:
+    jsonapi_type: bulk_order
+    fields:
+    - delivery_address
+    - fulfillment_orders
+    - kits
+    - outbound_tracking_code
+    - placed_at
+    - fulfilled_at
+    - approved_at
+    - rejected_at
+    - approval_status
+    - status
+  SampleReference:
+    jsonapi_type: bulk_order_sample_reference
+    fields:
+    - kit_expiry
+    - is_expired
+    - is_consumed
+    - sample_collection_method
+    - test_profiles
+  FulfillmentOrder:
+    jsonapi_type: fulfillment_order
+    fields:
+    - status
+    - placed_at
+    - dispatched_at
+  Test:
+    jsonapi_type: test
+    fields:
+    - test_profiles
+    - user_id
+    - subject
+    - created_at
+    - status
+    - inbound_tracking_code
+    - result_set_id
+    - sample_collection_methods
+    - sample_reference
+    - product_code
+    - sample_booked_in_at
+    - completed_at
+    - failure_cause
+    - source_test
+    - reissued_test
+    - bulk_order_id
+  TestProfile:
+    jsonapi_type: test_profile
+    fields:
+    - name
+    - code
+    - description
+    - sample_type
+    - collection_methods
+    - collection_tube
+  Biomarker:
+    jsonapi_type: biomarker
+    fields:
+    - name
+    - code
+  Reporter:
+    jsonapi_type: reporter
+    fields:
+    - title
+    - first_name
+    - last_name
+    - email
+  BiomarkerComment:
+    jsonapi_type: biomarker_comment
+    fields:
+    - comment
+  Report:
+    jsonapi_type: report
+    fields:
+    - report_summary
+    - status
+  ResultSet:
+    jsonapi_type: result_set
+    fields:
+    - result_date
+    - sample_taken_at
+    - sample_booked_in_at
+    - sample_processed_at
+    - sample_reference
+    - status
+  BiomarkerResult:
+    jsonapi_type: biomarker_result
+    fields:
+    - code
+    - successful
+    - failure_reason
+    - failure_reason_description
+    - abnormal_flag
+    - escalation_level
+    - result_type
+    - result_value
+    - result_unit
+    - result_operator
+    - notes
+    - reference_ranges
+    - interpretation
+  Escalation:
+    jsonapi_type: escalation
+    fields:
+    - level
+    - acknowledgment_due_by
+    - acknowledged_at
+    - status
+  User:
+    jsonapi_type: user
+    fields:
+    - date_of_birth
+    - organization_key
+    - sex
+    - external_reference
+    - created_at
+  DeliveryAddress:
+    jsonapi_type: null
+    fields:
+    - name
+    - company_name
+    - line1
+    - line2
+    - line3
+    - city
+    - state
+    - postcode
+    - country
+  Sample:
+    jsonapi_type: blood
+    fields:
+    - type
+    - collection_method
+  Analysis:
+    jsonapi_type: null
+    fields:
+    - required
+    - lab
+  Kits:
+    jsonapi_type: null
+    fields: []
+  Address:
+    jsonapi_type: null
+    fields:
+    - name
+    - line1
+    - line2
+    - line3
+    - city
+    - state
+    - postcode
+    - country
+  ContactDetail:
+    jsonapi_type: null
+    fields:
+    - first_name
+    - last_name
+    - email
+    - mobile_phone_number
+  ResultSetAttachment:
+    jsonapi_type: null
+    fields: []
+  Appointment:
+    jsonapi_type: appointment
+    fields:
+    - status
+    - provider_type
+    - order_id
+    - user_id
+    - address_id
+    - metadata
+    - notes
+    - scheduling_url
+    - scheduled_at
+    - practitioner_name
+    - completed_at
+    - cancelled_at
+    - cancellation_reason
+    - failed_at
+    - failure_reason
+    - last_synced_at
+    - created_at
+    - updated_at
+  TrackingEvent:
+    jsonapi_type: tracking_event
+    fields:
+    - status
+    - location
+    - occurred_at
+    - details
+relationships:
+- from: Order
+  to: DeliveryAddress
+  kind: has_one
+  via: attributes.delivery_address
+- from: BulkOrder
+  to: DeliveryAddress
+  kind: has_one
+  via: attributes.delivery_address
+- from: BulkOrder
+  to: Kits
+  kind: has_one
+  via: attributes.kits
+- from: BulkOrder
+  to: SampleReference
+  kind: has_many
+  via: relationships.sample_references
+- from: Test
+  to: User
+  kind: belongs_to
+  via: attributes.user_id
+- from: Test
+  to: ResultSet
+  kind: belongs_to
+  via: attributes.result_set_id
+- from: Test
+  to: BulkOrder
+  kind: belongs_to
+  via: attributes.bulk_order_id
+- from: TestProfile
+  to: Biomarker
+  kind: has_many
+  via: relationships.biomarkers
+- from: BiomarkerComment
+  to: BiomarkerResult
+  kind: has_one
+  via: relationships.biomarker_result
+- from: Report
+  to: Reporter
+  kind: has_one
+  via: relationships.reporter
+- from: Report
+  to: BiomarkerComment
+  kind: has_many
+  via: relationships.biomarker_comments
+- from: ResultSet
+  to: TestProfile
+  kind: has_many
+  via: relationships.test_profiles
+- from: ResultSet
+  to: BiomarkerResult
+  kind: has_many
+  via: relationships.biomarker_results
+- from: ResultSet
+  to: Escalation
+  kind: has_many
+  via: relationships.escalations
+- from: ResultSet
+  to: Report
+  kind: has_many
+  via: relationships.reports
+- from: ResultSet
+  to: PdfResultAttachment
+  kind: has_one
+  via: relationships.pdf_result_attachment
+- from: BiomarkerResult
+  to: TestProfile
+  kind: has_many
+  via: relationships.test_profiles
+- from: User
+  to: Address
+  kind: has_many
+  via: relationships.address
+- from: User
+  to: ContactDetail
+  kind: has_one
+  via: relationships.contact_detail
+- from: Appointment
+  to: Order
+  kind: belongs_to
+  via: attributes.order_id
+- from: Appointment
+  to: User
+  kind: belongs_to
+  via: attributes.user_id
+- from: Appointment
+  to: Address
+  kind: belongs_to
+  via: attributes.address_id

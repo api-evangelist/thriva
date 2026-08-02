@@ -1,0 +1,27 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.thriva.io/docs/user
+components:
+  - family: Hosted / prebuilt surfaces
+    items:
+      - name: Clarity
+        kind: white-label results UI
+        description: >-
+          Thriva's white-label results interface for partners. Docs state a User is required
+          for "many of our products, such as our whitelabel results UI Clarity" and it is the
+          only way to group results per test subject. Users are invited into Clarity via the
+          Platform API (POST /v1/users/{user_id}/invitations sends an invitation email; the
+          invitation link is valid for 30 days).
+        api_operations:
+          - openapi/thriva-platform-api-openapi.yml#POST /v1/users/{user_id}/invitations
+        docs: https://docs.thriva.io/docs/user
+      - name: Partner Hub
+        kind: no-code partner console
+        description: >-
+          Off-the-shelf alternative to the API for partners - CSV ordering, real-time
+          tracking, and results access with no code required (described on
+          https://thriva.co/for-partners).
+        docs: https://thriva.co/for-partners
+notes: >-
+  No embeddable JS/web-component libraries were found; Thriva's client-side surfaces are
+  hosted white-label products rather than embeddable components.

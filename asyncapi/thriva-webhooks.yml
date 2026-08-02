@@ -1,0 +1,55 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.thriva.io/docs/webhooks-1
+type: Webhooks
+name: Thriva Platform webhooks
+overview: >-
+  Thriva delivers webhooks through Svix (webhooks-as-a-service). Thriva publishes no
+  AsyncAPI document; this artifact captures the documented webhook catalog. Thriva can
+  configure webhook endpoints for partners in Svix, or share a secure link for partners to
+  configure themselves; a partner-facing Svix Portal is on the way. The secret key for
+  verifying webhook signatures is shared out-of-band by the partner's Thriva contact.
+provider: svix
+signature:
+  scheme: svix
+  headers:
+    - svix-signature
+    - svix-id
+    - svix-timestamp
+  verification_docs: https://docs.svix.com/receiving/verifying-payloads/how
+events:
+  - event: test.received_at_lab
+    description: >-
+      Sent when a Test performed by the subject has been received by the lab, shortly
+      preceded by analysis of the sample.
+    payload_fields: [order_id, test_id]
+  - event: test.failure
+    description: Sent when we are notified by the lab of a Test but it does not pass validation.
+    payload_fields: [order_id, test_id, failure_cause]
+    example_failure_cause: validation.caused_by.unknown_test_profile
+  - event: fulfillment_order.fulfilled
+    description: Sent when a Fulfillment Order has been fulfilled.
+    payload_fields: [fulfillment_order_id, order_id]
+  - event: fulfillment_order.failure
+    description: Sent when fulfillment has failed for a Fulfillment Order.
+    payload_fields: [fulfillment_order_id, order_id, failure_cause]
+    example_failure_cause: address_rejected
+  - event: result_set.available
+    description: Sent when a result set for a Test has been generated and is available.
+    payload_fields: [order_id, test_id, result_set_id]
+  - event: result_set.partial_available
+    description: >-
+      Sent when a result set for a Test has been generated for partial results and is
+      available. The rest of the results are still being processed.
+    payload_fields: [event_type, order_id, organization_key, result_set_id, test_id]
+  - event: result_set.escalation_raised
+    description: >-
+      Sent when a clinical escalation has been raised against a result. Includes the
+      escalation level and the acknowledgment deadline.
+    payload_fields: [acknowledgment_due_by, escalation_id, event_type, level, order_id, organization_key, result_set_id, test_id]
+    example_level: very_high
+  - event: tracking_event.created
+    description: >-
+      Sent when a new tracking event is recorded for an order - either a kit on its way to
+      the customer (outbound) or a sample being returned to the lab (inbound).
+    payload_fields: [details, event_type, fulfillment_order_id, journey, occurred_at, order_id, organization_key, status, tracking_code, tracking_event_id]

@@ -1,8 +1,12 @@
 aid: thriva
 name: Thriva
-description: Thriva is a company surfaced as a portfolio company of 500-global, seedcamp and added to
-  the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Thriva is a UK digital-health company and the UK market leader in at-home consumer
+  diagnostics, tracking 75+ blood biomarkers with doctor-reviewed insights. Alongside its
+  direct-to-consumer service, the Thriva Platform offers partners a white-label at-home
+  blood-testing infrastructure - kit logistics, lab processing, results and clinical
+  escalations - through a RESTful JSON:API Platform API with OAuth2 client-credentials
+  auth, Svix-signed webhooks and a full sandbox environment.
 url: https://raw.githubusercontent.com/api-evangelist/thriva/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,12 +15,193 @@ x-backed-by:
 - seedcamp
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
-apis: []
+- Healthcare
+- Diagnostics
+- Blood Testing
+- At-Home Testing
+- Digital Health
+- Lab Testing
+- Webhooks
+- United Kingdom
+image: https://images.prismic.io/thriva/aXInFwIvOtkhB0T__WebisteBox_Wide_v5-1-.jpg
+apis:
+- aid: thriva:thriva-appointments-api-api
+  name: Thriva Appointments API API
+  description: The Appointments API API from Thriva — 2 operation(s) for appointments api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Appointments API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-appointments-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-auth-api-api
+  name: Thriva Auth API API
+  description: The Auth API API from Thriva — 1 operation(s) for auth api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Auth API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-auth-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-biomarkers-api-api
+  name: Thriva Biomarkers API API
+  description: The Biomarkers API API from Thriva — 1 operation(s) for biomarkers api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Biomarkers API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-biomarkers-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-bulk-orders-api-api
+  name: Thriva Bulk Orders API API
+  description: The Bulk Orders API API from Thriva — 4 operation(s) for bulk orders api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Bulk Orders API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-bulk-orders-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-escalations-api-api
+  name: Thriva Escalations API API
+  description: The Escalations API API from Thriva — 1 operation(s) for escalations api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Escalations API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-escalations-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-orders-api-api
+  name: Thriva Orders API API
+  description: The Orders API API from Thriva — 7 operation(s) for orders api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Orders API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-orders-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-result-attachments-api-api
+  name: Thriva Result attachments API API
+  description: The Result attachments API API from Thriva — 2 operation(s) for result attachments api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Result attachments API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-result-attachments-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-results-api-api
+  name: Thriva Results API API
+  description: The Results API API from Thriva — 2 operation(s) for results api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Results API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-results-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-tracking-api-api
+  name: Thriva Tracking API API
+  description: The Tracking API API from Thriva — 1 operation(s) for tracking api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Tracking API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-tracking-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
+- aid: thriva:thriva-users-api-api
+  name: Thriva Users API API
+  description: The Users API API from Thriva — 3 operation(s) for users api.
+  humanURL: https://docs.thriva.io
+  baseURL: https://api.thriva.io
+  tags:
+  - Users API
+  properties:
+  - type: OpenAPI
+    url: openapi/thriva-users-api-api-openapi.yml
+  - type: APIReference
+    url: https://docs.thriva.io/reference
+  - type: Documentation
+    url: https://docs.thriva.io/docs/getting-started
+  - type: JSONSchema
+    url: json-schema/thriva-platform-api-schemas.json
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,3 +210,60 @@ maintainers:
 common:
 - type: Website
   url: https://thriva.co
+- type: DeveloperPortal
+  url: https://docs.thriva.io
+- type: Documentation
+  url: https://docs.thriva.io/docs/getting-started
+- type: APIReference
+  url: https://docs.thriva.io/reference
+- type: GettingStarted
+  url: https://docs.thriva.io/docs/getting-started
+- type: Support
+  url: https://intercom.help/thrivahelpcenter/en/
+- type: Blog
+  url: https://thriva.co/hub
+- type: Login
+  url: https://thriva.co/login
+- type: TermsOfService
+  url: https://s3-eu-west-1.amazonaws.com/thriva/legal/Website+Terms.pdf
+- type: PrivacyPolicy
+  url: https://thriva.co/privacy-policy
+- type: Authentication
+  url: authentication/thriva-authentication.yml
+- type: OpenIDConnect
+  url: well-known/thriva-openid-configuration.json
+- type: Conventions
+  url: conventions/thriva-conventions.yml
+- type: Conformance
+  url: conformance/thriva-conformance.yml
+- type: ErrorCatalog
+  url: errors/thriva-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/thriva-lifecycle.yml
+- type: Sandbox
+  url: sandbox/thriva-sandbox.yml
+- type: Webhooks
+  url: asyncapi/thriva-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: MCPServer
+  url: mcp/thriva-mcp.yml
+- type: LLMsTxt
+  url: llms/thriva-llms.txt
+- type: WellKnown
+  url: well-known/thriva-well-known.yml
+- type: Packages
+  url: packages/thriva-packages.yml
+- type: Components
+  url: components/thriva-components.yml
+- type: DataModel
+  url: data-model/thriva-data-model.yml
+- type: AgenticAccess
+  url: agentic-access/thriva-agentic-access.yml
+- type: DomainSecurity
+  url: security/thriva-domain-security.yml
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1

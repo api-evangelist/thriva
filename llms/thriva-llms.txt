@@ -1,0 +1,44 @@
+# Thriva Platform Documentation
+
+> Thriva’s API makes offering at-home diagnostic testing simple and quick to implement for our partners.
+
+## Guides
+- [Sandbox Environment](https://docs.thriva.io/docs/sandbox-environment.md)
+- [Webhooks](https://docs.thriva.io/docs/webhooks-1.md): How to integrate with webhooks from Thriva
+- [Order](https://docs.thriva.io/docs/order.md)
+- [Bulk Order](https://docs.thriva.io/docs/bulk-order.md)
+- [Test](https://docs.thriva.io/docs/test.md)
+- [Result Set](https://docs.thriva.io/docs/result-set.md)
+- [User](https://docs.thriva.io/docs/user.md)
+
+## API Reference
+- [Create OAuth Token](https://docs.thriva.io/reference/post_oauth-token.md)
+- [Create an Order](https://docs.thriva.io/reference/post_v1-orders.md): Creates and sends an Order to a Subject
+- [Fetch Orders](https://docs.thriva.io/reference/get_v1-orders.md): Lists all of your orders
+- [Create a reorder](https://docs.thriva.io/reference/post_v1-orders-order-id-reorder.md): Creates a new order based on the provided Order ID and Test ID. The order details will be retrieved from the previous order and the tests will be linked via the source_test and reissued_test attributes on the tests themselves. An optional new delivery address may be provided.
+- [Fetch an Order](https://docs.thriva.io/reference/get_v1-orders-order-id.md): Fetch an Order by ID
+- [Fetch Tests for an Order](https://docs.thriva.io/reference/get_v1-orders-order-id-tests.md): Fetch all Tests for an Order
+- [Fetch Tests](https://docs.thriva.io/reference/get_v1-tests.md): Lists all of your tests
+- [Fetch a Test](https://docs.thriva.io/reference/get_v1-tests-test-id.md): Fetch a Test by ID
+- [Fetch a Fulfillment Order](https://docs.thriva.io/reference/get_v1-fulfillment-orders-fulfillment-order-id.md): Fetch a Fulfillment Order by it's ID
+- [Create a Bulk Order](https://docs.thriva.io/reference/post_v1-bulk-orders.md): Creates and sends a Bulk Order to a specified address
+- [Fetch Bulk Orders](https://docs.thriva.io/reference/get_v1-bulk-orders.md): Lists all Bulk Orders
+- [Fetch a Bulk Order](https://docs.thriva.io/reference/get_v1-bulk-orders-bulk-order-id.md): Fetch a Bulk Order by ID
+- [Get details about a sample reference](https://docs.thriva.io/reference/get_v1-bulk-orders-sample-references-sample-reference.md): Returns the details and status of a sample reference that is part of a Bulk Order. Can be used to check if a sample reference is valid before creating a Test from it.
+- [Create a Test from a Bulk Order item](https://docs.thriva.io/reference/post_v1-bulk-orders-tests.md): Creates a Test from a sample reference and links with a User
+- [Fetch available Test Profiles](https://docs.thriva.io/reference/get_v1-test-profiles.md)
+- [Fetch Results](https://docs.thriva.io/reference/get_v1-result-sets.md): Lists all of your results
+- [Fetch a Result](https://docs.thriva.io/reference/get_v1-result-sets-result-set-id.md)
+- [Create a User](https://docs.thriva.io/reference/post_v1-users.md): Creates a User
+- [Fetch Users](https://docs.thriva.io/reference/get_v1-users.md): An array of Users
+- [Fetch a User](https://docs.thriva.io/reference/get_v1-users-user-id.md): Fetch a User by ID
+- [Update a User](https://docs.thriva.io/reference/patch_v1-users-user-id.md): Update a User
+- [Create a User Clarity Invitation](https://docs.thriva.io/reference/post_v1-users-user-id-invitations.md): Sends a user invitation email for Clarity, the invitation link is valid for 30 days
+- [Create a ResultSetAttachment](https://docs.thriva.io/reference/post_v1-result-sets-result-set-id-attachments.md): Request a PDF of a customers results, once the PDF has been created a webhook will fire notifying you to then request it
+- [Fetch a Result Set Attachment](https://docs.thriva.io/reference/get_v1-result-sets-result-set-id-attachments-attachment-id.md)
+- [List Tracking Events for a tracking code](https://docs.thriva.io/reference/get_v1-tracking-tracking-code.md): Returns the tracking history for a tracking code, in ascending chronological order by `occurred_at`. Covers two journeys - outbound kit delivery and inbound sample return (see the `tracking_code` parameter and `status` for detail). Returns an empty collection if no events are available, including when the feature is not yet enabled for your organisation.
+- [Escalations API](https://docs.thriva.io/reference/escalations-api.md)
+- [Acknowledge an escalation](https://docs.thriva.io/reference/post_v1-escalations-escalation-id-acknowledge.md)
+- [Create an Appointment](https://docs.thriva.io/reference/post_v1-appointments.md): Creates an Appointment for a sample collection visit. You must provide either an `order_id` or a `user_id`, but not both. When using `user_id`, you must also provide an address (either `address_id` or inline `address`). A `remote` provider type means a practitioner visits the patient at their home or office (i.e. not at a clinic). The collection methods supported depend on the provider — for example, `remote-appt-a` currently supports venous collection only.
+- [Fetch Appointments](https://docs.thriva.io/reference/get_v1-appointments.md): Lists all of your appointments, sorted by most recently created
+- [Fetch an Appointment](https://docs.thriva.io/reference/get_v1-appointments-appointment-id.md): Fetch a single Appointment by its ID

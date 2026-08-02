@@ -1,0 +1,40 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.thriva.io/docs/sandbox-environment
+name: Thriva Platform API Sandbox
+overview: >-
+  Thriva publishes a full sandbox environment for partners to simulate orders, tests and
+  clinical escalations end-to-end before going live. Results for sandbox orders are usually
+  available within a couple of minutes of order creation.
+environments:
+  production:
+    auth_api: https://auth.thriva.io/
+    api: https://api.thriva.io
+  sandbox:
+    auth_api: https://auth.sandbox.thriva.io/
+    api: https://api.euw2.sandbox.thriva.io/
+    notes: >-
+      The Sandbox API URL must also be used as the value for `audience` in the request to
+      the Auth API when creating an access token for sandbox use.
+test_scenarios:
+  mechanism: >-
+    Scenarios are triggered by the postcode in an order's delivery address. If no scenario
+    postcode is used, sandbox defaults to returning successful test results.
+  postcodes:
+    - postcode: LAB S
+      description: Successful fulfilment and test results
+    - postcode: LAB F
+      description: Successful fulfilment, all biomarkers have failed
+    - postcode: LAB PF
+      description: >-
+        Successful fulfilment, 50% of biomarkers have failed. Failure reason is determined by
+        name specified on order (for example 'John Haemolysed'), or defaults to 'unknown'
+    - postcode: LAB HH
+      description: Successful fulfilment, one biomarker is critically escalated (result is too high)
+    - postcode: LAB LL
+      description: Successful fulfilment, one biomarker is critically escalated (result is too low)
+escalation_testing:
+  docs: https://docs.thriva.io/docs/clinical-escalations#testing-escalations-in-the-sandbox-environment
+  notes: >-
+    Escalations can be triggered in sandbox via the LAB HH / LAB LL postcodes; the Clinical
+    Escalations guide documents the full escalation testing flow.

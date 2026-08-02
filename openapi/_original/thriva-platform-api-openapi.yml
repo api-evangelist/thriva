@@ -1,0 +1,3359 @@
+# Thriva Platform API V1 - OpenAPI 3.0.2
+# generated: 2026-07-21
+# method: searched
+# source: https://docs.thriva.io/reference (per-operation OpenAPI fragments of platform-api-v1.json, reassembled)
+# note: Thriva publishes this spec through its ReadMe developer portal (docs.thriva.io);
+#       the portal offers no single-file download, so the per-operation OpenAPI fragments
+#       embedded in each reference page were reassembled verbatim into one document.
+openapi: 3.0.2
+info:
+  title: Platform API V1
+  version: '1.0'
+  description: End-to-end API to send tests kits and process samples
+servers:
+- url: https://api.thriva.io
+- url: https://api.euw2.sandbox.thriva.io/
+paths:
+  /oauth/token:
+    servers:
+    - url: https://auth.thriva.io
+      description: Authorization server subdomain
+    post:
+      summary: Create OAuth Token
+      tags:
+      - Auth API
+      requestBody:
+        $ref: '#/components/requestBodies/OAuthTokenCreate'
+      responses:
+        '200':
+          $ref: '#/components/responses/OAuthTokenResponse'
+        '400':
+          $ref: '#/components/responses/OAuthBadRequestResponse'
+        '401':
+          $ref: '#/components/responses/OAuthUnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/OAuthForbiddenResponse'
+  /v1/test-profiles:
+    get:
+      summary: Fetch available Test Profiles
+      tags:
+      - Biomarkers API
+      parameters:
+      - $ref: '#/components/parameters/TestProfileIncludes'
+      - in: query
+        name: filter[code_in]
+        schema:
+          type: string
+        description: An array of test profile codes used to filter the response
+        example: LFT,LIPP,VIDC
+        required: false
+      responses:
+        '200':
+          $ref: '#/components/responses/TestProfileCollectionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/orders:
+    post:
+      summary: Create an Order
+      description: Creates and sends an Order to a Subject
+      tags:
+      - Orders API
+      requestBody:
+        $ref: '#/components/requestBodies/OrderCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/OrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+    get:
+      summary: Fetch Orders
+      description: Lists all of your orders
+      tags:
+      - Orders API
+      parameters:
+      - in: query
+        name: filter[startDate]
+        schema:
+          type: string
+        description: The date (UTC) from which orders will be retrieved (YYYY-MM-DD)
+        required: false
+      - in: query
+        name: filter[endDate]
+        schema:
+          type: string
+        description: The date (UTC) to which orders will be retrieved (YYYY-MM-DD)
+        required: false
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/OrdersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/orders/{order_id}/reorder:
+    post:
+      summary: Create a reorder
+      description: Creates a new order based on the provided Order ID and Test ID.
+        The order details will be retrieved from the previous order and the tests
+        will be linked via the source_test and reissued_test attributes on the tests
+        themselves. An optional new delivery address may be provided.
+      tags:
+      - Orders API
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an Order
+          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      requestBody:
+        $ref: '#/components/requestBodies/ReorderCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/OrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+  /v1/orders/{order_id}:
+    get:
+      summary: Fetch an Order
+      description: Fetch an Order by ID
+      tags:
+      - Orders API
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an Order
+          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      responses:
+        '200':
+          $ref: '#/components/responses/OrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/orders/{order_id}/tests:
+    get:
+      summary: Fetch Tests for an Order
+      description: Fetch all Tests for an Order
+      tags:
+      - Orders API
+      parameters:
+      - name: order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an Order
+          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      responses:
+        '200':
+          $ref: '#/components/responses/TestCollectionResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/bulk-orders:
+    post:
+      summary: Create a Bulk Order
+      description: Creates and sends a Bulk Order to a specified address
+      tags:
+      - Bulk Orders API
+      requestBody:
+        $ref: '#/components/requestBodies/BulkOrderCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/BulkOrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+    get:
+      summary: Fetch Bulk Orders
+      description: Lists all Bulk Orders
+      tags:
+      - Bulk Orders API
+      parameters:
+      - in: query
+        name: filter[startDate]
+        schema:
+          type: string
+        description: The date (UTC) from which bulk orders will be retrieved (YYYY-MM-DD)
+        required: false
+      - in: query
+        name: filter[endDate]
+        schema:
+          type: string
+        description: The date (UTC) to which bulk orders will be retrieved (YYYY-MM-DD)
+        required: false
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/BulkOrdersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/bulk-orders/{bulk_order_id}:
+    get:
+      summary: Fetch a Bulk Order
+      description: Fetch a Bulk Order by ID
+      tags:
+      - Bulk Orders API
+      parameters:
+      - name: bulk_order_id
+        in: path
+        required: true
+        description: The ID of a Bulk Order
+        schema:
+          type: string
+          example: BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      responses:
+        '200':
+          $ref: '#/components/responses/BulkOrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/bulk-orders/sample-references/{sample_reference}:
+    get:
+      summary: Get details about a sample reference
+      description: Returns the details and status of a sample reference that is part
+        of a Bulk Order. Can be used to check if a sample reference is valid before
+        creating a Test from it.
+      tags:
+      - Bulk Orders API
+      parameters:
+      - name: sample_reference
+        in: path
+        required: true
+        description: The unique identifier for a sample reference, which can be found
+          on labels and barcodes in the test kit.
+        schema:
+          type: string
+          example: T00240XPA3
+      responses:
+        '201':
+          $ref: '#/components/responses/BulkOrderSampleReferenceResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/bulk-orders/tests:
+    post:
+      summary: Create a Test from a Bulk Order item
+      description: Creates a Test from a sample reference and links with a User
+      tags:
+      - Bulk Orders API
+      requestBody:
+        $ref: '#/components/requestBodies/BulkOrderTestCreate'
+      responses:
+        '202':
+          $ref: '#/components/responses/TestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/tests:
+    get:
+      summary: Fetch Tests
+      description: Lists all of your tests
+      tags:
+      - Orders API
+      parameters:
+      - in: query
+        name: filter[sample_reference_eq]
+        schema:
+          type: string
+        description: The complete sample_reference of a Test you wish to filter by
+        required: false
+      - in: query
+        name: filter[user_id_eq]
+        schema:
+          type: string
+        description: Allows you to filter Tests by a particular user_id.
+        required: false
+      - in: query
+        name: filter[startDate]
+        schema:
+          type: string
+        description: The date (UTC) from which tests be retrieved (YYYY-MM-DD)
+        required: false
+      - in: query
+        name: filter[endDate]
+        schema:
+          type: string
+        description: The date (UTC) to which tests will be retrieved (YYYY-MM-DD)
+        required: false
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/TestsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/tests/{test_id}:
+    get:
+      summary: Fetch a Test
+      description: Fetch a Test by ID
+      tags:
+      - Orders API
+      parameters:
+      - name: test_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of a Test
+          example: T-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      responses:
+        '200':
+          $ref: '#/components/responses/TestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/fulfillment-orders/{fulfillment_order_id}:
+    get:
+      summary: Fetch a Fulfillment Order
+      description: Fetch a Fulfillment Order by it's ID
+      tags:
+      - Orders API
+      parameters:
+      - name: fulfillment_order_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of a Fulfillment Order
+          example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      responses:
+        '200':
+          $ref: '#/components/responses/FulfillmentOrderResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/result-sets:
+    get:
+      summary: Fetch Results
+      description: Lists all of your results
+      tags:
+      - Results API
+      parameters:
+      - in: query
+        name: filter[startDate]
+        schema:
+          type: string
+        description: The date (UTC) from which results will be retrieved (YYYY-MM-DD)
+        required: false
+      - in: query
+        name: filter[endDate]
+        schema:
+          type: string
+        description: The date (UTC) to which results will be retrieved (YYYY-MM-DD)
+        required: false
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResultSetsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/result-sets/{result_set_id}:
+    get:
+      summary: Fetch a Result
+      tags:
+      - Results API
+      parameters:
+      - name: result_set_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The result set ID for a complete Order
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      - $ref: '#/components/parameters/ResultSetIncludes'
+      responses:
+        '200':
+          $ref: '#/components/responses/ResultSetResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/escalations/{escalation_id}/acknowledge:
+    post:
+      summary: Acknowledge an escalation
+      tags:
+      - Escalations API
+      parameters:
+      - name: escalation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an escalation
+          example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
+      requestBody:
+        content:
+          application/vnd.api+json:
+            schema:
+              type: object
+              required:
+              - data
+              properties:
+                data:
+                  type: object
+                  required:
+                  - type
+                  - attributes
+                  properties:
+                    type:
+                      type: string
+                      example: escalation
+                    attributes:
+                      type: object
+                      required:
+                      - level
+                      properties:
+                        level:
+                          description: The escalation level that you are acknowledging
+                          type: string
+                          example: critical
+      responses:
+        '202':
+          $ref: '#/components/responses/EscalationResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '422':
+          description: The request syntax was valid, but we were unable to process
+            the request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      oneOf:
+                      - $ref: '#/components/schemas/ArchivedEscalationError'
+                      - $ref: '#/components/schemas/InvalidEscalationLevelError'
+  /v1/users:
+    post:
+      summary: Create a User
+      description: Creates a User
+      tags:
+      - Users API
+      requestBody:
+        $ref: '#/components/requestBodies/UserCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/UserResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+    get:
+      summary: Fetch Users
+      description: An array of Users
+      tags:
+      - Users API
+      parameters:
+      - in: query
+        name: filter[contact_detail_email_eq]
+        schema:
+          type: string
+        description: A complete email address that may belong to a single User
+        required: false
+      - $ref: '#/components/parameters/UserIncludes'
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/UsersResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/users/{user_id}:
+    get:
+      summary: Fetch a User
+      description: Fetch a User by ID
+      tags:
+      - Users API
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of a User
+          example: U-25A37617-913C-4F39-B2D4-ED5B734DEC04
+      - $ref: '#/components/parameters/UserIncludes'
+      responses:
+        '200':
+          $ref: '#/components/responses/UserResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+    patch:
+      summary: Update a User
+      description: Update a User
+      tags:
+      - Users API
+      requestBody:
+        $ref: '#/components/requestBodies/UserUpdate'
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of a User
+          example: U-25A37617-913C-4F39-B2D4-ED5B734DEC04
+      responses:
+        '200':
+          $ref: '#/components/responses/UserResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - title
+                      properties:
+                        title:
+                          type: string
+                          description: Title of the error
+                          example: user not found
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/users/{user_id}/invitations:
+    post:
+      summary: Create a User Clarity Invitation
+      description: Sends a user invitation email for Clarity, the invitation link
+        is valid for 30 days
+      tags:
+      - Users API
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of a User
+          example: U-25A37617-913C-4F39-B2D4-ED5B734DEC04
+      requestBody:
+        description: No request body needed
+        required: false
+        content:
+          application/json: {}
+      responses:
+        '202':
+          description: ACCEPTED
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/result-sets/{result_set_id}/attachments:
+    post:
+      summary: Create a ResultSetAttachment
+      description: Request a PDF of a customers results, once the PDF has been created
+        a webhook will fire notifying you to then request it
+      tags:
+      - Result attachments API
+      parameters:
+      - name: result_set_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The result set ID
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      requestBody:
+        $ref: '#/components/requestBodies/ResultSetAttachmentCreate'
+      responses:
+        '202':
+          description: ACCEPTED
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+  /v1/result-sets/{result_set_id}/attachments/{attachment_id}:
+    get:
+      summary: Fetch a Result Set Attachment
+      tags:
+      - Result attachments API
+      parameters:
+      - name: result_set_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The result set ID
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+      - name: attachment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: Request a PDF of a customers results, once the PDF has been
+            created a webhook will fire notifying you to then request it
+          example: 7S660UN25PBMEWU9
+      responses:
+        '200':
+          $ref: '#/components/responses/ResultSetAttachmentResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+  /v1/appointments:
+    post:
+      summary: Create an Appointment
+      description: Creates an Appointment for a sample collection visit. You must
+        provide either an `order_id` or a `user_id`, but not both. When using `user_id`,
+        you must also provide an address (either `address_id` or inline `address`).
+        A `remote` provider type means a practitioner visits the patient at their
+        home or office (i.e. not at a clinic). The collection methods supported depend
+        on the provider — for example, `remote-appt-a` currently supports venous collection
+        only.
+      tags:
+      - Appointments API
+      requestBody:
+        $ref: '#/components/requestBodies/AppointmentCreate'
+      responses:
+        '201':
+          $ref: '#/components/responses/AppointmentResponse'
+        '400':
+          description: Bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: unsupported provider
+                        detail:
+                          type: string
+                          example: 'Provider ''acme'' is not supported. Supported
+                            providers: remote-appt-a'
+                        source:
+                          type: object
+                          properties:
+                            pointer:
+                              type: string
+                              example: /data/attributes/provider_type
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+        '422':
+          description: Unprocessable entity
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                required:
+                - errors
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        title:
+                          type: string
+                          example: collection method not supported
+                        detail:
+                          type: string
+                          example: The provider does not currently support this collection
+                            method for appointments
+                        source:
+                          type: object
+                          properties:
+                            pointer:
+                              type: string
+                              example: /data/attributes/order_id
+    get:
+      summary: Fetch Appointments
+      description: Lists all of your appointments, sorted by most recently created
+      tags:
+      - Appointments API
+      parameters:
+      - $ref: '#/components/parameters/PageNumber'
+      - $ref: '#/components/parameters/PageSize'
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/appointments/{appointment_id}:
+    get:
+      summary: Fetch an Appointment
+      description: Fetch a single Appointment by its ID
+      tags:
+      - Appointments API
+      parameters:
+      - name: appointment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The ID of an Appointment
+          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
+      responses:
+        '200':
+          $ref: '#/components/responses/AppointmentResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+  /v1/tracking/{tracking_code}:
+    get:
+      summary: List Tracking Events for a tracking code
+      description: Returns the tracking history for a tracking code, in ascending
+        chronological order by `occurred_at`. Covers two journeys - outbound kit delivery
+        and inbound sample return (see the `tracking_code` parameter and `status`
+        for detail). Returns an empty collection if no events are available, including
+        when the feature is not yet enabled for your organisation.
+      tags:
+      - Tracking API
+      parameters:
+      - name: tracking_code
+        in: path
+        required: true
+        schema:
+          type: string
+          description: The tracking code to look up. For the outbound (kit delivery)
+            journey, this is the outbound_tracking_code from an Order; for the inbound
+            (sample return) journey, it is the inbound_tracking_code from a Test.
+          example: AA123456789US
+      responses:
+        '200':
+          $ref: '#/components/responses/TrackingEventsResponse'
+        '401':
+          $ref: '#/components/responses/UnauthorizedResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '415':
+          $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+components:
+  parameters:
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    ResultSetIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: test_profiles,biomarker_results,escalations
+    TestProfileIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: biomarkers
+    UserIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: address,contact_detail
+  requestBodies:
+    OAuthTokenCreate:
+      content:
+        application/json:
+          schema:
+            required:
+            - grant_type
+            - client_id
+            - client_secret
+            - audience
+            properties:
+              grant_type:
+                description: The type of OAuth Grant
+                type: string
+                example: client_credentials
+              client_id:
+                description: The client id provided to you by Thriva
+                type: string
+                example: Q3TaSO2SBRJq3ZzGJ7cwGbwIw889SIjo
+              client_secret:
+                description: The client secret provided to you by Thriva
+                type: string
+                example: iOZAHcJH8xf-rB7-AsB6XwEg2_1JO4MCXsa14ZuFmnkBr72c_zTG2BwOCYTun5Ps
+              audience:
+                description: API URL
+                type: string
+                example: https://api.euw2.thriva.io
+    OrderCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: order
+                  attributes:
+                    type: object
+                    required:
+                    - delivery_address
+                    - tests
+                    properties:
+                      delivery_address:
+                        $ref: '#/components/schemas/DeliveryAddress'
+                      tests:
+                        description: An array of the Tests that should be part of
+                          this Order
+                        type: array
+                        items:
+                          description: A Test object that relates to a physical test
+                            kit that will be sent to the delivery address
+                          type: object
+                          properties:
+                            test_profiles:
+                              description: A list of what needs to be tested for the
+                                user's sample
+                              type: array
+                              items:
+                                type: string
+                              example:
+                              - LFT
+                              - LIPP
+                            subject:
+                              description: Details about the user for which a sample
+                                is being collected
+                              type: object
+                              properties:
+                                contact:
+                                  description: Contact details for a subject.
+                                  type: object
+                                  required:
+                                  - first_name
+                                  - last_name
+                                  properties:
+                                    first_name:
+                                      description: The subject's first name.
+                                      type: string
+                                      example: Frasier
+                                    last_name:
+                                      description: The subject's last name.
+                                      type: string
+                                      example: Crane
+                                    email:
+                                      description: The subject's email address.
+                                      type: string
+                                      example: frasier.crane@example.com
+                                    mobile_phone_number:
+                                      description: The subject's mobile phone number.
+                                        Only GB numbers in the format +447123456789
+                                      type: string
+                                      example: '+447123456789'
+                                date_of_birth:
+                                  description: The date the subject was born, in ISO8601
+                                    format.
+                                  type: string
+                                  example: '1953-03-07'
+                                sex:
+                                  description: The sex of the subject
+                                  type: string
+                                  enum:
+                                  - female
+                                  - male
+                                  example: female
+                            user_id:
+                              description: An existing user's reference - for each
+                                test you either need to pass in a subject object or
+                                a user ID, not both
+                              type: string
+                              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                            product_code:
+                              description: The identifier for the Product being ordered.
+                                Products are optionally made available to API partners
+                                and may not be provided alongside test_profiles /
+                                sample
+                              type: string
+                              example: P-12345
+                            sample:
+                              $ref: '#/components/schemas/Sample'
+                            analysis:
+                              $ref: '#/components/schemas/Analysis'
+    ReorderCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: order
+                  attributes:
+                    type: object
+                    properties:
+                      delivery_address:
+                        $ref: '#/components/schemas/DeliveryAddress'
+                      tests:
+                        description: An array of tests to be reissued, each specifying
+                          the test ID and the reissue reason.
+                        type: array
+                        items:
+                          type: object
+                          required:
+                          - id
+                          - reissue_reason
+                          properties:
+                            id:
+                              type: string
+                              description: The ID of the test to be reissued.
+                              example: TST-BEE3DE3E-FBB5-49BD-BF1A-C7775AF5DAE0
+                            reissue_reason:
+                              type: string
+                              description: The reason for reissuing the test.
+                              enum:
+                              - failed_analysis
+                              - failed_fulfillment
+                              - failed_sample_collection
+                              - failed_sample_return
+                              example: failed_analysis
+    BulkOrderCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: bulk_order
+                  attributes:
+                    type: object
+                    required:
+                    - delivery_address
+                    - kits
+                    properties:
+                      delivery_address:
+                        $ref: '#/components/schemas/DeliveryAddress'
+                      kits:
+                        $ref: '#/components/schemas/Kits'
+    BulkOrderTestCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  attributes:
+                    type: object
+                    required:
+                    - sample_reference
+                    properties:
+                      user_id:
+                        type: string
+                        description: The User ID if to associate with a test
+                        example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      sample_reference:
+                        description: The identifier for a sample reference
+                        type: string
+                        example: T00240XPA3
+                      test_profiles:
+                        type: array
+                        description: A list of what needs to be tested for the user's
+                          sample. Only required if profiles not specified at time
+                          of Bulk Order creation.
+                        items:
+                          type: string
+                        example:
+                        - LFT
+                        - LIPP
+    ResultSetAttachmentCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: result_set_attachment
+                  attributes:
+                    type: object
+                    required:
+                    - name
+                    - content_type
+                    properties:
+                      name:
+                        description: This will be the name of the generated pdf file
+                        type: string
+                        example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      content_type:
+                        description: Currently application/pdf is the only supported
+                          content-type
+                        type: string
+                        example: application/pdf
+    UserCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: user
+                  attributes:
+                    type: object
+                    required:
+                    - contact
+                    - date_of_birth
+                    - sex
+                    properties:
+                      address:
+                        $ref: '#/components/schemas/Address'
+                      contact:
+                        $ref: '#/components/schemas/ContactDetail'
+                      date_of_birth:
+                        description: The date the user was born, in ISO8601 format.
+                        type: string
+                        example: '1953-03-07'
+                      sex:
+                        description: The sex of the user
+                        type: string
+                        enum:
+                        - female
+                        - male
+                        example: female
+                      external_reference:
+                        description: A reference to help identify the user in your
+                          system
+                        type: string
+                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+    UserUpdate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: user
+                  attributes:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/ContactDetail'
+                      date_of_birth:
+                        description: The date the user was born, in ISO8601 format.
+                        type: string
+                        example: '1953-03-07'
+                      sex:
+                        description: The sex of the user
+                        type: string
+                        enum:
+                        - female
+                        - male
+                        example: female
+                      external_reference:
+                        description: A reference to help identify the user in your
+                          system
+                        type: string
+                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+    AppointmentCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - type
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: appointment
+                  attributes:
+                    type: object
+                    required:
+                    - provider_type
+                    properties:
+                      provider_type:
+                        description: The appointment provider to use. A `remote` provider
+                          means a practitioner visits the patient at their home or
+                          office rather than at a clinic.
+                        type: string
+                        enum:
+                        - remote-appt-a
+                        example: remote-appt-a
+                      order_id:
+                        description: The reference of the Order to create an appointment
+                          for. Mutually exclusive with `user_id` — you must provide
+                          one or the other.
+                        type: string
+                        example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
+                      user_id:
+                        description: The ID of an existing User to create an appointment
+                          for. Mutually exclusive with `order_id` — you must provide
+                          one or the other. When using `user_id`, you must also provide
+                          either `address_id` or `address`.
+                        type: string
+                        example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      address_id:
+                        description: A reference to an existing address. Cannot be
+                          used together with `address`.
+                        type: string
+                        example: AD-12345678-1234-1234-1234-123456789012
+                      address:
+                        description: An inline address for the appointment. Cannot
+                          be used together with `address_id`.
+                        type: object
+                        required:
+                        - line1
+                        - city
+                        - postcode
+                        - country
+                        properties:
+                          line1:
+                            description: First line of the address
+                            type: string
+                            example: 123 Test Street
+                          line2:
+                            description: Second line of the address
+                            type: string
+                            example: Suite 100
+                          city:
+                            description: City
+                            type: string
+                            example: London
+                          state:
+                            description: State or county
+                            type: string
+                            example: England
+                          postcode:
+                            description: Postal code
+                            type: string
+                            example: SW1A 1AA
+                          country:
+                            description: ISO 3166-1 alpha-2 country code
+                            type: string
+                            minLength: 2
+                            maxLength: 2
+                            example: GB
+                      phone_number:
+                        description: Contact phone number for the appointment
+                        type: string
+                        example: '+447123456789'
+                      metadata:
+                        description: Custom metadata to attach to the appointment
+                        type: object
+                        example:
+                          task_id: tsk_custom_123
+                      notes:
+                        description: Notes for the appointment
+                        type: string
+                        example: Morning appointment preferred
+  responses:
+    OAuthTokenResponse:
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthToken'
+    OAuthBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthBadRequestError'
+    OAuthUnauthorizedResponse:
+      description: Unauthorized request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthUnauthorizedError'
+    OAuthForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthForbiddenError'
+    OrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Order'
+    OrdersResponse:
+      description: An array of Orders
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    BulkOrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/BulkOrder'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/SampleReference'
+    BulkOrdersResponse:
+      description: An array of Bulk Orders
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkOrder'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/SampleReference'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    BulkOrderSampleReferenceResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/SampleReference'
+    TestCollectionResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+    TestResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Test'
+    TestsResponse:
+      description: An array of Tests
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    FulfillmentOrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/FulfillmentOrder'
+    TestProfileCollectionResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestProfile'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Biomarker'
+    ResultSetResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/ResultSet'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/BiomarkerResult'
+                  - $ref: '#/components/schemas/TestProfile'
+                  - $ref: '#/components/schemas/Escalation'
+    ResultSetsResponse:
+      description: An array of Result Set
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultSet'
+              links:
+                $ref: '#/components/schemas/Pagination'
+    EscalationResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Escalation'
+    UserResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/User'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Address'
+                  - $ref: '#/components/schemas/ContactDetail'
+    UsersResponse:
+      description: An array of Users
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    ResultSetAttachmentResponse:
+      description: ResultSetAttachment PDF
+      content:
+        application/pdf:
+          schema:
+            $ref: '#/components/schemas/ResultSetAttachment'
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+            description: Used only with `application/pdf` responses
+            example: attachment; filename="name.pdf"
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    AppointmentResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Appointment'
+    AppointmentsResponse:
+      description: An array of Appointments
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Appointment'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    TrackingEventsResponse:
+      description: An array of Tracking Events
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingEvent'
+  schemas:
+    OAuthToken:
+      type: object
+      required:
+      - access_token
+      - scope
+      - expires_in
+      - token_type
+      properties:
+        access_token:
+          description: The JWT Token
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlUtQ3Brdmtaem9OLXhYeFE1bmpyVSJ9.eyJodHRwczovL3Rocml2YS5pby9vcmdhbml6YXRpb24iOiJ0ZXN0LW9yZ2FuaXNhdGlvbiIsImlzcyI6Imh0dHBzOi8vYXV0aC50aHJpdmEuaW8vIiwic3ViIjoiSzJXYVNPM1NCUkpxM1J6R0o1Y3dDYndJdzg3NFNJam9AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmV1dzIudGhyaXZhLmlvIiwiaWF0IjoxNjU2MzIwODY1LCJleHAiOjE2NTYzMzE2NjUsImF6cCI6IlEyVGFTTzNTQlJVcTNaekdKNWN3R2J3SXc4OMKjU0lqbyIsInNjb3BlIjoib3JkZXI6Y3JlYXRlIG9yZGVyOnJlYWQgdGVzdF9wcm9maWxlOnJlYWQgcmVzdWx0X3NldDpyZWFkIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.ADyC6-FZQu7hb-QTXifoECy3Nhmf58KIu0skAs2G7EGGgNIk3SNeS0QVSY7AOp9qWsfnqb6y3jakobkNHwXUwW_MYNePernmyOYGalXG-pGw0p2v-R0QwHQ_GKfcZCiF4Pzpu1EywHQuuqE68IWy4H8mCox32BsIQZRFTCPp3eaVML2huicrWDgGCFoT5PWwloLSrBpuZkPeP7pZvV6SM_pJoChL26QqdPBJ09pG3_6trJvummyadGptkupV84K4wuxfKXDg0TUSQhKJWJENTYDyj8WG5OlR5a4IQ-u6xRixxahD_Wc4S5Y4LYTSCfWPstRQvrHJxAy4d2sFaF1Ztg
+        scope:
+          description: The permissions of the token
+          type: string
+          example: order:create order:read test_profile:read result_set:read
+        expires_in:
+          description: Length of time in seconds within which the token expires
+          type: integer
+          example: 10800
+        token_type:
+          description: Description of what type of token this is
+          type: string
+          example: Bearer
+    OAuthBadRequestError:
+      type: object
+      required:
+      - error
+      - error_description
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: invalid_request
+        error_description:
+          type: string
+          description: Error description
+          example: 'Missing required parameter: grant_type'
+    OAuthUnauthorizedError:
+      type: object
+      required:
+      - error
+      - error_description
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: access_denied
+        error_description:
+          type: string
+          description: Error description
+          example: Unauthorized
+    OAuthForbiddenError:
+      type: object
+      required:
+      - error
+      - error_description
+      - error_uri
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: unauthorized_client
+        error_description:
+          type: string
+          description: Error description
+          example: Grant type 'incorrect_grant_type' not allowed for the client.
+        error_uri:
+          type: string
+          description: URI for the documentation
+          example: https://auth0.com/docs/clients/client-grant-types
+    Pagination:
+      type: object
+      required:
+      - self
+      - current
+      properties:
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
+    Meta:
+      type: object
+      required:
+      - pagination
+      properties:
+        pagination:
+          type: object
+          required:
+          - current
+          - records
+          properties:
+            current:
+              type: number
+              description: The current page number of the request
+              example: 5
+            records:
+              type: number
+              description: The total number of records based on current filters
+              example: 100
+            first:
+              type: number
+              description: The first page number
+              example: 1
+            prev:
+              type: number
+              description: The the previous page number
+              example: 4
+            next:
+              type: number
+              description: The next page number
+              example: 6
+            last:
+              type: number
+              description: The last page number
+              example: 10
+    Order:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Unique identifier for this Order
+          type: string
+          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          description: Specifies what type of object this is
+          type: string
+          enum:
+          - order
+          example: order
+        attributes:
+          type: object
+          properties:
+            delivery_address:
+              $ref: '#/components/schemas/DeliveryAddress'
+            fulfillment_orders:
+              description: Array of IDs for the linked Fulfillment Orders linked to
+                this Order
+              type: array
+              items:
+                type: string
+                example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            tests:
+              description: Array of IDs for the linked Tests linked to this Order
+              type: array
+              items:
+                type: string
+                example: T-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            outbound_tracking_code:
+              description: The tracking code for the outbound delivery to the subject
+              type: string
+              example: 9876543212345A67B8CDE
+            placed_at:
+              description: The date and time, in ISO 8601 format, at which the Order
+                was placed.
+              type: string
+              example: '2021-06-11T08:00:00Z'
+            fulfilled_at:
+              description: The date and time, in ISO 8601 format, at which the Order
+                was dispatched to the subject
+              type: string
+              example: '2021-06-11T10:00:00Z'
+    BulkOrder:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Unique identifier for this Bulk Order
+          type: string
+          example: BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          description: Specifies what type of object this is
+          type: string
+          enum:
+          - bulk_order
+          example: bulk_order
+        attributes:
+          type: object
+          properties:
+            delivery_address:
+              $ref: '#/components/schemas/DeliveryAddress'
+            fulfillment_orders:
+              description: Array of IDs for the linked Fulfillment Orders linked to
+                this Order
+              type: array
+              items:
+                type: string
+                example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            kits:
+              $ref: '#/components/schemas/Kits'
+            outbound_tracking_code:
+              description: The tracking code for the outbound delivery to the delivery
+                address
+              type: string
+              example: 9876543212345A67B8CDE
+            placed_at:
+              description: The date and time, in ISO 8601 format, at which the Bulk
+                Order was placed.
+              type: string
+              example: '2024-06-11T08:00:00Z'
+            fulfilled_at:
+              description: The date and time, in ISO 8601 format, at which the Order
+                was dispatched
+              type: string
+              example: '2024-06-11T10:00:00Z'
+            approved_at:
+              description: The date and time, in ISO 8601 format, at which the Bulk
+                Order was approved
+              type: string
+              example: '2024-06-11T09:00:00Z'
+            rejected_at:
+              description: The date and time, in ISO 8601 format, at which the Bulk
+                Order was rejected
+              type: string
+              example: '2024-06-11T09:00:00Z'
+            approval_status:
+              description: The approval status of the Bulk Order
+              type: string
+              enum:
+              - pending
+              - approved
+              - rejected
+              example: approved
+            status:
+              description: The status of the Bulk Order
+              type: string
+              enum:
+              - validating
+              - resolving_skus
+              - awaiting_approval
+              - creating_fulfillment_orders
+              - awaiting_fulfillment
+              - processed
+              - complete
+              - rejected
+              - failed
+              example: complete
+        relationships:
+          type: object
+          properties:
+            sample_references:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Bulk Order Sample Reference ID
+                        type: string
+                        example: T00240XPA3
+                      type:
+                        type: string
+                        example: bulk_order_sample_reference
+    SampleReference:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: The identifier for a sample reference
+          type: string
+          example: T00240XPA3
+        type:
+          type: string
+          enum:
+          - bulk_order_sample_reference
+        attributes:
+          type: object
+          properties:
+            kit_expiry:
+              description: The expiry date of the test kit with this sample reference.
+                The sample reference cannot be used to create a Test past this date.
+                The lab will not analyse the sample past this date.
+              type: string
+              format: date
+              example: '2025-10-15'
+            is_expired:
+              description: If the test kit with this sample reference has expired
+              type: boolean
+              example: false
+            is_consumed:
+              description: If the sample reference has been used to create a Test
+              type: boolean
+              example: false
+            sample_collection_method:
+              description: The sample collection method for this sample reference
+              type: string
+              enum:
+              - finger_prick
+              - swab
+              - venous
+              - automatic_capillary
+              example: finger_prick
+            test_profiles:
+              type: array
+              items:
+                type: string
+              example:
+              - LFT
+              - LIPP
+    FulfillmentOrder:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for a fulfillment order
+          type: string
+          example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: fulfillment_order
+        attributes:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+              - fulfilling
+              - complete
+              - failed
+            placed_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the Fulfillment
+                Order was placed.
+              example: '2021-06-11T08:00:00Z'
+            dispatched_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the Fulfillment
+                Order was dispatched.
+              example: '2021-06-11T08:00:00Z'
+    Test:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for test
+          type: string
+          example: T-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: test
+        attributes:
+          type: object
+          properties:
+            test_profiles:
+              type: array
+              items:
+                type: string
+              example:
+              - LFT
+              - LIPP
+            user_id:
+              type: string
+              description: The user id if a user is attached to the test (optional)
+              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            subject:
+              type: object
+              properties:
+                contact:
+                  description: Contact details the subject.
+                  type: object
+                  required:
+                  - first_name
+                  - last_name
+                  properties:
+                    first_name:
+                      description: The subject's first name.
+                      type: string
+                      example: Frasier
+                    last_name:
+                      description: The subject's last name.
+                      type: string
+                      example: Crane
+                    email:
+                      description: The subject's email address.
+                      type: string
+                      example: frasier.crane@example.com
+                    mobile_phone_number:
+                      description: The subject's mobile phone number. Only GB numbers
+                        in the format +447123456789
+                      type: string
+                      example: '+447123456789'
+                date_of_birth:
+                  description: The date the subject was born, in ISO8601 format.
+                  type: string
+                  example: '1953-03-07'
+                sex:
+                  description: The sex of the subject
+                  type: string
+                  enum:
+                  - female
+                  - male
+                  example: female
+            created_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the test
+                resource was created
+              example: '2021-06-11T06:00:00Z'
+            status:
+              description: Overview of the test's current state
+              type: string
+              enum:
+              - awaiting_sample_at_lab
+              - processing_sample
+              - complete
+              - failed
+            inbound_tracking_code:
+              description: Tracking code for the kit being sent from the subject to
+                the lab for processing
+              type: string
+              example: ZB123456789GB
+            result_set_id:
+              description: Immutable identifier for the results of an Order. Only
+                present when results are available.
+              type: string
+              example: R-1E0EEDB2-E790-4D16-9EE7-14381E807B7E
+            sample_collection_methods:
+              type: array
+              items:
+                type: object
+                properties:
+                  collection_method:
+                    description: The method used for sample collection.
+                    type: string
+                    example: finger_prick
+                  sample_type:
+                    description: The type of sample collected.
+                    type: string
+                    example: blood
+            sample_reference:
+              description: The reference number that will appear on the test kit is
+                a unique number assigned to each kit. This reference will also be
+                used by the lab to refer to the test results if a result were to be
+                escalated due to falling outside of the expected ranges
+              type: string
+              example: T123456789
+            product_code:
+              description: The identifier for the Product used to order the Test.
+                Products are optionally made available to API partners.
+              type: string
+              example: P-12345
+            sample_booked_in_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the test
+                kit was received by the lab
+              example: '2021-06-11T06:00:00Z'
+            completed_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the Test
+                was completed.
+              example: '2021-06-11T08:00:00Z'
+            failure_cause:
+              type: string
+              description: If state is 'failed', this field describes the failure
+                cause
+              example: 'invalid collection method: venous, for test profile: OEST'
+            source_test:
+              type: object
+              nullable: true
+              properties:
+                reissue_reason:
+                  type: string
+                  enum:
+                  - failed_analysis
+                  - failed_fulfillment
+                  - failed_sample_collection
+                  - failed_sample_return
+                  example: failed_fulfillment
+                id:
+                  description: The ID of the source test that was reissued
+                  type: string
+                  example: TST-04BD173A-770D-4C8F-8CEC-3C24FBF81692
+            reissued_test:
+              type: object
+              nullable: true
+              properties:
+                reissue_reason:
+                  type: string
+                  enum:
+                  - failed_analysis
+                  - failed_fulfillment
+                  - failed_sample_collection
+                  - failed_sample_return
+                  example: failed_analysis
+                id:
+                  description: The ID of the reissued test
+                  type: string
+                  example: TST-13F1ABE9-E2F4-4FF1-A5C4-53E0629C5D0B
+            bulk_order_id:
+              type: string
+              description: The ID of the Bulk Order this Test is associated with
+    TestProfile:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Immutable identifier for Test Profile
+          type: string
+          example: AB12
+        type:
+          type: string
+          example: test_profile
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: B12 (Active)
+            code:
+              type: string
+              example: AB12
+            description:
+              type: string
+              example: This is a short description of the test profile, how it affects
+                the human body, and why it is helpful to be monitored.
+            sample_type:
+              type: string
+              enum:
+              - blood
+              - saliva
+            collection_methods:
+              type: array
+              items:
+                example:
+                - finger_prick
+                - venous
+            collection_tube:
+              type: string
+              description: The collection tube needed to test this test profile
+              example: EDTA/Purple tube
+        relationships:
+          type: object
+          properties:
+            biomarkers:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Biomarker ID
+                        type: string
+                        example: ALP
+                      type:
+                        type: string
+                        example: biomarker
+    Biomarker:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Biomarker
+          type: string
+          example: ALP
+        type:
+          type: string
+          example: biomarker
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Alkaline phosphatase
+            code:
+              type: string
+              example: ALP
+    Reporter:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Reporter
+          type: string
+          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
+        type:
+          type: string
+          example: reporter
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              enum:
+              - Dr Mr Mrs Ms Miss Mx
+              example: Dr
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            email:
+              type: string
+              example: john.doe@example.com
+    BiomarkerComment:
+      description: Beta feature, disabled by default. When not enabled for your organisation,
+        `report.relationships.biomarker_comments.data` will be an empty array.
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Biomarker Comment
+          type: string
+          example: '1286'
+        type:
+          type: string
+          example: biomarker_comment
+        attributes:
+          type: object
+          properties:
+            comment:
+              description: Beta feature, disabled by default. Automated rule-derived
+                annotation for the associated biomarker result, based on the biomarker
+                value, subject sex, and any previous result. Not authored by the clinician;
+                the clinician's narrative is on `report.attributes.report_summary`.
+              type: string
+              example: Your ferritin levels are low. We would advise following up
+                with your GP.
+        relationships:
+          type: object
+          properties:
+            biomarker_result:
+              $ref: '#/components/schemas/BiomarkerResult'
+    Report:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Report ID
+          type: string
+          example: REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6
+        type:
+          type: string
+          example: report
+        attributes:
+          type: object
+          properties:
+            report_summary:
+              description: Clinician-authored narrative for the report. Populated
+                once `status` is `complete`.
+              type: string
+              example: Hi John, these results are excellent.
+            status:
+              description: Status of the report
+              type: string
+              enum:
+              - complete
+              example: complete
+        relationships:
+          type: object
+          properties:
+            reporter:
+              $ref: '#/components/schemas/Reporter'
+            biomarker_comments:
+              $ref: '#/components/schemas/BiomarkerComment'
+    ResultSet:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Immutable identifier for Result Set
+          type: string
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: result_set
+        attributes:
+          type: object
+          properties:
+            result_date:
+              description: DateTime (in ISO8601 format) for when the result has been
+                created
+              type: string
+              example: '2023-02-12T11:00:00Z'
+            sample_taken_at:
+              description: DateTime (in ISO8601 format) for when the sample was received
+                by the lab
+              type: string
+              example: '2023-02-11T08:00:00Z'
+            sample_booked_in_at:
+              description: DateTime (in ISO8601 format) for when the sample was received
+                by the lab and ready to be analysed
+              type: string
+              example: '2023-02-12T10:00:00Z'
+            sample_processed_at:
+              description: DateTime (in ISO8601 format) for when the sample was analysed
+                at the lab, and results have been made available
+              type: string
+              example: '2023-02-12T11:00:00Z'
+            sample_reference:
+              description: The reference number that will appear on the test kit is
+                a unique number assigned to each kit. This reference will also be
+                used by the lab to refer to the test results if a result were to be
+                escalated due to falling outside of the expected ranges
+              type: string
+              example: T123456789
+            status:
+              description: The current status of the Result Set
+              type: string
+              enum:
+              - complete
+              - results_to_follow
+        relationships:
+          type: object
+          properties:
+            test_profiles:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Test Profile ID
+                        type: string
+                        example: AB12
+                      type:
+                        type: string
+                        example: test_profile
+            biomarker_results:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Biomarker Result ID
+                        type: string
+                        example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
+                      type:
+                        type: string
+                        example: biomarker_result
+            escalations:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Escalation ID
+                        type: string
+                        example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
+                      type:
+                        type: string
+                        example: escalation
+            reports:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Report'
+            pdf_result_attachment:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      description: Result Set Attachment ID
+                      type: string
+                      example: F14VHYB35EF7F5O2
+                    type:
+                      type: string
+                      example: result_set_attachment
+    BiomarkerResult:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Unique identifier for Biomarker Result
+          type: string
+          example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
+        type:
+          type: string
+          example: biomarker_result
+        attributes:
+          type: object
+          properties:
+            code:
+              description: Biomarker code for this Biomarker Result
+              type: string
+              example: ALP
+            successful:
+              type: boolean
+              example: true
+            failure_reason:
+              type: string
+              nullable: true
+              enum:
+              - clotted
+              - contaminated
+              - delay
+              - foreign_object
+              - haemolysed
+              - icteric
+              - insufficient
+              - lab_error
+              - lid_swap
+              - lipaemic
+              - mismatch
+              - no_sample_received
+              - sample_leaked
+              - unknown
+              - unlabelled
+            failure_reason_description:
+              type: string
+              nullable: true
+              description: Human-readable description of the failure reason
+            abnormal_flag:
+              type: string
+              nullable: true
+              example: A
+            escalation_level:
+              description: The escalation level for this biomarker result
+              type: string
+              enum:
+              - very_high
+              - high
+              - medium
+              - low
+              - very_low
+              - not_escalated
+            result_type:
+              type: string
+              enum:
+              - numeric
+              - string
+            result_value:
+              type: string
+              example: '1.78'
+            result_unit:
+              type: string
+              example: umol/L
+            result_operator:
+              type: string
+              nullable: true
+              enum:
+              - LESS_THAN
+              - LESS_THAN_OR_EQUAL
+              - GREATER_THAN
+              - GREATER_THAN_OR_EQUAL
+            notes:
+              description: An array of notes returned from the Lab about this biomarker
+                result
+              type: array
+              items:
+                type: string
+                example: Your Creatinine levels are high. Please discuss this with
+                  your GP.
+            reference_ranges:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Normal
+                  lower_bound:
+                    type: string
+                    nullable: true
+                    example: '50.0000'
+                  upper_bound:
+                    type: string
+                    nullable: true
+                    example: '250.0000'
+                  operator:
+                    type: string
+                    nullable: true
+                    example: LESS_THAN
+                    enum:
+                    - LESS_THAN
+                    - LESS_THAN_OR_EQUAL
+                    - GREATER_THAN
+                    - GREATER_THAN_OR_EQUAL
+                  severity_level:
+                    type: integer
+                    nullable: false
+                    minimum: 10
+                    maximum: 50
+                    example: 20
+            interpretation:
+              description: Provides interpretation for results. String results will
+                contain a display value and sentiment for the result. Numeric results
+                will contain a display value and matched reference range
+              type: object
+              nullable: true
+              properties:
+                display_value:
+                  description: For numeric results the display_value joins the operator
+                    and numeric value together. For string results, the display_value
+                    formats the string correctly and can provide a more human understandable
+                    interpretation of the result. e.g. For an antibody test, the string_result
+                    might be `positive` while the `display_value` would be `immune`.
+                  type: string
+                  example: '100.0'
+                  nullable: true
+                sentiment:
+                  description: The sentiment associated with string result interpretations.
+                    Can be used to decide how to display results on the frontend (i.e.
+                    positive sentiment might be highlighted in green). Can be positive,
+                    negative, or neutral
+                  type: string
+                  example: positive
+                  nullable: true
+                  enum:
+                  - positive
+                  - negative
+                  - neutral
+                matched_reference_range:
+                  description: The reference range that the result value falls within
+                  type: object
+                  nullable: true
+                  properties:
+                    name:
+                      type: string
+                      example: Normal
+                    severity_level:
+                      type: integer
+                      example: 20
+        relationships:
+          type: object
+          properties:
+            test_profiles:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Test Profile ID
+                        type: string
+                        example: AB12
+                      type:
+                        type: string
+                        example: test_profile
+    Escalation:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Escalation ID
+          type: string
+          example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
+        type:
+          type: string
+          example: escalation
+        attributes:
+          type: object
+          required:
+          - level
+          - acknowledgment_due_by
+          - acknowledged_at
+          - status
+          properties:
+            level:
+              description: The level of the escalation
+              type: string
+              example: very_high
+              enum:
+              - very_high
+              - high
+              - medium
+              - low
+              - very_low
+              - not_escalated
+            acknowledgment_due_by:
+              description: When the escalation needs to be acknowledged by
+              type: string
+              format: date-time
+              nullable: true
+            acknowledged_at:
+              description: When you acknowledged the escalation
+              type: string
+              format: date-time
+              nullable: true
+            status:
+              description: The current status of the escalation
+              type: string
+              enum:
+              - acknowledged
+              - awaiting_acknowledgment
+              - no_acknowledgment_required
+              - archived
+    User:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Immutable identifier for a user
+          type: string
+          example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: user
+        attributes:
+          type: object
+          properties:
+            date_of_birth:
+              description: The date the user was born, in ISO8601 format.
+              type: string
+              example: '1953-03-07'
+            organization_key:
+              description: Immutable identifier for the organization to which the
+                user belongs
+              type: string
+              example: ORG-THRIVA
+            sex:
+              description: The sex of the user
+              type: string
+              enum:
+              - female
+              - male
+              example: female
+            external_reference:
+              description: A reference to help identify the user in your system
+              type: string
+              example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+            created_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the user
+                resource was created
+              example: '2021-06-11T06:00:00Z'
+        relationships:
+          type: object
+          required:
+          - address
+          - contact_detail
+          properties:
+            address:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: AD-25A37617-913C-4F39-B2D4-ED5B734DEC04
+                    type:
+                      type: string
+                      example: address
+            contact_detail:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: CD-25A37617-913C-4F39-B2D4-ED5B734DEC04
+                    type:
+                      type: string
+                      example: contact_detail
+    DeliveryAddress:
+      type: object
+      required:
+      - name
+      - line1
+      - city
+      - postcode
+      - country
+      properties:
+        name:
+          description: The name of the recipient at the delivery address
+          type: string
+          example: Mr Joe Blogs
+        company_name:
+          description: The name of the company
+          type: string
+          example: Thriva Ltd
+        line1:
+          description: The first line of the delivery address
+          type: string
+          example: 3rd Floor
+        line2:
+          description: The second line of the delivery address
+          type: string
+          example: White Collar Factory
+        line3:
+          description: The third line of the delivery address
+          type: string
+          example: 1 Old Street Yard
+        city:
+          description: The city for the delivery address
+          type: string
+          example: London
+        state:
+          description: The county or state for the delivery address
+          type: string
+          example: Greater London
+        postcode:
+          description: The postcode for the delivery address
+          type: string
+          example: EC1Y 8AF
+        country:
+          description: The country for the delivery address (ISO 3166-1 alpha-2)
+          type: string
+          example: GB
+    Sample:
+      type: object
+      required:
+      - type
+      - collection_method
+      properties:
+        type:
+          description: Whether you want the test to be a saliva or blood test
+          type: string
+          enum:
+          - blood
+          - saliva
+          example: blood
+        collection_method:
+          description: Define what type of collection method you would like for the
+            sample type
+          type: string
+          enum:
+          - finger_prick
+          - swab
+          - venous
+          - automatic_capillary
+          example: finger_prick
+    Analysis:
+      description: Requirements for processing a sample
+      type: object
+      required:
+      - required
+      properties:
+        required:
+          description: Indicates whether a Thriva lab needs to perform analysis on
+            this sample.
+          type: boolean
+          example: true
+        lab:
+          description: The identifier for the lab that should perform analysis on
+            this sample. If one is not provided, one will be assigned based on the
+            analysis requirements.
+          type: string
+          example: PUR1
+    Kits:
+      description: The requirements for the kits that should be part of this Order
+      type: array
+      items:
+        description: A Kit object that relates to a physical test kits that will be
+          sent to the delivery address
+        type: object
+        required:
+        - count
+        - analysis
+        properties:
+          test_profiles:
+            description: A list of what needs to be tested for the user's sample
+            type: array
+            items:
+              type: string
+            example:
+            - LFT
+            - LIPP
+          count:
+            description: The number of test kits required
+            type: integer
+            enum:
+            - 25
+            - 50
+            example: 25
+          sample:
+            $ref: '#/components/schemas/Sample'
+          analysis:
+            $ref: '#/components/schemas/Analysis'
+    Address:
+      description: The default delivery address for a user
+      type: object
+      deprecated: true
+      required:
+      - name
+      - line1
+      - city
+      - postcode
+      - country
+      properties:
+        name:
+          description: The name of the recipient at the delivery address
+          type: string
+          example: Mr Joe Blogs
+        line1:
+          description: The first line of the delivery address
+          type: string
+          example: Thriva Ltd
+        line2:
+          description: The second line of the delivery address
+          type: string
+          example: 174-180 Old St
+        line3:
+          description: The third line of the delivery address
+          type: string
+          example: Greater London
+        city:
+          description: The city for the delivery address
+          type: string
+          example: London
+        state:
+          description: The county or state for the delivery address
+          type: string
+          example: London
+        postcode:
+          description: The postcode for the delivery address
+          type: string
+          example: EC1V 9BP
+        country:
+          description: The country for the delivery address (ISO 3166-1 alpha-2)
+          type: string
+          example: GB
+    ContactDetail:
+      description: Contact details for a User/Subject
+      type: object
+      required:
+      - first_name
+      - last_name
+      properties:
+        first_name:
+          description: The first name
+          type: string
+          example: Frasier
+        last_name:
+          description: The last name
+          type: string
+          example: Crane
+        email:
+          description: The email address
+          type: string
+          example: frasier.crane@example.com
+        mobile_phone_number:
+          description: The mobile phone number. Only GB numbers in the format +447123456789.
+            Optional for most organisations, but a valid mobile phone number is required
+            (on both create and update) when Thriva provides clinical governance for
+            your organisation. If it is required and omitted, the request is rejected
+            with a "mobile_phone_number is required" error.
+          type: string
+          example: '+447123456789'
+    ResultSetAttachment:
+      type: string
+      format: binary
+      example: '%PDF-1.5
+
+        %âãÏÓ
+
+        3 0 obj
+
+        <<
+
+        /Producer (PDF-XChange Printer 2012 \(5.5 build 313.1\) [Windows 8 Professional
+        x64 \(Build 9200\)])
+
+        /Title (ASET Pathology report)
+
+        /Subject (Pathology report)
+
+        /Keywords (ASET Pathology)
+
+        /Creator (ASET)
+
+        /CreationDate (D:20220619080645+01''00'')
+
+        >>
+
+        endobj
+
+        5 0 obj
+
+        <<
+
+        /Type /XObject
+
+        /Subtype /Image
+
+        /Width 162
+
+        /Height 92
+
+        /BitsPerComponent 8
+
+        /ColorSpace /DeviceRGB
+
+        /Length 2831
+
+        /Filter [/FlateDecode /DCTDecode]
+
+        >>'
+    Appointment:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: The unique identifier for the Appointment
+          type: string
+          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
+        type:
+          type: string
+          enum:
+          - appointment
+        attributes:
+          type: object
+          properties:
+            status:
+              description: The current status of the Appointment
+              type: string
+              enum:
+              - pending
+              - appointment_created
+              - scheduled
+              - in_progress
+              - completed
+              - cancelled
+              - failed
+              example: pending
+            provider_type:
+              description: The appointment provider. A `remote` provider means a practitioner
+                visits the patient at their home or office rather than at a clinic.
+              type: string
+              enum:
+              - remote-appt-a
+              example: remote-appt-a
+            order_id:
+              description: The reference of the associated Order
+              type: string
+              example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
+            user_id:
+              description: The ID of the associated User
+              type: string
+              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            address_id:
+              description: The ID to the address used for the appointment
+              type: string
+              nullable: true
+              example: AD-12345678-1234-1234-1234-123456789012
+            metadata:
+              description: Custom metadata attached to the appointment
+              type: object
+              nullable: true
+              example:
+                task_id: tsk_custom_123
+            notes:
+              description: Notes for the appointment
+              type: string
+              nullable: true
+              example: Morning appointment preferred
+            scheduling_url:
+              description: URL for the patient to schedule their appointment
+              type: string
+              example: https://provider.example.com/schedule/abc123
+            scheduled_at:
+              description: The date and time the appointment is scheduled for
+              type: string
+              format: date-time
+              nullable: true
+              example: '2026-03-27T09:00:00Z'
+            practitioner_name:
+              description: The name of the assigned practitioner
+              type: string
+              nullable: true
+              example: Dr Alice Green
+            completed_at:
+              description: The date and time the appointment was completed
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            cancelled_at:
+              description: The date and time the appointment was cancelled
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            cancellation_reason:
+              description: The reason for cancellation, if applicable
+              type: string
+              nullable: true
+              example: null
+            failed_at:
+              description: The date and time the appointment failed
+              type: string
+              format: date-time
+              nullable: true
+              example: null
+            failure_reason:
+              description: The reason for failure, if applicable
+              type: string
+              nullable: true
+              example: null
+            last_synced_at:
+              description: The date and time the appointment data was last synced
+                with the provider
+              type: string
+              format: date-time
+              nullable: true
+              example: '2026-03-25T10:30:00Z'
+            created_at:
+              description: The date and time the Appointment was created
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+            updated_at:
+              description: The date and time the Appointment was last updated
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+    TrackingEvent:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Unique identifier for the tracking event
+          type: string
+          format: uuid
+          example: 0190a7c2-4b1f-7c3a-9f00-1c9b3a2d4e10
+        type:
+          type: string
+          enum:
+          - tracking_event
+          example: tracking_event
+        attributes:
+          type: object
+          required:
+          - status
+          - location
+          - occurred_at
+          - details
+          properties:
+            status:
+              description: Carrier tracking status of the kit/sample, reflecting its
+                movement through the delivery carrier's network. `kit_*` values are
+                outbound events (the kit being delivered from Thriva to the customer);
+                `sample_*` values are inbound events (the sample being returned from
+                the customer to the lab).
+              type: string
+              enum:
+              - kit_in_transit
+              - kit_delivered
+              - kit_delivery_attempted
+              - kit_exception
+              - sample_in_transit
+              - sample_delivery_attempted
+              - sample_delivered_to_lab
+              - sample_exception
+              example: kit_in_transit
+            location:
+              description: Location reported by the carrier, when available
+              type: string
+              nullable: true
+              example: MOUNT PLEASANT MC
+            occurred_at:
+              description: The date and time, in ISO 8601 format (UTC), at which the
+                event occurred
+              type: string
+              format: date-time
+              example: '2026-03-29T09:15:00Z'
+            details:
+              description: Human-readable description of the status, suitable for
+                display
+              type: string
+              example: Your kit is on its way.
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that
+                caused the error
+              type: string
+              example: /data/field_name/example
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    ArchivedEscalationError:
+      type: object
+      required:
+      - code
+      - title
+      - detail
+      - meta
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: ARCHIVED_ESCALATION
+        title:
+          type: string
+          description: Title of the error
+          example: archived escalation
+        detail:
+          type: string
+          example: This escalation is archived. Only an active escalation can be acknowledged.
+        meta:
+          type: object
+          required:
+          - active_escalation_id
+          properties:
+            active_escalation_id:
+              description: The id of the current active escalation.
+              type: string
+              example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
+    InvalidEscalationLevelError:
+      type: object
+      required:
+      - code
+      - title
+      - detail
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: INVALID_ESCALATION_LEVEL
+        title:
+          type: string
+          description: Title of the error
+          example: invalid escalation level
+        detail:
+          type: string
+          example: The level passed in does not match the current level of the escalation.

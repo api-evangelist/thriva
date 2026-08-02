@@ -1,0 +1,54 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.thriva.io
+standards:
+  - id: oauth2
+    conforms: true
+    evidence: >-
+      Docs state access is enforced through the OAuth 2.0 Client Credentials grant
+      (https://docs.thriva.io/docs/authentication); token endpoint POST /oauth/token.
+  - id: oidc
+    conforms: true
+    evidence: >-
+      Auth API (Auth0-backed) publishes OIDC discovery at
+      https://auth.thriva.io/.well-known/openid-configuration and
+      https://auth.sandbox.thriva.io/.well-known/openid-configuration (both fetched 200,
+      captured in well-known/). Applies to the auth surface; partner API access itself uses
+      the client-credentials grant.
+  - id: json:api
+    conforms: true
+    evidence: >-
+      Introduction guide states "Our API is a RESTful JSON API that follows the JSON API
+      Specification (jsonapi.org)"; spec confirms JSON:API pagination links, include
+      relationship expansion, and JSON:API error objects with source.pointer.
+  - id: rfc6901-json-pointer
+    conforms: true
+    evidence: >-
+      Error objects carry source.pointer described in the spec as "A RFC6901 compliant JSON
+      pointer to the attribute that caused the error".
+  - id: pagination
+    conforms: true
+    evidence: page[number]/page[size] params with self/current/first/prev/next/last links (OpenAPI components).
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: Errors are JSON:API error objects, not application/problem+json.
+  - id: idempotency
+    conforms: false
+    evidence: No idempotency-key contract documented or declared in the OpenAPI (searched 2026-07-21).
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returned 404 on thriva.co, docs.thriva.io and api.thriva.io (probed 2026-07-21).
+  - id: webhook-signing
+    conforms: true
+    evidence: >-
+      Webhooks are delivered and signed via Svix (svix-signature/svix-id/svix-timestamp
+      headers); https://docs.thriva.io/docs/webhooks-1.
+  - id: openapi-3
+    conforms: true
+    evidence: Platform API published as OpenAPI 3.0.2 through the ReadMe portal (docs.thriva.io/reference).
+notes: >-
+  Thriva markets its platform as covering "clinical and medical compliance requirements" and
+  its Escalation Calculator is described as a medical device with instructions for use held
+  in their Quality Management System (https://docs.thriva.io/docs/clinical-escalations), but
+  no public trust center or named certification program (SOC 2 / ISO 27001) was found on the
+  public surface, so no Compliance pointer is emitted.

@@ -1,0 +1,59 @@
+generated: '2026-07-21'
+method: searched
+source: https://docs.thriva.io/docs/getting-started
+derived_from: openapi/thriva-platform-api-openapi.yml
+style: >-
+  RESTful JSON API following the JSON:API specification (https://jsonapi.org/), as stated in
+  Thriva's own Introduction guide. Resource responses are JSON:API-shaped documents; list
+  endpoints carry pagination links and support relationship inclusion.
+authentication:
+  style: OAuth 2.0 Client Credentials bearer token
+  artifact: authentication/thriva-authentication.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  notes: All Platform API operations are under /v1/; the published spec is "Platform API V1" version 1.0.
+pagination:
+  style: page-based (JSON:API page family)
+  params:
+    - name: page[number]
+      description: The page that will be returned
+    - name: page[size]
+      description: The amount of items per page (minimum 10, maximum 100)
+  response_fields:
+    links: [self, current, first, prev, next, last]
+    source: openapi/thriva-platform-api-openapi.yml#/components/schemas/Pagination
+field_expansion:
+  style: JSON:API include parameter
+  param: include
+  notes: >-
+    Comma-separated list of relationship objects to include in the response, e.g.
+    include=test_profiles,biomarker_results,escalations on result sets,
+    include=biomarkers on test profiles, include=address,contact_detail on users.
+errors:
+  envelope: JSON:API error objects
+  fields:
+    - title
+    - detail
+    - source.pointer (RFC 6901 JSON pointer to the offending attribute)
+  artifact: errors/thriva-problem-types.yml
+  notes: >-
+    415 Unsupported Media Type is returned for wrong content types; 400/401/403/404/422 are
+    declared across operations. No RFC 9457 problem+json.
+idempotency:
+  supported: false
+  notes: >-
+    No idempotency key header or retry-safety contract is documented in the Platform API
+    docs or declared in the OpenAPI (searched 2026-07-21).
+rate_limits:
+  documented: false
+  notes: No rate-limit policy or signaling headers are documented (searched 2026-07-21).
+request_tracing:
+  documented: false
+webhooks:
+  provider: svix
+  signature_headers: [svix-signature, svix-id, svix-timestamp]
+  artifact: asyncapi/thriva-webhooks.yml
+external_references:
+  - https://docs.thriva.io/docs/getting-started
+  - https://docs.thriva.io/reference

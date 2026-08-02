@@ -1,0 +1,48 @@
+generated: '2026-07-21'
+method: searched
+hosts:
+  - host: https://thriva.co
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /llms.txt
+        status: 404
+  - host: https://docs.thriva.io
+    documents:
+      - path: /llms.txt
+        status: 200
+        file: ../llms/thriva-llms.txt
+        notes: ReadMe-generated llms.txt index of guides and API reference, saved verbatim.
+      - path: /.well-known/security.txt
+        status: 404
+  - host: https://api.thriva.io
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+  - host: https://auth.thriva.io
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: thriva-openid-configuration.json
+        notes: Auth0-backed OIDC discovery for the production Auth API (issuer https://auth.thriva.io/).
+  - host: https://auth.sandbox.thriva.io
+    documents:
+      - path: /.well-known/openid-configuration
+        status: 200
+        file: thriva-sandbox-openid-configuration.json
+        notes: OIDC discovery for the sandbox Auth API (issuer https://auth.sandbox.thriva.io/).
+probed: '2026-07-21'

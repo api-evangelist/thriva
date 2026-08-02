@@ -1,0 +1,136 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/thriva-platform-api-openapi.yml
+format: json:api-error-objects
+notes: Thriva's Platform API returns JSON:API-style error objects (title, detail,
+  source.pointer with an RFC 6901 JSON pointer to the offending attribute), not RFC
+  9457 problem+json. Derived from the 4xx responses declared in the OpenAPI; no 5xx
+  responses are declared in the spec.
+envelope:
+  content_type: application/json
+  shape:
+    title: Title of the error
+    detail: Human-readable detail (e.g. 'field_name.example must be a string')
+    source.pointer: RFC 6901 JSON pointer to the attribute that caused the error
+problems:
+- status: 400
+  title: Bad request
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /oauth/token
+  also_on:
+  - GET /v1/test-profiles
+  - GET /v1/orders
+  - GET /v1/bulk-orders
+  - GET /v1/tests
+  - GET /v1/result-sets
+  - POST /v1/users
+  - GET /v1/users
+  - POST /v1/users/{user_id}/invitations
+  - POST /v1/appointments
+  - GET /v1/appointments
+- status: 401
+  title: Unauthorized request
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /oauth/token
+- status: 401
+  title: Unauthorized response
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/test-profiles
+  also_on:
+  - POST /v1/orders
+  - GET /v1/orders
+  - POST /v1/orders/{order_id}/reorder
+  - GET /v1/orders/{order_id}
+  - GET /v1/orders/{order_id}/tests
+  - POST /v1/bulk-orders
+  - GET /v1/bulk-orders
+  - GET /v1/bulk-orders/{bulk_order_id}
+  - GET /v1/bulk-orders/sample-references/{sample_reference}
+  - POST /v1/bulk-orders/tests
+  - GET /v1/tests
+  - GET /v1/tests/{test_id}
+  - GET /v1/fulfillment-orders/{fulfillment_order_id}
+  - GET /v1/result-sets
+  - GET /v1/result-sets/{result_set_id}
+  - POST /v1/users
+  - GET /v1/users
+  - GET /v1/users/{user_id}
+  - PATCH /v1/users/{user_id}
+  - POST /v1/users/{user_id}/invitations
+  - POST /v1/result-sets/{result_set_id}/attachments
+  - GET /v1/result-sets/{result_set_id}/attachments/{attachment_id}
+  - POST /v1/appointments
+  - GET /v1/appointments
+  - GET /v1/appointments/{appointment_id}
+  - GET /v1/tracking/{tracking_code}
+- status: 403
+  title: Action forbidden response
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /oauth/token
+  also_on:
+  - GET /v1/test-profiles
+  - GET /v1/orders
+  - GET /v1/orders/{order_id}
+  - GET /v1/orders/{order_id}/tests
+  - GET /v1/bulk-orders
+  - GET /v1/bulk-orders/{bulk_order_id}
+  - GET /v1/tests
+  - GET /v1/tests/{test_id}
+  - GET /v1/fulfillment-orders/{fulfillment_order_id}
+  - GET /v1/result-sets
+  - GET /v1/result-sets/{result_set_id}
+  - POST /v1/users
+  - GET /v1/users
+  - GET /v1/users/{user_id}
+  - PATCH /v1/users/{user_id}
+  - POST /v1/users/{user_id}/invitations
+  - GET /v1/result-sets/{result_set_id}/attachments/{attachment_id}
+  - POST /v1/appointments
+  - GET /v1/appointments
+  - GET /v1/appointments/{appointment_id}
+  - GET /v1/tracking/{tracking_code}
+- status: 404
+  title: Resource not found
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/test-profiles
+  also_on:
+  - GET /v1/orders/{order_id}
+  - GET /v1/orders/{order_id}/tests
+  - GET /v1/bulk-orders/{bulk_order_id}
+  - GET /v1/bulk-orders/sample-references/{sample_reference}
+  - GET /v1/tests/{test_id}
+  - GET /v1/fulfillment-orders/{fulfillment_order_id}
+  - GET /v1/result-sets/{result_set_id}
+  - POST /v1/escalations/{escalation_id}/acknowledge
+  - GET /v1/users/{user_id}
+  - PATCH /v1/users/{user_id}
+  - POST /v1/users/{user_id}/invitations
+  - GET /v1/result-sets/{result_set_id}/attachments/{attachment_id}
+  - GET /v1/appointments/{appointment_id}
+- status: 415
+  title: Unsupported media type response
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/test-profiles
+  also_on:
+  - GET /v1/orders
+  - GET /v1/orders/{order_id}
+  - GET /v1/orders/{order_id}/tests
+  - POST /v1/bulk-orders
+  - GET /v1/bulk-orders
+  - GET /v1/bulk-orders/{bulk_order_id}
+  - GET /v1/bulk-orders/sample-references/{sample_reference}
+  - POST /v1/bulk-orders/tests
+  - GET /v1/tests
+  - GET /v1/tests/{test_id}
+  - GET /v1/fulfillment-orders/{fulfillment_order_id}
+  - GET /v1/result-sets
+  - GET /v1/result-sets/{result_set_id}
+  - POST /v1/users
+  - GET /v1/users
+  - GET /v1/users/{user_id}
+  - PATCH /v1/users/{user_id}
+  - POST /v1/users/{user_id}/invitations
+  - POST /v1/appointments
+  - GET /v1/appointments
+  - GET /v1/appointments/{appointment_id}
+  - GET /v1/tracking/{tracking_code}
+- status: 422
+  title: The request syntax was valid, but we were unable to process the request
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/escalations/{escalation_id}/acknowledge
+- status: 422
+  title: Unprocessable entity
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/appointments

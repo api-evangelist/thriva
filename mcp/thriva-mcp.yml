@@ -1,0 +1,99 @@
+generated: '2026-07-21'
+method: derived
+status: candidate
+source: openapi/thriva-platform-api-openapi.yml
+notes: 'No official Thriva MCP server was found (official MCP registry searched 2026-07-21:
+  no results; no mention on docs.thriva.io). Candidate tool list derived from the
+  Platform API operations; the spec declares no operationIds, so tool names are synthesized
+  from method + path and each tool records its source operation.'
+server:
+  name: thriva
+  transport: http
+tools:
+- name: create_oauth_token
+  description: Create OAuth Token
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /oauth/token
+- name: list_test_profiles
+  description: Fetch available Test Profiles
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/test-profiles
+- name: create_orders
+  description: Create an Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/orders
+- name: list_orders
+  description: Fetch Orders
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/orders
+- name: create_orders_reorder
+  description: Create a reorder
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/orders/{order_id}/reorder
+- name: get_orders
+  description: Fetch an Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/orders/{order_id}
+- name: get_orders_tests
+  description: Fetch Tests for an Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/orders/{order_id}/tests
+- name: create_bulk_orders
+  description: Create a Bulk Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/bulk-orders
+- name: list_bulk_orders
+  description: Fetch Bulk Orders
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/bulk-orders
+- name: get_bulk_orders
+  description: Fetch a Bulk Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/bulk-orders/{bulk_order_id}
+- name: get_bulk_orders_sample_references
+  description: Get details about a sample reference
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/bulk-orders/sample-references/{sample_reference}
+- name: create_bulk_orders_tests
+  description: Create a Test from a Bulk Order item
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/bulk-orders/tests
+- name: list_tests
+  description: Fetch Tests
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/tests
+- name: get_tests
+  description: Fetch a Test
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/tests/{test_id}
+- name: get_fulfillment_orders
+  description: Fetch a Fulfillment Order
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/fulfillment-orders/{fulfillment_order_id}
+- name: list_result_sets
+  description: Fetch Results
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/result-sets
+- name: get_result_sets
+  description: Fetch a Result
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/result-sets/{result_set_id}
+- name: create_escalations_acknowledge
+  description: Acknowledge an escalation
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/escalations/{escalation_id}/acknowledge
+- name: create_users
+  description: Create a User
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/users
+- name: list_users
+  description: Fetch Users
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/users
+- name: get_users
+  description: Fetch a User
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/users/{user_id}
+- name: update_users
+  description: Update a User
+  source_operation: openapi/thriva-platform-api-openapi.yml#PATCH /v1/users/{user_id}
+- name: create_users_invitations
+  description: Create a User Clarity Invitation
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/users/{user_id}/invitations
+- name: create_result_sets_attachments
+  description: Create a ResultSetAttachment
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/result-sets/{result_set_id}/attachments
+- name: get_result_sets_attachments
+  description: Fetch a Result Set Attachment
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/result-sets/{result_set_id}/attachments/{attachment_id}
+- name: create_appointments
+  description: Create an Appointment
+  source_operation: openapi/thriva-platform-api-openapi.yml#POST /v1/appointments
+- name: list_appointments
+  description: Fetch Appointments
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/appointments
+- name: get_appointments
+  description: Fetch an Appointment
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/appointments/{appointment_id}
+- name: get_tracking
+  description: List Tracking Events for a tracking code
+  source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/tracking/{tracking_code}

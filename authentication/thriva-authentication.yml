@@ -1,0 +1,39 @@
+generated: '2026-07-21'
+method: searched
+docs: https://docs.thriva.io/docs/authentication
+source: https://docs.thriva.io/docs/authentication
+summary:
+  types: [oauth2]
+  oauth2_flows: [clientCredentials]
+  token_style: bearer
+overview: >-
+  Access to the Thriva Platform API is enforced through the OAuth 2.0 Client Credentials
+  grant. Thriva provisions each partner with a clientId and secret, which are exchanged for
+  an access token at the Auth API; the access token is then used as a bearer token on
+  Platform API requests. The Auth API is Auth0-backed: both production and sandbox auth
+  hosts publish OIDC discovery documents (captured in well-known/).
+schemes:
+  - name: OAuth2ClientCredentials
+    type: oauth2
+    flows:
+      - flow: clientCredentials
+        tokenUrl: https://auth.thriva.io/oauth/token
+        sandbox_tokenUrl: https://auth.sandbox.thriva.io/oauth/token
+        notes: >-
+          The token request must include an `audience` parameter; for sandbox use, the
+          audience is the Sandbox API URL (https://api.euw2.sandbox.thriva.io/). The
+          Platform API reference also documents the token operation as POST /oauth/token
+          ("Create OAuth Token").
+    sources:
+      - https://docs.thriva.io/docs/authentication
+      - https://docs.thriva.io/reference/post_oauth-token
+      - well-known/thriva-openid-configuration.json
+discovery:
+  production_oidc: https://auth.thriva.io/.well-known/openid-configuration
+  sandbox_oidc: https://auth.sandbox.thriva.io/.well-known/openid-configuration
+  jwks: https://auth.thriva.io/.well-known/jwks.json
+notes: >-
+  The published OpenAPI declares no securitySchemes; this profile is taken from the
+  provider's authentication documentation and the live OIDC discovery documents. No
+  partner-facing OAuth scopes are documented for the Platform API (the client-credentials
+  grant is unscoped in the docs), so no scopes/ artifact is emitted.

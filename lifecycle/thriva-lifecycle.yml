@@ -1,0 +1,19 @@
+generated: '2026-07-21'
+method: derived
+source: openapi/thriva-platform-api-openapi.yml
+versioning:
+  scheme: uri-path
+  current: v1
+  spec_version: '1.0'
+  docs: https://docs.thriva.io/reference
+deprecation:
+  policy_url: null
+  sunset_header: false
+  notes: No public deprecation policy or RFC 8594 Sunset-header support found (searched 2026-07-21).
+sla:
+  url: null
+  notes: No public SLA found.
+status_page: null
+status_page_notes: >-
+  No public status page found; status.thriva.io does not resolve (probed 2026-07-21).
+deprecated_operations: []

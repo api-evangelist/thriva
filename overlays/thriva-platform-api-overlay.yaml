@@ -1,0 +1,46 @@
+# generated: 2026-07-21
+# method: generated
+# source: api-evangelist enrichment pipeline
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Thriva Platform API
+  version: 1.0.0
+extends: openapi/thriva-platform-api-openapi.yml
+actions:
+  - target: $.info
+    description: Attach API Evangelist provenance and portal metadata.
+    update:
+      contact:
+        name: Thriva Developer Portal
+        url: https://docs.thriva.io
+      x-apievangelist:
+        provider: thriva
+        harvested: '2026-07-21'
+        source: https://docs.thriva.io/reference
+        note: >-
+          Spec reassembled from the per-operation OpenAPI fragments the ReadMe portal embeds;
+          no single-file download is published.
+  - target: $
+    description: Point consumers at the developer portal.
+    update:
+      externalDocs:
+        description: Thriva Platform developer documentation
+        url: https://docs.thriva.io
+  - target: $
+    description: >-
+      Declare the OAuth2 client-credentials security model the docs describe but the
+      published spec omits (see authentication/thriva-authentication.yml).
+    update:
+      x-apievangelist-security:
+        type: oauth2
+        flow: clientCredentials
+        tokenUrl: https://auth.thriva.io/oauth/token
+        sandboxTokenUrl: https://auth.sandbox.thriva.io/oauth/token
+        audienceRequired: true
+  - target: $.paths
+    description: >-
+      Flag the spec's biggest contract gap for a provider follow-up - no operationIds are
+      declared on any of the 29 operations, which blocks Arazzo workflows and weakens
+      generated SDK/tool naming.
+    update:
+      x-apievangelist-gap: no-operation-ids

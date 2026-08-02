@@ -1,0 +1,13 @@
+generated: '2026-07-21'
+method: searched
+source: public package registries (probed 2026-07-21)
+packages: []
+notes: >-
+  No first-party client libraries found. Registries probed 2026-07-21: npm (search
+  "thriva" returns only @thrivadev/thriva-stencil-ui, an unmodified Stencil component
+  starter last published 2022-11 whose repository field points at the generic
+  ionic-team/stencil-component-starter - not an API client and not clearly first-party),
+  PyPI (thriva: 404), NuGet (thriva: 404), RubyGems (no results), Packagist (no
+  first-party results), Maven Central (no first-party results), pkg.go.dev (0 results);
+  crates.io search was blocked by their API data-access policy. Thriva's docs document
+  the raw REST API only and reference no official SDKs.

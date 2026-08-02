@@ -1,0 +1,32 @@
+{
+  "provider": "thriva",
+  "sources": [
+    "thriva-appointments-api-api-openapi.yml",
+    "thriva-auth-api-api-openapi.yml",
+    "thriva-biomarkers-api-api-openapi.yml",
+    "thriva-bulk-orders-api-api-openapi.yml",
+    "thriva-escalations-api-api-openapi.yml",
+    "thriva-orders-api-api-openapi.yml",
+    "thriva-result-attachments-api-api-openapi.yml",
+    "thriva-results-api-api-openapi.yml",
+    "thriva-tracking-api-api-openapi.yml",
+    "thriva-users-api-api-openapi.yml"
+  ],
+  "outputs": [
+    "thriva-appointments-api-api-openapi.yml",
+    "thriva-auth-api-api-openapi.yml",
+    "thriva-biomarkers-api-api-openapi.yml",
+    "thriva-bulk-orders-api-api-openapi.yml",
+    "thriva-escalations-api-api-openapi.yml",
+    "thriva-orders-api-api-openapi.yml",
+    "thriva-result-attachments-api-api-openapi.yml",
+    "thriva-results-api-api-openapi.yml",
+    "thriva-tracking-api-api-openapi.yml",
+    "thriva-users-api-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
