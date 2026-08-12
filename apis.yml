@@ -208,6 +208,8 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/thriva-platform-api-overlay.yaml
 - type: Website
   url: https://thriva.co
 - type: DeveloperPortal
