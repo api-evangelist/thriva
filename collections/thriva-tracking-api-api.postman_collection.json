@@ -1,0 +1,257 @@
+{
+  "item": [
+    {
+      "id": "7bf4858d-2040-4b0f-bb6c-1a0f8aa6e2a8",
+      "name": "Tracking API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "03721a2a-6e4f-42a9-9b3b-a5c953920d82",
+          "name": "List Tracking Events for a tracking code",
+          "request": {
+            "name": "List Tracking Events for a tracking code",
+            "description": {
+              "content": "Returns the tracking history for a tracking code, in ascending chronological order by `occurred_at`. Covers two journeys - outbound kit delivery and inbound sample return (see the `tracking_code` parameter and `status` for detail). Returns an empty collection if no events are available, including when the feature is not yet enabled for your organisation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "tracking",
+                ":tracking_code"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tracking_code",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "44c3b62f-5bdf-4f16-8299-6ca71ec9d1a7",
+              "name": "An array of Tracking Events",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tracking",
+                    ":tracking_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"0190a7c2-4b1f-7c3a-9f00-1c9b3a2d4e10\",\n      \"type\": \"tracking_event\",\n      \"attributes\": {\n        \"status\": \"kit_in_transit\",\n        \"location\": \"MOUNT PLEASANT MC\",\n        \"occurred_at\": \"2026-03-29T09:15:00Z\",\n        \"details\": \"Your kit is on its way.\"\n      }\n    },\n    {\n      \"id\": \"0190a7c2-4b1f-7c3a-9f00-1c9b3a2d4e10\",\n      \"type\": \"tracking_event\",\n      \"attributes\": {\n        \"status\": \"kit_in_transit\",\n        \"location\": \"MOUNT PLEASANT MC\",\n        \"occurred_at\": \"2026-03-29T09:15:00Z\",\n        \"details\": \"Your kit is on its way.\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4efac9c-2855-4ed0-bde5-df1f5d3b22eb",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tracking",
+                    ":tracking_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a88162fa-4ecc-4c43-bc6b-47de6b985efe",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tracking",
+                    ":tracking_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b35d47bd-2852-46ae-a773-55dd6ac8f7b1",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "tracking",
+                    ":tracking_code"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "tracking_code",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "122500ee-27e5-4bf4-8cd9-dc3fc45e254a",
+    "name": "Platform API V1 Appointments API Tracking API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Appointments API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Appointments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/appointments",
+            "params": [
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "Lists all of your appointments, sorted by most recently created"
+        },
+        {
+          "info": {
+            "name": "Create an Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/appointments",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates an Appointment for a sample collection visit. You must provide either an `order_id` or a `user_id`, but not both. When using `user_id`, you must also provide an address (either `address_id` or inline `address`). A `remote` provider type means a practitioner visits the patient at their home or office (i.e. not at a clinic). The collection methods supported depend on the provider — for example, `remote-appt-a` currently supports venous collection only."
+        },
+        {
+          "info": {
+            "name": "Fetch an Appointment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/appointments/:appointment_id",
+            "params": [
+              {
+                "name": "appointment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a single Appointment by its ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

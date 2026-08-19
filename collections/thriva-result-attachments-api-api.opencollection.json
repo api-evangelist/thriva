@@ -1,0 +1,63 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Result attachments API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Result attachments API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a ResultSetAttachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/result-sets/:result_set_id/attachments",
+            "params": [
+              {
+                "name": "result_set_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Request a PDF of a customers results, once the PDF has been created a webhook will fire notifying you to then request it"
+        },
+        {
+          "info": {
+            "name": "Fetch a Result Set Attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/result-sets/:result_set_id/attachments/:attachment_id",
+            "params": [
+              {
+                "name": "result_set_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "attachment_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a Result Set Attachment"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

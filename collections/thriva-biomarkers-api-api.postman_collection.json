@@ -1,0 +1,348 @@
+{
+  "item": [
+    {
+      "id": "6a335d9e-7087-4c59-8fb2-547c31dc972b",
+      "name": "Biomarkers API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "59f77602-487b-4833-8725-bbc028f0337b",
+          "name": "Fetch available Test Profiles",
+          "request": {
+            "name": "Fetch available Test Profiles",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "test-profiles"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma separated list of relationship objects to include in response"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[code_in]",
+                  "value": "<string>",
+                  "description": "An array of test profile codes used to filter the response"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6363dd77-9d03-4fdf-a729-770386b7571a",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"AB12\",\n      \"type\": \"test_profile\",\n      \"attributes\": {\n        \"name\": \"B12 (Active)\",\n        \"code\": \"AB12\",\n        \"description\": \"This is a short description of the test profile, how it affects the human body, and why it is helpful to be monitored.\",\n        \"sample_type\": \"saliva\",\n        \"collection_tube\": \"EDTA/Purple tube\"\n      },\n      \"relationships\": {\n        \"biomarkers\": {\n          \"data\": [\n            {\n              \"id\": \"ALP\",\n              \"type\": \"biomarker\"\n            },\n            {\n              \"id\": \"ALP\",\n              \"type\": \"biomarker\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"AB12\",\n      \"type\": \"test_profile\",\n      \"attributes\": {\n        \"name\": \"B12 (Active)\",\n        \"code\": \"AB12\",\n        \"description\": \"This is a short description of the test profile, how it affects the human body, and why it is helpful to be monitored.\",\n        \"sample_type\": \"blood\",\n        \"collection_tube\": \"EDTA/Purple tube\"\n      },\n      \"relationships\": {\n        \"biomarkers\": {\n          \"data\": [\n            {\n              \"id\": \"ALP\",\n              \"type\": \"biomarker\"\n            },\n            {\n              \"id\": \"ALP\",\n              \"type\": \"biomarker\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"included\": [\n    {\n      \"id\": \"ALP\",\n      \"type\": \"biomarker\",\n      \"attributes\": {\n        \"name\": \"Alkaline phosphatase\",\n        \"code\": \"ALP\"\n      }\n    },\n    {\n      \"id\": \"ALP\",\n      \"type\": \"biomarker\",\n      \"attributes\": {\n        \"name\": \"Alkaline phosphatase\",\n        \"code\": \"ALP\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "28d78937-f5ea-460b-9528-d99e231a1418",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c6ae0def-0145-4be4-a72c-43b8126531c8",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d39a26bc-9c05-4659-bf74-60b78d12a29b",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8b2659c-b2f2-4c3a-bae6-7abbe68ac16f",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 7377\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1c41e83-7bd2-4b8b-9806-cb48d4b1a448",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "test-profiles"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "biomarkers"
+                    },
+                    {
+                      "key": "filter[code_in]",
+                      "value": "LFT,LIPP,VIDC"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "a711df87-9650-4451-a46a-9b42e37fee15",
+    "name": "Platform API V1 Appointments API Biomarkers API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

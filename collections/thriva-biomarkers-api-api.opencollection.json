@@ -1,0 +1,43 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Biomarkers API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Biomarkers API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch available Test Profiles",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/test-profiles",
+            "params": [
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of relationship objects to include in response"
+              },
+              {
+                "name": "filter[code_in]",
+                "value": "LFT,LIPP,VIDC",
+                "type": "query",
+                "description": "An array of test profile codes used to filter the response"
+              }
+            ]
+          },
+          "docs": "Fetch available Test Profiles"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

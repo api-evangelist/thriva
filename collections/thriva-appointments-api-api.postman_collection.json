@@ -1,0 +1,841 @@
+{
+  "item": [
+    {
+      "id": "89075f9e-cc49-4253-8559-fcc10417decf",
+      "name": "Appointments API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "06b7b72a-87da-4979-9551-d5e36763042b",
+          "name": "Create an Appointment",
+          "request": {
+            "name": "Create an Appointment",
+            "description": {
+              "content": "Creates an Appointment for a sample collection visit. You must provide either an `order_id` or a `user_id`, but not both. When using `user_id`, you must also provide an address (either `address_id` or inline `address`). A `remote` provider type means a practitioner visits the patient at their home or office (i.e. not at a clinic). The collection methods supported depend on the provider — for example, `remote-appt-a` currently supports venous collection only.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "appointments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"type\": \"<string>\",\n    \"attributes\": {\n      \"provider_type\": \"<string>\",\n      \"order_id\": \"<string>\",\n      \"user_id\": \"<string>\",\n      \"address_id\": \"<string>\",\n      \"address\": {\n        \"line1\": \"<string>\",\n        \"city\": \"<string>\",\n        \"postcode\": \"<string>\",\n        \"country\": \"<string>\",\n        \"line2\": \"<string>\",\n        \"state\": \"<string>\"\n      },\n      \"phone_number\": \"<string>\",\n      \"metadata\": \"<object>\",\n      \"notes\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e6a74553-a9b8-4e51-9060-b10e8061d8d2",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6\",\n    \"type\": \"appointment\",\n    \"attributes\": {\n      \"status\": \"pending\",\n      \"provider_type\": \"remote-appt-a\",\n      \"order_id\": \"O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E\",\n      \"user_id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"address_id\": \"AD-12345678-1234-1234-1234-123456789012\",\n      \"metadata\": {\n        \"task_id\": \"tsk_custom_123\"\n      },\n      \"notes\": \"Morning appointment preferred\",\n      \"scheduling_url\": \"https://provider.example.com/schedule/abc123\",\n      \"scheduled_at\": \"2026-03-27T09:00:00Z\",\n      \"practitioner_name\": \"Dr Alice Green\",\n      \"completed_at\": null,\n      \"cancelled_at\": null,\n      \"cancellation_reason\": null,\n      \"failed_at\": null,\n      \"failure_reason\": null,\n      \"last_synced_at\": \"2026-03-25T10:30:00Z\",\n      \"created_at\": \"2026-03-25T10:30:00Z\",\n      \"updated_at\": \"2026-03-25T10:30:00Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d61a0561-00bb-4c17-865c-6d50a7272a90",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported provider\",\n      \"detail\": \"Provider 'acme' is not supported. Supported providers: remote-appt-a\",\n      \"source\": {\n        \"pointer\": \"/data/attributes/provider_type\"\n      }\n    },\n    {\n      \"title\": \"unsupported provider\",\n      \"detail\": \"Provider 'acme' is not supported. Supported providers: remote-appt-a\",\n      \"source\": {\n        \"pointer\": \"/data/attributes/provider_type\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "22cace82-1fbe-4d3d-bc0f-03a0870b4cc5",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c41d27f-016c-414f-940a-cea77af9a18f",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0dcff2dd-2b78-45b6-b186-0825e0411cfd",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2683e7f9-ae23-4138-a897-e8112b3d3d63",
+              "name": "Unprocessable entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"collection method not supported\",\n      \"detail\": \"The provider does not currently support this collection method for appointments\",\n      \"source\": {\n        \"pointer\": \"/data/attributes/order_id\"\n      }\n    },\n    {\n      \"title\": \"collection method not supported\",\n      \"detail\": \"The provider does not currently support this collection method for appointments\",\n      \"source\": {\n        \"pointer\": \"/data/attributes/order_id\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4f8cee19-eed2-482f-b42b-d3b29e336974",
+          "name": "Fetch Appointments",
+          "request": {
+            "name": "Fetch Appointments",
+            "description": {
+              "content": "Lists all of your appointments, sorted by most recently created",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "appointments"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<integer>",
+                  "description": "The page that will be returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<integer>",
+                  "description": "The amount of items per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e5ea7e91-fd4a-40bd-a379-7f07abe37d16",
+              "name": "An array of Appointments",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6\",\n      \"type\": \"appointment\",\n      \"attributes\": {\n        \"status\": \"pending\",\n        \"provider_type\": \"remote-appt-a\",\n        \"order_id\": \"O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E\",\n        \"user_id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n        \"address_id\": \"AD-12345678-1234-1234-1234-123456789012\",\n        \"metadata\": {\n          \"task_id\": \"tsk_custom_123\"\n        },\n        \"notes\": \"Morning appointment preferred\",\n        \"scheduling_url\": \"https://provider.example.com/schedule/abc123\",\n        \"scheduled_at\": \"2026-03-27T09:00:00Z\",\n        \"practitioner_name\": \"Dr Alice Green\",\n        \"completed_at\": null,\n        \"cancelled_at\": null,\n        \"cancellation_reason\": null,\n        \"failed_at\": null,\n        \"failure_reason\": null,\n        \"last_synced_at\": \"2026-03-25T10:30:00Z\",\n        \"created_at\": \"2026-03-25T10:30:00Z\",\n        \"updated_at\": \"2026-03-25T10:30:00Z\"\n      }\n    },\n    {\n      \"id\": \"APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6\",\n      \"type\": \"appointment\",\n      \"attributes\": {\n        \"status\": \"pending\",\n        \"provider_type\": \"remote-appt-a\",\n        \"order_id\": \"O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E\",\n        \"user_id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n        \"address_id\": \"AD-12345678-1234-1234-1234-123456789012\",\n        \"metadata\": {\n          \"task_id\": \"tsk_custom_123\"\n        },\n        \"notes\": \"Morning appointment preferred\",\n        \"scheduling_url\": \"https://provider.example.com/schedule/abc123\",\n        \"scheduled_at\": \"2026-03-27T09:00:00Z\",\n        \"practitioner_name\": \"Dr Alice Green\",\n        \"completed_at\": null,\n        \"cancelled_at\": null,\n        \"cancellation_reason\": null,\n        \"failed_at\": null,\n        \"failure_reason\": null,\n        \"last_synced_at\": \"2026-03-25T10:30:00Z\",\n        \"created_at\": \"2026-03-25T10:30:00Z\",\n        \"updated_at\": \"2026-03-25T10:30:00Z\"\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"current\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"first\": \"http://example.com/articles?page[number]=1&page[size]=1\",\n    \"prev\": \"http://example.com/articles?page[number]=2&page[size]=1\",\n    \"next\": \"http://example.com/articles?page[number]=4&page[size]=1\",\n    \"last\": \"http://example.com/articles?page[number]=13&page[size]=1\"\n  },\n  \"meta\": {\n    \"pagination\": {\n      \"current\": 5,\n      \"records\": 100,\n      \"first\": 1,\n      \"prev\": 4,\n      \"next\": 6,\n      \"last\": 10\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6ab622c-cb0a-4e67-811b-fc33a2dd3aef",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8289892-f26e-4d82-b856-0d015d303145",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe313b1f-e858-4875-bb80-d82deb5dba03",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fe773198-0a9c-4bc6-ad62-22b987d72e4c",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3e426fe0-0477-4ff7-b907-e19304f51c87",
+          "name": "Fetch an Appointment",
+          "request": {
+            "name": "Fetch an Appointment",
+            "description": {
+              "content": "Fetch a single Appointment by its ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "appointments",
+                ":appointment_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "appointment_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fd9d3946-8adc-4e6f-af3e-c060296bacd2",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments",
+                    ":appointment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appointment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6\",\n    \"type\": \"appointment\",\n    \"attributes\": {\n      \"status\": \"pending\",\n      \"provider_type\": \"remote-appt-a\",\n      \"order_id\": \"O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E\",\n      \"user_id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"address_id\": \"AD-12345678-1234-1234-1234-123456789012\",\n      \"metadata\": {\n        \"task_id\": \"tsk_custom_123\"\n      },\n      \"notes\": \"Morning appointment preferred\",\n      \"scheduling_url\": \"https://provider.example.com/schedule/abc123\",\n      \"scheduled_at\": \"2026-03-27T09:00:00Z\",\n      \"practitioner_name\": \"Dr Alice Green\",\n      \"completed_at\": null,\n      \"cancelled_at\": null,\n      \"cancellation_reason\": null,\n      \"failed_at\": null,\n      \"failure_reason\": null,\n      \"last_synced_at\": \"2026-03-25T10:30:00Z\",\n      \"created_at\": \"2026-03-25T10:30:00Z\",\n      \"updated_at\": \"2026-03-25T10:30:00Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "38e1aef7-d344-4917-907a-09455ddaeb39",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments",
+                    ":appointment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appointment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "07942587-ac34-4dfd-a567-cf5ce5729b94",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments",
+                    ":appointment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appointment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ac7b19a5-25e9-4566-b6a2-6bfa7dac70ae",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments",
+                    ":appointment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appointment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 118\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "da7c144b-dc96-430c-bacb-aef30ca3c3cb",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "appointments",
+                    ":appointment_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "appointment_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "93a89ea9-ee5d-4408-b806-1b80480d0a56",
+    "name": "Platform API V1 Appointments API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

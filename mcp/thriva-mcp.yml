@@ -2,10 +2,10 @@ generated: '2026-07-21'
 method: derived
 status: candidate
 source: openapi/thriva-platform-api-openapi.yml
-notes: 'No official Thriva MCP server was found (official MCP registry searched 2026-07-21:
-  no results; no mention on docs.thriva.io). Candidate tool list derived from the
-  Platform API operations; the spec declares no operationIds, so tool names are synthesized
-  from method + path and each tool records its source operation.'
+notes: 'No official Thriva MCP server was found (official MCP registry searched 2026-07-21: no results;
+  no mention on docs.thriva.io). Candidate tool list derived from the Platform API operations; the spec
+  declares no operationIds, so tool names are synthesized from method + path and each tool records its
+  source operation.'
 server:
   name: thriva
   transport: http
@@ -97,3 +97,9 @@ tools:
 - name: get_tracking
   description: List Tracking Events for a tracking code
   source_operation: openapi/thriva-platform-api-openapi.yml#GET /v1/tracking/{tracking_code}
+deployment:
+  mode: none
+  verified: derived
+  tools: 29
+  checked: '2026-08-12'
+  source: catalog MCP census

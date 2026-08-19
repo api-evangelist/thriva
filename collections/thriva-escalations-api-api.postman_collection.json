@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "3dda5b19-c144-423d-9053-69d5babcb584",
+      "name": "Escalations API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "abfdbd3e-2487-4619-b83a-d9ef1f8c7a54",
+          "name": "Acknowledge an escalation",
+          "request": {
+            "name": "Acknowledge an escalation",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "escalations",
+                ":escalation_id",
+                "acknowledge"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "escalation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"type\": \"<string>\",\n    \"attributes\": {\n      \"level\": \"<string>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3ad5150f-9213-40ba-9f6d-0a91ac901fec",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "escalations",
+                    ":escalation_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "escalation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"type\": \"escalation\",\n    \"attributes\": {\n      \"level\": \"critical\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n    \"type\": \"escalation\",\n    \"attributes\": {\n      \"level\": \"very_high\",\n      \"acknowledgment_due_by\": \"1976-07-10T18:49:28.982Z\",\n      \"acknowledged_at\": \"1971-04-11T19:54:38.223Z\",\n      \"status\": \"archived\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6b058485-900f-4435-bbd9-7b8470bea93b",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "escalations",
+                    ":escalation_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "escalation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"type\": \"escalation\",\n    \"attributes\": {\n      \"level\": \"critical\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": false\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "16dcc2b0-5990-423d-b80f-0d614f712e39",
+              "name": "The request syntax was valid, but we were unable to process the request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "escalations",
+                    ":escalation_id",
+                    "acknowledge"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "escalation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"data\": {\n    \"type\": \"escalation\",\n    \"attributes\": {\n      \"level\": \"critical\"\n    }\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"code\": \"ARCHIVED_ESCALATION\",\n      \"title\": \"archived escalation\",\n      \"detail\": \"This escalation is archived. Only an active escalation can be acknowledged.\",\n      \"meta\": {\n        \"active_escalation_id\": \"ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194\"\n      }\n    },\n    {\n      \"code\": \"ARCHIVED_ESCALATION\",\n      \"title\": \"archived escalation\",\n      \"detail\": \"This escalation is archived. Only an active escalation can be acknowledged.\",\n      \"meta\": {\n        \"active_escalation_id\": \"ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "c3127d8a-7635-4d2a-a89d-d91334b7ff1d",
+    "name": "Platform API V1 Appointments API Escalations API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Bulk Orders API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk Orders API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Bulk Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/bulk-orders",
+            "params": [
+              {
+                "name": "filter[startDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) from which bulk orders will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "filter[endDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) to which bulk orders will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "Lists all Bulk Orders"
+        },
+        {
+          "info": {
+            "name": "Create a Bulk Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/bulk-orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and sends a Bulk Order to a specified address"
+        },
+        {
+          "info": {
+            "name": "Fetch a Bulk Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/bulk-orders/:bulk_order_id",
+            "params": [
+              {
+                "name": "bulk_order_id",
+                "value": "",
+                "type": "path",
+                "description": "The ID of a Bulk Order"
+              }
+            ]
+          },
+          "docs": "Fetch a Bulk Order by ID"
+        },
+        {
+          "info": {
+            "name": "Get details about a sample reference",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/bulk-orders/sample-references/:sample_reference",
+            "params": [
+              {
+                "name": "sample_reference",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+              }
+            ]
+          },
+          "docs": "Returns the details and status of a sample reference that is part of a Bulk Order. Can be used to check if a sample reference is valid before creating a Test from it."
+        },
+        {
+          "info": {
+            "name": "Create a Test from a Bulk Order item",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/bulk-orders/tests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a Test from a sample reference and links with a User"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

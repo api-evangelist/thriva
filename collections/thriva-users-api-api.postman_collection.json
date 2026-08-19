@@ -1,0 +1,1549 @@
+{
+  "item": [
+    {
+      "id": "861c56d7-199a-4084-98d7-a1b1e60a2d7a",
+      "name": "Users API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f09567c0-ab08-4417-bd3e-583d73b8355a",
+          "name": "Create a User",
+          "request": {
+            "name": "Create a User",
+            "description": {
+              "content": "Creates a User",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"contact\": {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"mobile_phone_number\": \"<string>\"\n      },\n      \"date_of_birth\": \"<string>\",\n      \"sex\": \"<string>\",\n      \"address\": {\n        \"name\": \"<string>\",\n        \"line1\": \"<string>\",\n        \"city\": \"<string>\",\n        \"postcode\": \"<string>\",\n        \"country\": \"<string>\",\n        \"line2\": \"<string>\",\n        \"line3\": \"<string>\",\n        \"state\": \"<string>\"\n      },\n      \"external_reference\": \"<string>\"\n    },\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3246a6d0-02e4-4ef1-8452-a2be40c5ad82",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"user\",\n    \"attributes\": {\n      \"date_of_birth\": \"1953-03-07\",\n      \"organization_key\": \"ORG-THRIVA\",\n      \"sex\": \"female\",\n      \"external_reference\": \"28651739-737a-4fb3-9c44-4b5557b2b75f\",\n      \"created_at\": \"2021-06-11T06:00:00Z\"\n    },\n    \"relationships\": {\n      \"address\": {\n        \"data\": {\n          \"id\": \"AD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"address\"\n        }\n      },\n      \"contact_detail\": {\n        \"data\": {\n          \"id\": \"CD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"contact_detail\"\n        }\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    },\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2f9b660f-7162-47be-b3e9-2b9ecdd08e5b",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5d3f42c-e7d3-40e9-987e-22b3a9179280",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7fea3a03-1e6d-4057-9ec4-eefb2d1dca8d",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "855d66bb-53cc-41d9-87e7-7e64c7814491",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2e444bd9-cd8f-487a-9e8e-57b5860a50fb",
+          "name": "Fetch Users",
+          "request": {
+            "name": "Fetch Users",
+            "description": {
+              "content": "An array of Users",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter[contact_detail_email_eq]",
+                  "value": "<string>",
+                  "description": "A complete email address that may belong to a single User"
+                },
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma separated list of relationship objects to include in response"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<integer>",
+                  "description": "The page that will be returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<integer>",
+                  "description": "The amount of items per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "73d8b168-756b-43e5-a2a8-f4a8e8bf7421",
+              "name": "An array of Users",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[contact_detail_email_eq]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"user\",\n      \"attributes\": {\n        \"date_of_birth\": \"1953-03-07\",\n        \"organization_key\": \"ORG-THRIVA\",\n        \"sex\": \"female\",\n        \"external_reference\": \"28651739-737a-4fb3-9c44-4b5557b2b75f\",\n        \"created_at\": \"2021-06-11T06:00:00Z\"\n      },\n      \"relationships\": {\n        \"address\": {\n          \"data\": {\n            \"id\": \"AD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n            \"type\": \"address\"\n          }\n        },\n        \"contact_detail\": {\n          \"data\": {\n            \"id\": \"CD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n            \"type\": \"contact_detail\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"user\",\n      \"attributes\": {\n        \"date_of_birth\": \"1953-03-07\",\n        \"organization_key\": \"ORG-THRIVA\",\n        \"sex\": \"female\",\n        \"external_reference\": \"28651739-737a-4fb3-9c44-4b5557b2b75f\",\n        \"created_at\": \"2021-06-11T06:00:00Z\"\n      },\n      \"relationships\": {\n        \"address\": {\n          \"data\": {\n            \"id\": \"AD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n            \"type\": \"address\"\n          }\n        },\n        \"contact_detail\": {\n          \"data\": {\n            \"id\": \"CD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n            \"type\": \"contact_detail\"\n          }\n        }\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"current\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"first\": \"http://example.com/articles?page[number]=1&page[size]=1\",\n    \"prev\": \"http://example.com/articles?page[number]=2&page[size]=1\",\n    \"next\": \"http://example.com/articles?page[number]=4&page[size]=1\",\n    \"last\": \"http://example.com/articles?page[number]=13&page[size]=1\"\n  },\n  \"meta\": {\n    \"pagination\": {\n      \"current\": 5,\n      \"records\": 100,\n      \"first\": 1,\n      \"prev\": 4,\n      \"next\": 6,\n      \"last\": 10\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f05c4300-3352-43dc-8964-af806dfcc81d",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[contact_detail_email_eq]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff252e72-c990-4f76-a4e1-26b882016c0b",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[contact_detail_email_eq]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fed163e0-dfd8-43f6-9924-0504bbde9814",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[contact_detail_email_eq]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e7277fbf-013f-4996-b041-848e236bac58",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[contact_detail_email_eq]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7c13fba3-54be-4704-8bb9-60fadab84c74",
+          "name": "Fetch a User",
+          "request": {
+            "name": "Fetch a User",
+            "description": {
+              "content": "Fetch a User by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "users",
+                ":user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma separated list of relationship objects to include in response"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "21aebfd7-842a-408b-bb02-730e3adc2237",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"user\",\n    \"attributes\": {\n      \"date_of_birth\": \"1953-03-07\",\n      \"organization_key\": \"ORG-THRIVA\",\n      \"sex\": \"female\",\n      \"external_reference\": \"28651739-737a-4fb3-9c44-4b5557b2b75f\",\n      \"created_at\": \"2021-06-11T06:00:00Z\"\n    },\n    \"relationships\": {\n      \"address\": {\n        \"data\": {\n          \"id\": \"AD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"address\"\n        }\n      },\n      \"contact_detail\": {\n        \"data\": {\n          \"id\": \"CD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"contact_detail\"\n        }\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    },\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a6f58d6f-b7a2-44ab-a927-2952fc99b9a0",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fb55d4c0-8d44-416b-a5fd-f8196a499ee9",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2bae0dc1-fbb5-4084-8616-51fe7b29d4d5",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 1464\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 9287\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cba04a6-5e72-4da3-898a-3d4ea2dbad10",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "address,contact_detail"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "575eb99e-76bf-43ac-9db9-a5df8cc76d41",
+          "name": "Update a User",
+          "request": {
+            "name": "Update a User",
+            "description": {
+              "content": "Update a User",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "users",
+                ":user_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"contact\": {\n        \"first_name\": \"<string>\",\n        \"last_name\": \"<string>\",\n        \"email\": \"<string>\",\n        \"mobile_phone_number\": \"<string>\"\n      },\n      \"date_of_birth\": \"<string>\",\n      \"sex\": \"<string>\",\n      \"external_reference\": \"<string>\"\n    },\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f0b658f6-6678-47f0-8ddb-eb355fb533b6",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"user\",\n    \"attributes\": {\n      \"date_of_birth\": \"1953-03-07\",\n      \"organization_key\": \"ORG-THRIVA\",\n      \"sex\": \"female\",\n      \"external_reference\": \"28651739-737a-4fb3-9c44-4b5557b2b75f\",\n      \"created_at\": \"2021-06-11T06:00:00Z\"\n    },\n    \"relationships\": {\n      \"address\": {\n        \"data\": {\n          \"id\": \"AD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"address\"\n        }\n      },\n      \"contact_detail\": {\n        \"data\": {\n          \"id\": \"CD-25A37617-913C-4F39-B2D4-ED5B734DEC04\",\n          \"type\": \"contact_detail\"\n        }\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    },\n    {\n      \"name\": \"Mr Joe Blogs\",\n      \"line1\": \"Thriva Ltd\",\n      \"city\": \"London\",\n      \"postcode\": \"EC1V 9BP\",\n      \"country\": \"GB\",\n      \"line2\": \"174-180 Old St\",\n      \"line3\": \"Greater London\",\n      \"state\": \"London\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1584e7c-d960-40f4-835f-6f48e0254ccc",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06bcbbab-27b7-4e13-a195-30e6c93c4295",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9a89b5b7-1b7e-48f0-a8d4-d8782d2c365e",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"user not found\"\n    },\n    {\n      \"title\": \"user not found\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "428ba359-db0e-479f-838b-960a4d295507",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4545c92-182d-43cc-87b1-929f0d7f9461",
+          "name": "Create a User Clarity Invitation",
+          "request": {
+            "name": "Create a User Clarity Invitation",
+            "description": {
+              "content": "Sends a user invitation email for Clarity, the invitation link is valid for 30 days",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "users",
+                ":user_id",
+                "invitations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b423c44d-b1be-46da-92ac-4d6a8f1e4451",
+              "name": "ACCEPTED",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "9d9d4c09-8bec-474d-a31d-870098077ff4",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab485a99-2411-40b2-9362-ac35408851e3",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "db42c4bf-4edd-4a7c-9c1e-4d38a6841767",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5ee8858-4347-4f2c-a826-4b29558756e1",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": true\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b497b115-0483-4981-8e56-6f05fc2b5f83",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "users",
+                    ":user_id",
+                    "invitations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "620dff7a-a0ff-4f6b-8d5b-96d3754173d8",
+    "name": "Platform API V1 Appointments API Users API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

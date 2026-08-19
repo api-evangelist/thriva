@@ -1,0 +1,227 @@
+{
+  "item": [
+    {
+      "id": "f208f29c-aa04-4fb4-9177-19965bb0dc34",
+      "name": "Auth API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "82bcbad3-a1a1-4bfd-8b74-0b6c4977d458",
+          "name": "Create OAuth Token",
+          "request": {
+            "name": "Create OAuth Token",
+            "description": {},
+            "url": {
+              "path": [
+                "oauth",
+                "token"
+              ],
+              "host": [
+                "{{oauth-token-Url}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"grant_type\": \"<string>\",\n  \"client_id\": \"<string>\",\n  \"client_secret\": \"<string>\",\n  \"audience\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "fd6669bf-7763-42ed-baac-9911d9bc6a27",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "token"
+                  ],
+                  "host": [
+                    "{{oauth-token-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"access_token\": \"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlUtQ3Brdmtaem9OLXhYeFE1bmpyVSJ9.eyJodHRwczovL3Rocml2YS5pby9vcmdhbml6YXRpb24iOiJ0ZXN0LW9yZ2FuaXNhdGlvbiIsImlzcyI6Imh0dHBzOi8vYXV0aC50aHJpdmEuaW8vIiwic3ViIjoiSzJXYVNPM1NCUkpxM1J6R0o1Y3dDYndJdzg3NFNJam9AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmV1dzIudGhyaXZhLmlvIiwiaWF0IjoxNjU2MzIwODY1LCJleHAiOjE2NTYzMzE2NjUsImF6cCI6IlEyVGFTTzNTQlJVcTNaekdKNWN3R2J3SXc4OMKjU0lqbyIsInNjb3BlIjoib3JkZXI6Y3JlYXRlIG9yZGVyOnJlYWQgdGVzdF9wcm9maWxlOnJlYWQgcmVzdWx0X3NldDpyZWFkIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.ADyC6-FZQu7hb-QTXifoECy3Nhmf58KIu0skAs2G7EGGgNIk3SNeS0QVSY7AOp9qWsfnqb6y3jakobkNHwXUwW_MYNePernmyOYGalXG-pGw0p2v-R0QwHQ_GKfcZCiF4Pzpu1EywHQuuqE68IWy4H8mCox32BsIQZRFTCPp3eaVML2huicrWDgGCFoT5PWwloLSrBpuZkPeP7pZvV6SM_pJoChL26QqdPBJ09pG3_6trJvummyadGptkupV84K4wuxfKXDg0TUSQhKJWJENTYDyj8WG5OlR5a4IQ-u6xRixxahD_Wc4S5Y4LYTSCfWPstRQvrHJxAy4d2sFaF1Ztg\",\n  \"scope\": \"order:create order:read test_profile:read result_set:read\",\n  \"expires_in\": 10800,\n  \"token_type\": \"Bearer\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8781e06e-6de6-4f8c-8ae4-32f9af0375cd",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "token"
+                  ],
+                  "host": [
+                    "{{oauth-token-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_request\",\n  \"error_description\": \"Missing required parameter: grant_type\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f0739507-1e7b-43e2-bd2b-240a0528e04c",
+              "name": "Unauthorized request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "token"
+                  ],
+                  "host": [
+                    "{{oauth-token-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"access_denied\",\n  \"error_description\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dce1b270-9a66-4086-9bb8-6b9be23808b7",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth",
+                    "token"
+                  ],
+                  "host": [
+                    "{{oauth-token-Url}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"unauthorized_client\",\n  \"error_description\": \"Grant type 'incorrect_grant_type' not allowed for the client.\",\n  \"error_uri\": \"https://auth0.com/docs/clients/client-grant-types\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "https://auth.thriva.io",
+      "key": "oauth-token-Url"
+    }
+  ],
+  "info": {
+    "_postman_id": "3eccd392-3aaf-43fe-af94-b1ab48f93d51",
+    "name": "Platform API V1 Appointments API Auth API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

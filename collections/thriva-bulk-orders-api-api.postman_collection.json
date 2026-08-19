@@ -1,0 +1,1176 @@
+{
+  "item": [
+    {
+      "id": "ffedf8e4-86d8-41ca-ae97-2c249743ca3e",
+      "name": "Bulk Orders API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b1bd52d1-558c-4fad-97f0-f50e33e5077d",
+          "name": "Create a Bulk Order",
+          "request": {
+            "name": "Create a Bulk Order",
+            "description": {
+              "content": "Creates and sends a Bulk Order to a specified address",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "bulk-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"delivery_address\": {\n        \"name\": \"<string>\",\n        \"line1\": \"<string>\",\n        \"city\": \"<string>\",\n        \"postcode\": \"<string>\",\n        \"country\": \"<string>\",\n        \"company_name\": \"<string>\",\n        \"line2\": \"<string>\",\n        \"line3\": \"<string>\",\n        \"state\": \"<string>\"\n      },\n      \"kits\": [\n        {\n          \"count\": \"<integer>\",\n          \"analysis\": {\n            \"required\": \"<boolean>\",\n            \"lab\": \"<string>\"\n          },\n          \"test_profiles\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"sample\": {\n            \"type\": \"<string>\",\n            \"collection_method\": \"<string>\"\n          }\n        },\n        {\n          \"count\": \"<integer>\",\n          \"analysis\": {\n            \"required\": \"<boolean>\",\n            \"lab\": \"<string>\"\n          },\n          \"test_profiles\": [\n            \"<string>\",\n            \"<string>\"\n          ],\n          \"sample\": {\n            \"type\": \"<string>\",\n            \"collection_method\": \"<string>\"\n          }\n        }\n      ]\n    },\n    \"type\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ffddae0e-4b4d-447b-937f-8059e77a37ee",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"bulk_order\",\n    \"attributes\": {\n      \"delivery_address\": {\n        \"name\": \"Mr Joe Blogs\",\n        \"line1\": \"3rd Floor\",\n        \"city\": \"London\",\n        \"postcode\": \"EC1Y 8AF\",\n        \"country\": \"GB\",\n        \"company_name\": \"Thriva Ltd\",\n        \"line2\": \"White Collar Factory\",\n        \"line3\": \"1 Old Street Yard\",\n        \"state\": \"Greater London\"\n      },\n      \"fulfillment_orders\": [\n        \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n        \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\"\n      ],\n      \"kits\": [\n        {\n          \"count\": 25,\n          \"analysis\": {\n            \"required\": true,\n            \"lab\": \"PUR1\"\n          },\n          \"test_profiles\": [\n            \"LFT\",\n            \"LIPP\"\n          ],\n          \"sample\": {\n            \"type\": \"blood\",\n            \"collection_method\": \"finger_prick\"\n          }\n        },\n        {\n          \"count\": 25,\n          \"analysis\": {\n            \"required\": true,\n            \"lab\": \"PUR1\"\n          },\n          \"test_profiles\": [\n            \"LFT\",\n            \"LIPP\"\n          ],\n          \"sample\": {\n            \"type\": \"blood\",\n            \"collection_method\": \"finger_prick\"\n          }\n        }\n      ],\n      \"outbound_tracking_code\": \"9876543212345A67B8CDE\",\n      \"placed_at\": \"2024-06-11T08:00:00Z\",\n      \"fulfilled_at\": \"2024-06-11T10:00:00Z\",\n      \"approved_at\": \"2024-06-11T09:00:00Z\",\n      \"rejected_at\": \"2024-06-11T09:00:00Z\",\n      \"approval_status\": \"approved\",\n      \"status\": \"complete\"\n    },\n    \"relationships\": {\n      \"sample_references\": {\n        \"data\": [\n          {\n            \"id\": \"T00240XPA3\",\n            \"type\": \"bulk_order_sample_reference\"\n          },\n          {\n            \"id\": \"T00240XPA3\",\n            \"type\": \"bulk_order_sample_reference\"\n          }\n        ]\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    },\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8acba16-758b-4edb-840c-e8e70889a270",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96ac7232-c9d6-4702-b265-ba8a3ee32f23",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d0059a0e-4b46-4510-96a1-a2bbce1f00ee",
+          "name": "Fetch Bulk Orders",
+          "request": {
+            "name": "Fetch Bulk Orders",
+            "description": {
+              "content": "Lists all Bulk Orders",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "bulk-orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter[startDate]",
+                  "value": "<string>",
+                  "description": "The date (UTC) from which bulk orders will be retrieved (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[endDate]",
+                  "value": "<string>",
+                  "description": "The date (UTC) to which bulk orders will be retrieved (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<integer>",
+                  "description": "The page that will be returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<integer>",
+                  "description": "The amount of items per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "11a188ec-39e6-4917-8cd3-ec335946d2bd",
+              "name": "An array of Bulk Orders",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"bulk_order\",\n      \"attributes\": {\n        \"delivery_address\": {\n          \"name\": \"Mr Joe Blogs\",\n          \"line1\": \"3rd Floor\",\n          \"city\": \"London\",\n          \"postcode\": \"EC1Y 8AF\",\n          \"country\": \"GB\",\n          \"company_name\": \"Thriva Ltd\",\n          \"line2\": \"White Collar Factory\",\n          \"line3\": \"1 Old Street Yard\",\n          \"state\": \"Greater London\"\n        },\n        \"fulfillment_orders\": [\n          \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n          \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\"\n        ],\n        \"kits\": [\n          {\n            \"count\": 25,\n            \"analysis\": {\n              \"required\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"lab\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"test_profiles\": [\n              \"LFT\",\n              \"LIPP\"\n            ],\n            \"sample\": {\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"collection_method\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"count\": 25,\n            \"analysis\": {\n              \"required\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"lab\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"test_profiles\": [\n              \"LFT\",\n              \"LIPP\"\n            ],\n            \"sample\": {\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"collection_method\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ],\n        \"outbound_tracking_code\": \"9876543212345A67B8CDE\",\n        \"placed_at\": \"2024-06-11T08:00:00Z\",\n        \"fulfilled_at\": \"2024-06-11T10:00:00Z\",\n        \"approved_at\": \"2024-06-11T09:00:00Z\",\n        \"rejected_at\": \"2024-06-11T09:00:00Z\",\n        \"approval_status\": \"approved\",\n        \"status\": \"complete\"\n      },\n      \"relationships\": {\n        \"sample_references\": {\n          \"data\": [\n            {\n              \"id\": \"T00240XPA3\",\n              \"type\": \"bulk_order_sample_reference\"\n            },\n            {\n              \"id\": \"T00240XPA3\",\n              \"type\": \"bulk_order_sample_reference\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"bulk_order\",\n      \"attributes\": {\n        \"delivery_address\": {\n          \"name\": \"Mr Joe Blogs\",\n          \"line1\": \"3rd Floor\",\n          \"city\": \"London\",\n          \"postcode\": \"EC1Y 8AF\",\n          \"country\": \"GB\",\n          \"company_name\": \"Thriva Ltd\",\n          \"line2\": \"White Collar Factory\",\n          \"line3\": \"1 Old Street Yard\",\n          \"state\": \"Greater London\"\n        },\n        \"fulfillment_orders\": [\n          \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n          \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\"\n        ],\n        \"kits\": [\n          {\n            \"count\": 25,\n            \"analysis\": {\n              \"required\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"lab\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"test_profiles\": [\n              \"LFT\",\n              \"LIPP\"\n            ],\n            \"sample\": {\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"collection_method\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"count\": 25,\n            \"analysis\": {\n              \"required\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"lab\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            },\n            \"test_profiles\": [\n              \"LFT\",\n              \"LIPP\"\n            ],\n            \"sample\": {\n              \"type\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"collection_method\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ],\n        \"outbound_tracking_code\": \"9876543212345A67B8CDE\",\n        \"placed_at\": \"2024-06-11T08:00:00Z\",\n        \"fulfilled_at\": \"2024-06-11T10:00:00Z\",\n        \"approved_at\": \"2024-06-11T09:00:00Z\",\n        \"rejected_at\": \"2024-06-11T09:00:00Z\",\n        \"approval_status\": \"approved\",\n        \"status\": \"complete\"\n      },\n      \"relationships\": {\n        \"sample_references\": {\n          \"data\": [\n            {\n              \"id\": \"T00240XPA3\",\n              \"type\": \"bulk_order_sample_reference\"\n            },\n            {\n              \"id\": \"T00240XPA3\",\n              \"type\": \"bulk_order_sample_reference\"\n            }\n          ]\n        }\n      }\n    }\n  ],\n  \"included\": [\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    },\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"current\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"first\": \"http://example.com/articles?page[number]=1&page[size]=1\",\n    \"prev\": \"http://example.com/articles?page[number]=2&page[size]=1\",\n    \"next\": \"http://example.com/articles?page[number]=4&page[size]=1\",\n    \"last\": \"http://example.com/articles?page[number]=13&page[size]=1\"\n  },\n  \"meta\": {\n    \"pagination\": {\n      \"current\": 5,\n      \"records\": 100,\n      \"first\": 1,\n      \"prev\": 4,\n      \"next\": 6,\n      \"last\": 10\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fbb3ea3-0439-49cb-b335-5b041bf095de",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f2d9c14c-6c40-48af-aa33-11e959783170",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "78639c59-2074-4b47-947e-9e754130e01f",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ddc686ae-0731-45e3-b4c0-40a13cb40a6c",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9e528feb-884d-4173-bf53-84a179af2a53",
+          "name": "Fetch a Bulk Order",
+          "request": {
+            "name": "Fetch a Bulk Order",
+            "description": {
+              "content": "Fetch a Bulk Order by ID",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "bulk-orders",
+                ":bulk_order_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "bulk_order_id",
+                  "description": "(Required) The ID of a Bulk Order"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0f09ed93-55ef-4c1d-b36c-7c445c5a2b6c",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    ":bulk_order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bulk_order_id",
+                      "description": "(Required) The ID of a Bulk Order"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"BO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"bulk_order\",\n    \"attributes\": {\n      \"delivery_address\": {\n        \"name\": \"Mr Joe Blogs\",\n        \"line1\": \"3rd Floor\",\n        \"city\": \"London\",\n        \"postcode\": \"EC1Y 8AF\",\n        \"country\": \"GB\",\n        \"company_name\": \"Thriva Ltd\",\n        \"line2\": \"White Collar Factory\",\n        \"line3\": \"1 Old Street Yard\",\n        \"state\": \"Greater London\"\n      },\n      \"fulfillment_orders\": [\n        \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n        \"FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65\"\n      ],\n      \"kits\": [\n        {\n          \"count\": 25,\n          \"analysis\": {\n            \"required\": true,\n            \"lab\": \"PUR1\"\n          },\n          \"test_profiles\": [\n            \"LFT\",\n            \"LIPP\"\n          ],\n          \"sample\": {\n            \"type\": \"blood\",\n            \"collection_method\": \"finger_prick\"\n          }\n        },\n        {\n          \"count\": 25,\n          \"analysis\": {\n            \"required\": true,\n            \"lab\": \"PUR1\"\n          },\n          \"test_profiles\": [\n            \"LFT\",\n            \"LIPP\"\n          ],\n          \"sample\": {\n            \"type\": \"blood\",\n            \"collection_method\": \"finger_prick\"\n          }\n        }\n      ],\n      \"outbound_tracking_code\": \"9876543212345A67B8CDE\",\n      \"placed_at\": \"2024-06-11T08:00:00Z\",\n      \"fulfilled_at\": \"2024-06-11T10:00:00Z\",\n      \"approved_at\": \"2024-06-11T09:00:00Z\",\n      \"rejected_at\": \"2024-06-11T09:00:00Z\",\n      \"approval_status\": \"approved\",\n      \"status\": \"complete\"\n    },\n    \"relationships\": {\n      \"sample_references\": {\n        \"data\": [\n          {\n            \"id\": \"T00240XPA3\",\n            \"type\": \"bulk_order_sample_reference\"\n          },\n          {\n            \"id\": \"T00240XPA3\",\n            \"type\": \"bulk_order_sample_reference\"\n          }\n        ]\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    },\n    {\n      \"id\": \"T00240XPA3\",\n      \"type\": \"bulk_order_sample_reference\",\n      \"attributes\": {\n        \"kit_expiry\": \"2025-10-15\",\n        \"is_expired\": false,\n        \"is_consumed\": false,\n        \"sample_collection_method\": \"finger_prick\",\n        \"test_profiles\": [\n          \"LFT\",\n          \"LIPP\"\n        ]\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bdb4b8d7-22c6-4343-beea-a80a77e01539",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    ":bulk_order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bulk_order_id",
+                      "description": "(Required) The ID of a Bulk Order"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05ebb9d5-feba-47a9-bebd-343fe337514b",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    ":bulk_order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bulk_order_id",
+                      "description": "(Required) The ID of a Bulk Order"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "31e591cb-7714-4c6d-b840-259983d8f2a7",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    ":bulk_order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bulk_order_id",
+                      "description": "(Required) The ID of a Bulk Order"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": \"string\"\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 6743\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06f9eb17-8200-4c1b-bd51-3852a6e8e431",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    ":bulk_order_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "bulk_order_id",
+                      "description": "(Required) The ID of a Bulk Order"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0ed65d73-03cf-4725-b0cd-2e4e4ed6a99d",
+          "name": "Get details about a sample reference",
+          "request": {
+            "name": "Get details about a sample reference",
+            "description": {
+              "content": "Returns the details and status of a sample reference that is part of a Bulk Order. Can be used to check if a sample reference is valid before creating a Test from it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "bulk-orders",
+                "sample-references",
+                ":sample_reference"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "sample_reference",
+                  "description": "(Required) The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c2271a16-2d52-4e19-9c6d-3db493749a0a",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "sample-references",
+                    ":sample_reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sample_reference",
+                      "description": "(Required) The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"T00240XPA3\",\n    \"type\": \"bulk_order_sample_reference\",\n    \"attributes\": {\n      \"kit_expiry\": \"2025-10-15\",\n      \"is_expired\": false,\n      \"is_consumed\": false,\n      \"sample_collection_method\": \"finger_prick\",\n      \"test_profiles\": [\n        \"LFT\",\n        \"LIPP\"\n      ]\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "921b5b4a-c1e0-46b3-9f9b-361f53c121f0",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "sample-references",
+                    ":sample_reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sample_reference",
+                      "description": "(Required) The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c9146e34-d41f-4694-a987-57fb50f7b0b3",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "sample-references",
+                    ":sample_reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sample_reference",
+                      "description": "(Required) The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": \"string\"\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b465762-8138-4ff0-9cd0-0ad970f90981",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "sample-references",
+                    ":sample_reference"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "sample_reference",
+                      "description": "(Required) The unique identifier for a sample reference, which can be found on labels and barcodes in the test kit."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d15a316-c67b-40bf-b2b0-93ca88902112",
+          "name": "Create a Test from a Bulk Order item",
+          "request": {
+            "name": "Create a Test from a Bulk Order item",
+            "description": {
+              "content": "Creates a Test from a sample reference and links with a User",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "bulk-orders",
+                "tests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/vnd.api+json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"data\": {\n    \"attributes\": {\n      \"sample_reference\": \"<string>\",\n      \"user_id\": \"<string>\",\n      \"test_profiles\": [\n        \"<string>\",\n        \"<string>\"\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8464a386-45f8-47c2-9531-e736645e0764",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "tests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"T-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"test\",\n    \"attributes\": {\n      \"test_profiles\": [\n        \"LFT\",\n        \"LIPP\"\n      ],\n      \"user_id\": \"U-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"subject\": {\n        \"contact\": {\n          \"first_name\": \"Frasier\",\n          \"last_name\": \"Crane\",\n          \"email\": \"frasier.crane@example.com\",\n          \"mobile_phone_number\": \"+447123456789\"\n        },\n        \"date_of_birth\": \"1953-03-07\",\n        \"sex\": \"female\"\n      },\n      \"created_at\": \"2021-06-11T06:00:00Z\",\n      \"status\": \"failed\",\n      \"inbound_tracking_code\": \"ZB123456789GB\",\n      \"result_set_id\": \"R-1E0EEDB2-E790-4D16-9EE7-14381E807B7E\",\n      \"sample_collection_methods\": [\n        {\n          \"collection_method\": \"finger_prick\",\n          \"sample_type\": \"blood\"\n        },\n        {\n          \"collection_method\": \"finger_prick\",\n          \"sample_type\": \"blood\"\n        }\n      ],\n      \"sample_reference\": \"T123456789\",\n      \"product_code\": \"P-12345\",\n      \"sample_booked_in_at\": \"2021-06-11T06:00:00Z\",\n      \"completed_at\": \"2021-06-11T08:00:00Z\",\n      \"failure_cause\": \"invalid collection method: venous, for test profile: OEST\",\n      \"source_test\": {\n        \"reissue_reason\": \"failed_fulfillment\",\n        \"id\": \"TST-04BD173A-770D-4C8F-8CEC-3C24FBF81692\"\n      },\n      \"reissued_test\": {\n        \"reissue_reason\": \"failed_analysis\",\n        \"id\": \"TST-13F1ABE9-E2F4-4FF1-A5C4-53E0629C5D0B\"\n      },\n      \"bulk_order_id\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "35b9d15a-5e30-4922-9d3a-9d630648d0bb",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "tests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8024ff9-b620-4b76-bcea-ea6c1932a1de",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "bulk-orders",
+                    "tests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f542f5b9-2fe5-4d40-ba61-662a0314f77a",
+    "name": "Platform API V1 Appointments API Bulk Orders API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

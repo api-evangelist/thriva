@@ -1,0 +1,33 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Auth API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create OAuth Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/oauth/token",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create OAuth Token"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

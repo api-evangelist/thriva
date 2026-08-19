@@ -1,0 +1,657 @@
+{
+  "item": [
+    {
+      "id": "126fbade-e605-4c8d-b60e-8de30fb5680b",
+      "name": "Results API",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ea5f98c0-8af5-4c03-b9ba-9509fe597981",
+          "name": "Fetch Results",
+          "request": {
+            "name": "Fetch Results",
+            "description": {
+              "content": "Lists all of your results",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "result-sets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "filter[startDate]",
+                  "value": "<string>",
+                  "description": "The date (UTC) from which results will be retrieved (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "filter[endDate]",
+                  "value": "<string>",
+                  "description": "The date (UTC) to which results will be retrieved (YYYY-MM-DD)"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[number]",
+                  "value": "<integer>",
+                  "description": "The page that will be returned"
+                },
+                {
+                  "disabled": false,
+                  "key": "page[size]",
+                  "value": "<integer>",
+                  "description": "The amount of items per page"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8af24e5a-0725-4853-8234-0c1c9fdaa8d7",
+              "name": "An array of Result Set",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": [\n    {\n      \"id\": \"RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"result_set\",\n      \"attributes\": {\n        \"result_date\": \"2023-02-12T11:00:00Z\",\n        \"sample_taken_at\": \"2023-02-11T08:00:00Z\",\n        \"sample_booked_in_at\": \"2023-02-12T10:00:00Z\",\n        \"sample_processed_at\": \"2023-02-12T11:00:00Z\",\n        \"sample_reference\": \"T123456789\",\n        \"status\": \"results_to_follow\"\n      },\n      \"relationships\": {\n        \"test_profiles\": {\n          \"data\": [\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            },\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            }\n          ]\n        },\n        \"biomarker_results\": {\n          \"data\": [\n            {\n              \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n              \"type\": \"biomarker_result\"\n            },\n            {\n              \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n              \"type\": \"biomarker_result\"\n            }\n          ]\n        },\n        \"escalations\": {\n          \"data\": [\n            {\n              \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n              \"type\": \"escalation\"\n            },\n            {\n              \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n              \"type\": \"escalation\"\n            }\n          ]\n        },\n        \"reports\": {\n          \"data\": [\n            {\n              \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n              \"type\": \"report\",\n              \"attributes\": {\n                \"report_summary\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"status\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"relationships\": {\n                \"reporter\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"biomarker_comments\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n              \"type\": \"report\",\n              \"attributes\": {\n                \"report_summary\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"status\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"relationships\": {\n                \"reporter\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"biomarker_comments\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ]\n        },\n        \"pdf_result_attachment\": {\n          \"data\": {\n            \"id\": \"F14VHYB35EF7F5O2\",\n            \"type\": \"result_set_attachment\"\n          }\n        }\n      }\n    },\n    {\n      \"id\": \"RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n      \"type\": \"result_set\",\n      \"attributes\": {\n        \"result_date\": \"2023-02-12T11:00:00Z\",\n        \"sample_taken_at\": \"2023-02-11T08:00:00Z\",\n        \"sample_booked_in_at\": \"2023-02-12T10:00:00Z\",\n        \"sample_processed_at\": \"2023-02-12T11:00:00Z\",\n        \"sample_reference\": \"T123456789\",\n        \"status\": \"complete\"\n      },\n      \"relationships\": {\n        \"test_profiles\": {\n          \"data\": [\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            },\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            }\n          ]\n        },\n        \"biomarker_results\": {\n          \"data\": [\n            {\n              \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n              \"type\": \"biomarker_result\"\n            },\n            {\n              \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n              \"type\": \"biomarker_result\"\n            }\n          ]\n        },\n        \"escalations\": {\n          \"data\": [\n            {\n              \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n              \"type\": \"escalation\"\n            },\n            {\n              \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n              \"type\": \"escalation\"\n            }\n          ]\n        },\n        \"reports\": {\n          \"data\": [\n            {\n              \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n              \"type\": \"report\",\n              \"attributes\": {\n                \"report_summary\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"status\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"relationships\": {\n                \"reporter\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"biomarker_comments\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            },\n            {\n              \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n              \"type\": \"report\",\n              \"attributes\": {\n                \"report_summary\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"status\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"relationships\": {\n                \"reporter\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"biomarker_comments\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          ]\n        },\n        \"pdf_result_attachment\": {\n          \"data\": {\n            \"id\": \"F14VHYB35EF7F5O2\",\n            \"type\": \"result_set_attachment\"\n          }\n        }\n      }\n    }\n  ],\n  \"links\": {\n    \"self\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"current\": \"http://example.com/articles?page[number]=3&page[size]=1\",\n    \"first\": \"http://example.com/articles?page[number]=1&page[size]=1\",\n    \"prev\": \"http://example.com/articles?page[number]=2&page[size]=1\",\n    \"next\": \"http://example.com/articles?page[number]=4&page[size]=1\",\n    \"last\": \"http://example.com/articles?page[number]=13&page[size]=1\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "05893fd8-350d-4e6b-9904-5fa78a2b98c6",
+              "name": "Bad request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    },\n    {\n      \"title\": \"invalid field\",\n      \"detail\": \"field_name.example must be a string\",\n      \"source\": {\n        \"pointer\": \"/data/field_name/example\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9212a3cd-a938-4251-ab73-604ecb3e06ee",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7aa7cb98-41dd-4e20-b655-2c4c96d649c6",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4c410647-a5cd-42cf-af01-c5811164ac71",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "filter[startDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "filter[endDate]",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "page[number]",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page[size]",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "866f4903-8f93-412a-9e4d-275ef8bd1287",
+          "name": "Fetch a Result",
+          "request": {
+            "name": "Fetch a Result",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "result-sets",
+                ":result_set_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include",
+                  "value": "<string>",
+                  "description": "A comma separated list of relationship objects to include in response"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "result_set_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.api+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f3bf6996-01ec-41f0-ba9e-12f60947b0b0",
+              "name": "Successful request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets",
+                    ":result_set_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "test_profiles,biomarker_results,escalations"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "result_set_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"id\": \"RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65\",\n    \"type\": \"result_set\",\n    \"attributes\": {\n      \"result_date\": \"2023-02-12T11:00:00Z\",\n      \"sample_taken_at\": \"2023-02-11T08:00:00Z\",\n      \"sample_booked_in_at\": \"2023-02-12T10:00:00Z\",\n      \"sample_processed_at\": \"2023-02-12T11:00:00Z\",\n      \"sample_reference\": \"T123456789\",\n      \"status\": \"complete\"\n    },\n    \"relationships\": {\n      \"test_profiles\": {\n        \"data\": [\n          {\n            \"id\": \"AB12\",\n            \"type\": \"test_profile\"\n          },\n          {\n            \"id\": \"AB12\",\n            \"type\": \"test_profile\"\n          }\n        ]\n      },\n      \"biomarker_results\": {\n        \"data\": [\n          {\n            \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n            \"type\": \"biomarker_result\"\n          },\n          {\n            \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n            \"type\": \"biomarker_result\"\n          }\n        ]\n      },\n      \"escalations\": {\n        \"data\": [\n          {\n            \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n            \"type\": \"escalation\"\n          },\n          {\n            \"id\": \"ESC-0A657293-28A9-47C1-A119-126540BCBB5A\",\n            \"type\": \"escalation\"\n          }\n        ]\n      },\n      \"reports\": {\n        \"data\": [\n          {\n            \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n            \"type\": \"report\",\n            \"attributes\": {\n              \"report_summary\": \"Hi John, these results are excellent.\",\n              \"status\": \"complete\"\n            },\n            \"relationships\": {\n              \"reporter\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"biomarker_comments\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          },\n          {\n            \"id\": \"REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6\",\n            \"type\": \"report\",\n            \"attributes\": {\n              \"report_summary\": \"Hi John, these results are excellent.\",\n              \"status\": \"complete\"\n            },\n            \"relationships\": {\n              \"reporter\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              },\n              \"biomarker_comments\": {\n                \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n              }\n            }\n          }\n        ]\n      },\n      \"pdf_result_attachment\": {\n        \"data\": {\n          \"id\": \"F14VHYB35EF7F5O2\",\n          \"type\": \"result_set_attachment\"\n        }\n      }\n    }\n  },\n  \"included\": [\n    {\n      \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n      \"type\": \"biomarker_result\",\n      \"attributes\": {\n        \"code\": \"ALP\",\n        \"successful\": true,\n        \"failure_reason\": \"delay\",\n        \"failure_reason_description\": \"string\",\n        \"abnormal_flag\": \"A\",\n        \"escalation_level\": \"very_low\",\n        \"result_type\": \"string\",\n        \"result_value\": \"1.78\",\n        \"result_unit\": \"umol/L\",\n        \"result_operator\": \"LESS_THAN\",\n        \"notes\": [\n          \"Your Creatinine levels are high. Please discuss this with your GP.\",\n          \"Your Creatinine levels are high. Please discuss this with your GP.\"\n        ],\n        \"reference_ranges\": [\n          {\n            \"name\": \"Normal\",\n            \"lower_bound\": \"50.0000\",\n            \"upper_bound\": \"250.0000\",\n            \"operator\": \"LESS_THAN\",\n            \"severity_level\": 20\n          },\n          {\n            \"name\": \"Normal\",\n            \"lower_bound\": \"50.0000\",\n            \"upper_bound\": \"250.0000\",\n            \"operator\": \"LESS_THAN\",\n            \"severity_level\": 20\n          }\n        ],\n        \"interpretation\": {\n          \"display_value\": \"100.0\",\n          \"sentiment\": \"positive\",\n          \"matched_reference_range\": {\n            \"name\": \"Normal\",\n            \"severity_level\": 20\n          }\n        }\n      },\n      \"relationships\": {\n        \"test_profiles\": {\n          \"data\": [\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            },\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            }\n          ]\n        }\n      }\n    },\n    {\n      \"id\": \"BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70\",\n      \"type\": \"biomarker_result\",\n      \"attributes\": {\n        \"code\": \"ALP\",\n        \"successful\": true,\n        \"failure_reason\": \"icteric\",\n        \"failure_reason_description\": \"string\",\n        \"abnormal_flag\": \"A\",\n        \"escalation_level\": \"not_escalated\",\n        \"result_type\": \"numeric\",\n        \"result_value\": \"1.78\",\n        \"result_unit\": \"umol/L\",\n        \"result_operator\": \"LESS_THAN_OR_EQUAL\",\n        \"notes\": [\n          \"Your Creatinine levels are high. Please discuss this with your GP.\",\n          \"Your Creatinine levels are high. Please discuss this with your GP.\"\n        ],\n        \"reference_ranges\": [\n          {\n            \"name\": \"Normal\",\n            \"lower_bound\": \"50.0000\",\n            \"upper_bound\": \"250.0000\",\n            \"operator\": \"LESS_THAN\",\n            \"severity_level\": 20\n          },\n          {\n            \"name\": \"Normal\",\n            \"lower_bound\": \"50.0000\",\n            \"upper_bound\": \"250.0000\",\n            \"operator\": \"LESS_THAN\",\n            \"severity_level\": 20\n          }\n        ],\n        \"interpretation\": {\n          \"display_value\": \"100.0\",\n          \"sentiment\": \"positive\",\n          \"matched_reference_range\": {\n            \"name\": \"Normal\",\n            \"severity_level\": 20\n          }\n        }\n      },\n      \"relationships\": {\n        \"test_profiles\": {\n          \"data\": [\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            },\n            {\n              \"id\": \"AB12\",\n              \"type\": \"test_profile\"\n            }\n          ]\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "61369af5-63e6-4494-acaa-03ab53cda93f",
+              "name": "Unauthorized response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets",
+                    ":result_set_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "test_profiles,biomarker_results,escalations"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "result_set_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"invalid access token\"\n    },\n    {\n      \"title\": \"invalid access token\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "94bc8fd3-ccf6-4b32-8a3c-30bc726995d4",
+              "name": "Action forbidden response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets",
+                    ":result_set_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "test_profiles,biomarker_results,escalations"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "result_set_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"action not permitted\"\n    },\n    {\n      \"title\": \"action not permitted\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce32f32d-9b75-4129-b029-e20a6091ff8d",
+              "name": "Resource not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets",
+                    ":result_set_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "test_profiles,biomarker_results,escalations"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "result_set_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 9559.045716362634\n    },\n    {\n      \"title\": \"resource not found\",\n      \"detail\": 1848.4438231601919\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "25552180-9084-46aa-9465-8c36a3e453ed",
+              "name": "Unsupported media type response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "result-sets",
+                    ":result_set_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include",
+                      "value": "test_profiles,biomarker_results,escalations"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "result_set_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.api+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unsupported Media Type",
+              "code": 415,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.api+json"
+                }
+              ],
+              "body": "{\n  \"errors\": [\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    },\n    {\n      \"title\": \"unsupported media type\",\n      \"detail\": \"This endpoint only supports application/vnd.api+json\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.thriva.io",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "187b55ef-7e69-4e86-807f-4c7b1048da6a",
+    "name": "Platform API V1 Appointments API Results API API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "End-to-end API to send tests kits and process samples",
+      "type": "text/plain"
+    }
+  }
+}

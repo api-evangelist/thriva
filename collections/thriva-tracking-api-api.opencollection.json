@@ -1,0 +1,36 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Tracking API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tracking API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Tracking Events for a tracking code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/tracking/:tracking_code",
+            "params": [
+              {
+                "name": "tracking_code",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Returns the tracking history for a tracking code, in ascending chronological order by `occurred_at`. Covers two journeys - outbound kit delivery and inbound sample return (see the `tracking_code` parameter and `status` for detail). Returns an empty collection if no events are available, including when the feature is not yet enabled for your organisation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

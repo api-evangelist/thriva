@@ -1,0 +1,79 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Results API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Results API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/result-sets",
+            "params": [
+              {
+                "name": "filter[startDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) from which results will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "filter[endDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) to which results will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "Lists all of your results"
+        },
+        {
+          "info": {
+            "name": "Fetch a Result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/result-sets/:result_set_id",
+            "params": [
+              {
+                "name": "result_set_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of relationship objects to include in response"
+              }
+            ]
+          },
+          "docs": "Fetch a Result"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

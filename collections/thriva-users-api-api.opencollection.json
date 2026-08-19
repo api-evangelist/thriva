@@ -1,0 +1,138 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Users API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Users",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/users",
+            "params": [
+              {
+                "name": "filter[contact_detail_email_eq]",
+                "value": "",
+                "type": "query",
+                "description": "A complete email address that may belong to a single User"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of relationship objects to include in response"
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "An array of Users"
+        },
+        {
+          "info": {
+            "name": "Create a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/users",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a User"
+        },
+        {
+          "info": {
+            "name": "Fetch a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "include",
+                "value": "",
+                "type": "query",
+                "description": "A comma separated list of relationship objects to include in response"
+              }
+            ]
+          },
+          "docs": "Fetch a User by ID"
+        },
+        {
+          "info": {
+            "name": "Update a User",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.thriva.io/v1/users/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a User"
+        },
+        {
+          "info": {
+            "name": "Create a User Clarity Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/users/:user_id/invitations",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sends a user invitation email for Clarity, the invitation link is valid for 30 days"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

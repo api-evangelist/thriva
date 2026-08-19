@@ -1,0 +1,213 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Platform API V1 Appointments API Orders API API",
+    "version": "1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders API",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch Orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/orders",
+            "params": [
+              {
+                "name": "filter[startDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) from which orders will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "filter[endDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) to which orders will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "Lists all of your orders"
+        },
+        {
+          "info": {
+            "name": "Create an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/orders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates and sends an Order to a Subject"
+        },
+        {
+          "info": {
+            "name": "Create a reorder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.thriva.io/v1/orders/:order_id/reorder",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a new order based on the provided Order ID and Test ID. The order details will be retrieved from the previous order and the tests will be linked via the source_test and reissued_test attributes on the tests themselves. An optional new delivery address may be provided."
+        },
+        {
+          "info": {
+            "name": "Fetch an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/orders/:order_id",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch an Order by ID"
+        },
+        {
+          "info": {
+            "name": "Fetch Tests for an Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/orders/:order_id/tests",
+            "params": [
+              {
+                "name": "order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch all Tests for an Order"
+        },
+        {
+          "info": {
+            "name": "Fetch Tests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/tests",
+            "params": [
+              {
+                "name": "filter[sample_reference_eq]",
+                "value": "",
+                "type": "query",
+                "description": "The complete sample_reference of a Test you wish to filter by"
+              },
+              {
+                "name": "filter[user_id_eq]",
+                "value": "",
+                "type": "query",
+                "description": "Allows you to filter Tests by a particular user_id."
+              },
+              {
+                "name": "filter[startDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) from which tests be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "filter[endDate]",
+                "value": "",
+                "type": "query",
+                "description": "The date (UTC) to which tests will be retrieved (YYYY-MM-DD)"
+              },
+              {
+                "name": "page[number]",
+                "value": "",
+                "type": "query",
+                "description": "The page that will be returned"
+              },
+              {
+                "name": "page[size]",
+                "value": "",
+                "type": "query",
+                "description": "The amount of items per page"
+              }
+            ]
+          },
+          "docs": "Lists all of your tests"
+        },
+        {
+          "info": {
+            "name": "Fetch a Test",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/tests/:test_id",
+            "params": [
+              {
+                "name": "test_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a Test by ID"
+        },
+        {
+          "info": {
+            "name": "Fetch a Fulfillment Order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.thriva.io/v1/fulfillment-orders/:fulfillment_order_id",
+            "params": [
+              {
+                "name": "fulfillment_order_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a Fulfillment Order by it's ID"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
