@@ -11,35 +11,26 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 3
+edge_count: 2
 edges:
 - tag: Results API
   spec_file: thriva-results-api-api-openapi.yml
   capability_id: BC-2860.60
   capability_id_l1: BC-2860
   capability_name: Diagnostic Results Management
-  confidence: 0.82
-  evidence: GET /v1/result-sets "Fetch Results"; schemas ResultSet, BiomarkerResult, BiomarkerComment,
-    TestProfile, Report
-  reason: Retrieval of validated biomarker result sets with doctor comments and reports is diagnostic
-    results management for a lab diagnostics provider.
+  confidence: 0.8
+  evidence: GET /v1/result-sets 'Fetch Results'; schemas ResultSet, BiomarkerResult, BiomarkerComment,
+    Report, Reporter, Escalation
+  reason: Retrieval of blood-test result sets with per-biomarker results, doctor comments, reports and
+    escalation linkage — clearly management and distribution of diagnostic results.
 - tag: Appointments API
   spec_file: thriva-appointments-api-api-openapi.yml
   capability_id: BC-2800.10
   capability_id_l1: BC-2800
   capability_name: Scheduling & Appointment Management
-  confidence: 0.7
-  evidence: POST /v1/appointments Create an Appointment
-  reason: Appointment booking and retrieval for at-home blood-testing service; maps to scheduling and
-    appointment management, though context is thin about resource/provider scheduling.
-- tag: Orders API
-  spec_file: thriva-orders-api-api-openapi.yml
-  capability_id: BC-2860.10
-  capability_id_l1: BC-2860
-  capability_name: Laboratory Services Management
-  confidence: 0.7
-  evidence: POST /v1/orders "Create an Order", GET /v1/orders/{order_id}/tests "Fetch Tests for an Order",
-    schemas Sample, Analysis, FulfillmentOrder, DeliveryAddress
-  reason: Ordering of blood tests, kit fulfilment and sample/analysis tracking on a laboratory diagnostics
-    platform maps to laboratory services (specimen collection and test ordering/processing). Some ambiguity
-    with order-entry and logistics framing.
+  confidence: 0.75
+  evidence: POST /v1/appointments 'Create an Appointment'; GET /v1/appointments 'Fetch Appointments';
+    schema Appointment
+  reason: Operations create and retrieve appointments within a diagnostics/blood-testing service, i.e.
+    booking a service slot for a patient — appointment/scheduling management. Some residual ambiguity
+    because the appointment context (phlebotomy visit vs kit collection) is not spelled out.
