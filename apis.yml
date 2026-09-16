@@ -1,12 +1,10 @@
 aid: thriva
 name: Thriva
-description: >-
-  Thriva is a UK digital-health company and the UK market leader in at-home consumer
-  diagnostics, tracking 75+ blood biomarkers with doctor-reviewed insights. Alongside its
-  direct-to-consumer service, the Thriva Platform offers partners a white-label at-home
-  blood-testing infrastructure - kit logistics, lab processing, results and clinical
-  escalations - through a RESTful JSON:API Platform API with OAuth2 client-credentials
-  auth, Svix-signed webhooks and a full sandbox environment.
+description: Thriva is a UK digital-health company and the UK market leader in at-home consumer diagnostics,
+  tracking 75+ blood biomarkers with doctor-reviewed insights. Alongside its direct-to-consumer service,
+  the Thriva Platform offers partners a white-label at-home blood-testing infrastructure - kit logistics,
+  lab processing, results and clinical escalations - through a RESTful JSON:API Platform API with OAuth2
+  client-credentials auth, Svix-signed webhooks and a full sandbox environment.
 url: https://raw.githubusercontent.com/api-evangelist/thriva/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -41,7 +39,7 @@ accessModel:
   method: derived
 specificationVersion: '0.23'
 created: '2026-07-17'
-modified: '2026-07-21'
+modified: '2026-09-16'
 tags:
 - Company
 - Healthcare
@@ -65,7 +63,7 @@ tags_raw:
 image: https://images.prismic.io/thriva/aXInFwIvOtkhB0T__WebisteBox_Wide_v5-1-.jpg
 apis:
 - aid: thriva:thriva-appointments-api-api
-  name: Thriva Appointments API API
+  name: Thriva Appointments API
   description: The Appointments API API from Thriva — 2 operation(s) for appointments api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -81,7 +79,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-auth-api-api
-  name: Thriva Auth API API
+  name: Thriva Auth API
   description: The Auth API API from Thriva — 1 operation(s) for auth api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -97,7 +95,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-biomarkers-api-api
-  name: Thriva Biomarkers API API
+  name: Thriva Biomarkers API
   description: The Biomarkers API API from Thriva — 1 operation(s) for biomarkers api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -113,7 +111,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-bulk-orders-api-api
-  name: Thriva Bulk Orders API API
+  name: Thriva Bulk Orders API
   description: The Bulk Orders API API from Thriva — 4 operation(s) for bulk orders api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -129,7 +127,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-escalations-api-api
-  name: Thriva Escalations API API
+  name: Thriva Escalations API
   description: The Escalations API API from Thriva — 1 operation(s) for escalations api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -145,7 +143,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-orders-api-api
-  name: Thriva Orders API API
+  name: Thriva Orders API
   description: The Orders API API from Thriva — 7 operation(s) for orders api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -161,7 +159,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-result-attachments-api-api
-  name: Thriva Result attachments API API
+  name: Thriva Result attachments API
   description: The Result attachments API API from Thriva — 2 operation(s) for result attachments api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -177,7 +175,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-results-api-api
-  name: Thriva Results API API
+  name: Thriva Results API
   description: The Results API API from Thriva — 2 operation(s) for results api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -193,7 +191,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-tracking-api-api
-  name: Thriva Tracking API API
+  name: Thriva Tracking API
   description: The Tracking API API from Thriva — 1 operation(s) for tracking api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -209,7 +207,7 @@ apis:
   - type: JSONSchema
     url: json-schema/thriva-platform-api-schemas.json
 - aid: thriva:thriva-users-api-api
-  name: Thriva Users API API
+  name: Thriva Users API
   description: The Users API API from Thriva — 3 operation(s) for users api.
   humanURL: https://docs.thriva.io
   baseURL: https://api.thriva.io
@@ -275,7 +273,10 @@ common:
   url: skills/_index.yml
 - type: X-MCPServerCandidate
   url: mcp/thriva-mcp.yml
-  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate — a tool list derived from the published API contracts, not an existing server. The scorer already read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type surfaces with a server that does not exist.'
+  note: 'Renamed from MCPServer 2026-09-03 (roadmap#247): the manifest self-describes as status: candidate
+    — a tool list derived from the published API contracts, not an existing server. The scorer already
+    read the manifest and reported mcp_server correctly; the MCPServer type was crediting the artifact-type
+    surfaces with a server that does not exist.'
 - type: LLMsTxt
   url: llms/thriva-llms.txt
 - type: WellKnown
