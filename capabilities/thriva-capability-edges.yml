@@ -11,7 +11,7 @@ capability_model:
   attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
     CC BY 4.0
   notice: NOTICE
-edge_count: 2
+edge_count: 3
 edges:
 - tag: Results API
   spec_file: thriva-results-api-api-openapi.yml
@@ -34,3 +34,15 @@ edges:
   reason: Operations create and retrieve appointments within a diagnostics/blood-testing service, i.e.
     booking a service slot for a patient — appointment/scheduling management. Some residual ambiguity
     because the appointment context (phlebotomy visit vs kit collection) is not spelled out.
+- tag: Orders API
+  spec_file: thriva-orders-api-api-openapi.yml
+  capability_id: BC-2860.10
+  capability_id_l1: BC-2860
+  capability_name: Laboratory Services Management
+  confidence: 0.7
+  evidence: POST /v1/orders "Create an Order", GET /v1/orders/{order_id}/tests "Fetch Tests for an Order",
+    schemas Sample, Analysis, FulfillmentOrder, DeliveryAddress
+  reason: Ordering of blood tests, kit fulfilment and sample/analysis tracking on a laboratory diagnostics
+    platform maps to laboratory services (specimen collection and test ordering/processing). Some ambiguity
+    with order-entry and logistics framing.
+  recovered_from: healthcare-vertical-edges.json
