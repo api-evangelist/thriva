@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Tracking API API
+  title: Platform API V1 Tracking API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -32,8 +32,23 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1TrackingByTrackingCode
+      x-operation-id-source: derived
 components:
   responses:
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
     ForbiddenResponse:
       description: Action forbidden response
       content:
@@ -47,6 +62,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/ForbiddenError'
+    TrackingEventsResponse:
+      description: An array of Tracking Events
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrackingEvent'
     UnauthorizedResponse:
       description: Unauthorized response
       content:
@@ -61,33 +89,29 @@ components:
                 items:
                   anyOf:
                   - $ref: '#/components/schemas/InvalidAccessTokenError'
-    TrackingEventsResponse:
-      description: An array of Tracking Events
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TrackingEvent'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
   schemas:
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
     TrackingEvent:
       type: object
       required:
@@ -128,8 +152,9 @@ components:
               example: kit_in_transit
             location:
               description: Location reported by the carrier, when available
-              type: string
-              nullable: true
+              type:
+              - string
+              - 'null'
               example: MOUNT PLEASANT MC
             occurred_at:
               description: The date and time, in ISO 8601 format (UTC), at which the event occurred
@@ -140,15 +165,6 @@ components:
               description: Human-readable description of the status, suitable for display
               type: string
               example: Your kit is on its way.
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
     InvalidAccessTokenError:
       type: object
       required:
@@ -158,16 +174,3 @@ components:
           type: string
           description: Title of the error
           example: invalid access token
-    UnsupportedMediaTypeError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json

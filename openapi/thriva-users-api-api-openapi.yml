@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Users API API
+  title: Platform API V1 Users API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -28,6 +28,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: postV1Users
+      x-operation-id-source: derived
     get:
       summary: Fetch Users
       description: An array of Users
@@ -54,6 +56,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1Users
+      x-operation-id-source: derived
   /v1/users/{user_id}:
     get:
       summary: Fetch a User
@@ -80,9 +84,10 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1UsersByUserId
+      x-operation-id-source: derived
     patch:
       summary: Update a User
-      description: Update a User
       tags:
       - Users API
       requestBody:
@@ -124,6 +129,8 @@ paths:
                           example: user not found
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: patchV1UsersByUserId
+      x-operation-id-source: derived
   /v1/users/{user_id}/invitations:
     post:
       summary: Create a User Clarity Invitation
@@ -156,31 +163,110 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: postV1UsersByUserIdInvitations
+      x-operation-id-source: derived
 components:
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    UserIncludes:
-      name: include
-      description: A comma separated list of relationship objects to include in response
-      in: query
-      schema:
-        type: string
-        example: address,contact_detail
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    UserResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/User'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Address'
+                  - $ref: '#/components/schemas/ContactDetail'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UsersResponse:
+      description: An array of Users
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
   schemas:
     Address:
       description: The default delivery address for a user
@@ -225,50 +311,6 @@ components:
           description: The country for the delivery address (ISO 3166-1 alpha-2)
           type: string
           example: GB
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-    Meta:
-      type: object
-      required:
-      - pagination
-      properties:
-        pagination:
-          type: object
-          required:
-          - current
-          - records
-          properties:
-            current:
-              type: number
-              description: The current page number of the request
-              example: 5
-            records:
-              type: number
-              description: The total number of records based on current filters
-              example: 100
-            first:
-              type: number
-              description: The first page number
-              example: 1
-            prev:
-              type: number
-              description: The the previous page number
-              example: 4
-            next:
-              type: number
-              description: The next page number
-              example: 6
-            last:
-              type: number
-              description: The last page number
-              example: 10
     User:
       type: object
       required:
@@ -340,6 +382,50 @@ components:
                     type:
                       type: string
                       example: contact_detail
+    Meta:
+      type: object
+      required:
+      - pagination
+      properties:
+        pagination:
+          type: object
+          required:
+          - current
+          - records
+          properties:
+            current:
+              type: number
+              description: The current page number of the request
+              example: 5
+            records:
+              type: number
+              description: The total number of records based on current filters
+              example: 100
+            first:
+              type: number
+              description: The first page number
+              example: 1
+            prev:
+              type: number
+              description: The the previous page number
+              example: 4
+            next:
+              type: number
+              description: The next page number
+              example: 6
+            last:
+              type: number
+              description: The last page number
+              example: 10
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
     ContactDetail:
       description: Contact details for a User/Subject
       type: object
@@ -363,6 +449,15 @@ components:
           description: The mobile phone number. Only GB numbers in the format +447123456789. Optional for most organisations, but a valid mobile phone number is required (on both create and update) when Thriva provides clinical governance for your organisation. If it is required and omitted, the request is rejected with a "mobile_phone_number is required" error.
           type: string
           example: '+447123456789'
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
     UnsupportedMediaTypeError:
       type: object
       required:
@@ -376,6 +471,16 @@ components:
         detail:
           type: string
           example: This endpoint only supports application/vnd.api+json
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
     Pagination:
       type: object
       required:
@@ -406,25 +511,6 @@ components:
           type: string
           description: The link to the last page
           example: http://example.com/articles?page[number]=13&page[size]=1
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
     BadRequestError:
       type: object
       required:
@@ -448,144 +534,7 @@ components:
               description: A RFC6901 compliant JSON pointer to the attribute that caused the error
               type: string
               example: /data/field_name/example
-  responses:
-    UserResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/User'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/Address'
-                  - $ref: '#/components/schemas/ContactDetail'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    UsersResponse:
-      description: An array of Users
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-              links:
-                $ref: '#/components/schemas/Pagination'
-              meta:
-                $ref: '#/components/schemas/Meta'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
   requestBodies:
-    UserUpdate:
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: user
-                  attributes:
-                    type: object
-                    properties:
-                      contact:
-                        $ref: '#/components/schemas/ContactDetail'
-                      date_of_birth:
-                        description: The date the user was born, in ISO8601 format.
-                        type: string
-                        example: '1953-03-07'
-                      sex:
-                        description: The sex of the user
-                        type: string
-                        enum:
-                        - female
-                        - male
-                        example: female
-                      external_reference:
-                        description: A reference to help identify the user in your system
-                        type: string
-                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
     UserCreate:
       content:
         application/vnd.api+json:
@@ -628,3 +577,63 @@ components:
                         description: A reference to help identify the user in your system
                         type: string
                         example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+    UserUpdate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: user
+                  attributes:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/ContactDetail'
+                      date_of_birth:
+                        description: The date the user was born, in ISO8601 format.
+                        type: string
+                        example: '1953-03-07'
+                      sex:
+                        description: The sex of the user
+                        type: string
+                        enum:
+                        - female
+                        - male
+                        example: female
+                      external_reference:
+                        description: A reference to help identify the user in your system
+                        type: string
+                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+  parameters:
+    UserIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: address,contact_detail
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false

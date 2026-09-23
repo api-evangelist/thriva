@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Escalations API API
+  title: Platform API V1 Escalations API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -68,61 +68,38 @@ paths:
                       oneOf:
                       - $ref: '#/components/schemas/ArchivedEscalationError'
                       - $ref: '#/components/schemas/InvalidEscalationLevelError'
+      operationId: postV1EscalationsByEscalationIdAcknowledge
+      x-operation-id-source: derived
 components:
-  responses:
-    EscalationResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Escalation'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
   schemas:
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    InvalidEscalationLevelError:
+    ArchivedEscalationError:
       type: object
       required:
       - code
       - title
       - detail
+      - meta
       properties:
         code:
           type: string
           description: Error code
-          example: INVALID_ESCALATION_LEVEL
+          example: ARCHIVED_ESCALATION
         title:
           type: string
           description: Title of the error
-          example: invalid escalation level
+          example: archived escalation
         detail:
           type: string
-          example: The level passed in does not match the current level of the escalation.
+          example: This escalation is archived. Only an active escalation can be acknowledged.
+        meta:
+          type: object
+          required:
+          - active_escalation_id
+          properties:
+            active_escalation_id:
+              description: The id of the current active escalation.
+              type: string
+              example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
     Escalation:
       type: object
       required:
@@ -158,14 +135,16 @@ components:
               - not_escalated
             acknowledgment_due_by:
               description: When the escalation needs to be acknowledged by
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             acknowledged_at:
               description: When you acknowledged the escalation
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             status:
               description: The current status of the escalation
               type: string
@@ -174,31 +153,56 @@ components:
               - awaiting_acknowledgment
               - no_acknowledgment_required
               - archived
-    ArchivedEscalationError:
+    InvalidEscalationLevelError:
       type: object
       required:
       - code
       - title
       - detail
-      - meta
       properties:
         code:
           type: string
           description: Error code
-          example: ARCHIVED_ESCALATION
+          example: INVALID_ESCALATION_LEVEL
         title:
           type: string
           description: Title of the error
-          example: archived escalation
+          example: invalid escalation level
         detail:
           type: string
-          example: This escalation is archived. Only an active escalation can be acknowledged.
-        meta:
-          type: object
-          required:
-          - active_escalation_id
-          properties:
-            active_escalation_id:
-              description: The id of the current active escalation.
-              type: string
-              example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
+          example: The level passed in does not match the current level of the escalation.
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    EscalationResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Escalation'

@@ -1,16 +1,7 @@
 {
   "provider": "thriva",
   "sources": [
-    "thriva-appointments-api-api-openapi.yml",
-    "thriva-auth-api-api-openapi.yml",
-    "thriva-biomarkers-api-api-openapi.yml",
-    "thriva-bulk-orders-api-api-openapi.yml",
-    "thriva-escalations-api-api-openapi.yml",
-    "thriva-orders-api-api-openapi.yml",
-    "thriva-result-attachments-api-api-openapi.yml",
-    "thriva-results-api-api-openapi.yml",
-    "thriva-tracking-api-api-openapi.yml",
-    "thriva-users-api-api-openapi.yml"
+    "_original/thriva-platform-api-openapi.yml"
   ],
   "outputs": [
     "thriva-appointments-api-api-openapi.yml",
@@ -27,6 +18,31 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "thriva-platform-api-openapi.yml: upgraded openapi 3.0.2 -> OpenAPI 3.2.0",
+    "thriva-platform-api-openapi.yml: declared missing tag: Appointments API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Auth API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Biomarkers API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Bulk Orders API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Escalations API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Orders API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Result attachments API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Results API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Tracking API",
+    "thriva-platform-api-openapi.yml: declared missing tag: Users API",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "thriva-appointments-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-auth-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-biomarkers-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-bulk-orders-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-escalations-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-orders-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-result-attachments-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-results-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-tracking-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "thriva-users-api-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

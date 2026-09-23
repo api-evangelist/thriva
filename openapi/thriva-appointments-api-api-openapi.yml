@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API API
+  title: Platform API V1 Appointments API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -78,6 +78,8 @@ paths:
                             pointer:
                               type: string
                               example: /data/attributes/order_id
+      operationId: postV1Appointments
+      x-operation-id-source: derived
     get:
       summary: Fetch Appointments
       description: Lists all of your appointments, sorted by most recently created
@@ -97,6 +99,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1Appointments
+      x-operation-id-source: derived
   /v1/appointments/{appointment_id}:
     get:
       summary: Fetch an Appointment
@@ -122,154 +126,10 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1AppointmentsByAppointmentId
+      x-operation-id-source: derived
 components:
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
   schemas:
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    Appointment:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: The unique identifier for the Appointment
-          type: string
-          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
-        type:
-          type: string
-          enum:
-          - appointment
-        attributes:
-          type: object
-          properties:
-            status:
-              description: The current status of the Appointment
-              type: string
-              enum:
-              - pending
-              - appointment_created
-              - scheduled
-              - in_progress
-              - completed
-              - cancelled
-              - failed
-              example: pending
-            provider_type:
-              description: The appointment provider. A `remote` provider means a practitioner visits the patient at their home or office rather than at a clinic.
-              type: string
-              enum:
-              - remote-appt-a
-              example: remote-appt-a
-            order_id:
-              description: The reference of the associated Order
-              type: string
-              example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
-            user_id:
-              description: The ID of the associated User
-              type: string
-              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-            address_id:
-              description: The ID to the address used for the appointment
-              type: string
-              nullable: true
-              example: AD-12345678-1234-1234-1234-123456789012
-            metadata:
-              description: Custom metadata attached to the appointment
-              type: object
-              nullable: true
-              example:
-                task_id: tsk_custom_123
-            notes:
-              description: Notes for the appointment
-              type: string
-              nullable: true
-              example: Morning appointment preferred
-            scheduling_url:
-              description: URL for the patient to schedule their appointment
-              type: string
-              example: https://provider.example.com/schedule/abc123
-            scheduled_at:
-              description: The date and time the appointment is scheduled for
-              type: string
-              format: date-time
-              nullable: true
-              example: '2026-03-27T09:00:00Z'
-            practitioner_name:
-              description: The name of the assigned practitioner
-              type: string
-              nullable: true
-              example: Dr Alice Green
-            completed_at:
-              description: The date and time the appointment was completed
-              type: string
-              format: date-time
-              nullable: true
-              example: null
-            cancelled_at:
-              description: The date and time the appointment was cancelled
-              type: string
-              format: date-time
-              nullable: true
-              example: null
-            cancellation_reason:
-              description: The reason for cancellation, if applicable
-              type: string
-              nullable: true
-              example: null
-            failed_at:
-              description: The date and time the appointment failed
-              type: string
-              format: date-time
-              nullable: true
-              example: null
-            failure_reason:
-              description: The reason for failure, if applicable
-              type: string
-              nullable: true
-              example: null
-            last_synced_at:
-              description: The date and time the appointment data was last synced with the provider
-              type: string
-              format: date-time
-              nullable: true
-              example: '2026-03-25T10:30:00Z'
-            created_at:
-              description: The date and time the Appointment was created
-              type: string
-              format: date-time
-              example: '2026-03-25T10:30:00Z'
-            updated_at:
-              description: The date and time the Appointment was last updated
-              type: string
-              format: date-time
-              example: '2026-03-25T10:30:00Z'
     BadRequestError:
       type: object
       required:
@@ -293,24 +153,16 @@ components:
               description: A RFC6901 compliant JSON pointer to the attribute that caused the error
               type: string
               example: /data/field_name/example
-    ForbiddenError:
+    NotFoundError:
       type: object
       required:
       - title
+      - detail
       properties:
         title:
           type: string
           description: Title of the error
-          example: action not permitted
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
+          example: resource not found
     UnsupportedMediaTypeError:
       type: object
       required:
@@ -359,6 +211,154 @@ components:
               type: number
               description: The last page number
               example: 10
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    Appointment:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: The unique identifier for the Appointment
+          type: string
+          example: APT-A1B2C3D4-E5F6-47G8-H9I0-J1K2L3M4N5O6
+        type:
+          type: string
+          enum:
+          - appointment
+        attributes:
+          type: object
+          properties:
+            status:
+              description: The current status of the Appointment
+              type: string
+              enum:
+              - pending
+              - appointment_created
+              - scheduled
+              - in_progress
+              - completed
+              - cancelled
+              - failed
+              example: pending
+            provider_type:
+              description: The appointment provider. A `remote` provider means a practitioner visits the patient at their home or office rather than at a clinic.
+              type: string
+              enum:
+              - remote-appt-a
+              example: remote-appt-a
+            order_id:
+              description: The reference of the associated Order
+              type: string
+              example: O-A7A2A7C5-1C49-4B76-B560-6CBA5C28368E
+            user_id:
+              description: The ID of the associated User
+              type: string
+              example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            address_id:
+              description: The ID to the address used for the appointment
+              type:
+              - string
+              - 'null'
+              example: AD-12345678-1234-1234-1234-123456789012
+            metadata:
+              description: Custom metadata attached to the appointment
+              type:
+              - object
+              - 'null'
+              example:
+                task_id: tsk_custom_123
+            notes:
+              description: Notes for the appointment
+              type:
+              - string
+              - 'null'
+              example: Morning appointment preferred
+            scheduling_url:
+              description: URL for the patient to schedule their appointment
+              type: string
+              example: https://provider.example.com/schedule/abc123
+            scheduled_at:
+              description: The date and time the appointment is scheduled for
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: '2026-03-27T09:00:00Z'
+            practitioner_name:
+              description: The name of the assigned practitioner
+              type:
+              - string
+              - 'null'
+              example: Dr Alice Green
+            completed_at:
+              description: The date and time the appointment was completed
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: null
+            cancelled_at:
+              description: The date and time the appointment was cancelled
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: null
+            cancellation_reason:
+              description: The reason for cancellation, if applicable
+              type:
+              - string
+              - 'null'
+              example: null
+            failed_at:
+              description: The date and time the appointment failed
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: null
+            failure_reason:
+              description: The reason for failure, if applicable
+              type:
+              - string
+              - 'null'
+              example: null
+            last_synced_at:
+              description: The date and time the appointment data was last synced with the provider
+              type:
+              - string
+              - 'null'
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+            created_at:
+              description: The date and time the Appointment was created
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+            updated_at:
+              description: The date and time the Appointment was last updated
+              type: string
+              format: date-time
+              example: '2026-03-25T10:30:00Z'
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
     Pagination:
       type: object
       required:
@@ -389,20 +389,24 @@ components:
           type: string
           description: The link to the last page
           example: http://example.com/articles?page[number]=13&page[size]=1
+  parameters:
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
   responses:
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
     UnauthorizedResponse:
       description: Unauthorized response
       content:
@@ -456,17 +460,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    AppointmentResponse:
-      description: Successful request
+    ForbiddenResponse:
+      description: Action forbidden response
       content:
         application/vnd.api+json:
           schema:
             type: object
             required:
-            - data
+            - errors
             properties:
-              data:
-                $ref: '#/components/schemas/Appointment'
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
     AppointmentsResponse:
       description: An array of Appointments
       content:
@@ -484,6 +490,17 @@ components:
                 $ref: '#/components/schemas/Pagination'
               meta:
                 $ref: '#/components/schemas/Meta'
+    AppointmentResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Appointment'
   requestBodies:
     AppointmentCreate:
       content:

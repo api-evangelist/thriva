@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Result attachments API API
+  title: Platform API V1 Result attachments API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -30,6 +30,8 @@ paths:
           description: ACCEPTED
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
+      operationId: postV1ResultSetsByResultSetIdAttachments
+      x-operation-id-source: derived
   /v1/result-sets/{result_set_id}/attachments/{attachment_id}:
     get:
       summary: Fetch a Result Set Attachment
@@ -59,38 +61,9 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
+      operationId: getV1ResultSetsByResultSetIdAttachmentsByAttachmentId
+      x-operation-id-source: derived
 components:
-  requestBodies:
-    ResultSetAttachmentCreate:
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: result_set_attachment
-                  attributes:
-                    type: object
-                    required:
-                    - name
-                    - content_type
-                    properties:
-                      name:
-                        description: This will be the name of the generated pdf file
-                        type: string
-                        example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-                      content_type:
-                        description: Currently application/pdf is the only supported content-type
-                        type: string
-                        example: application/pdf
   schemas:
     ResultSetAttachment:
       type: string
@@ -169,6 +142,19 @@ components:
           description: Title of the error
           example: invalid access token
   responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
     ForbiddenResponse:
       description: Action forbidden response
       content:
@@ -182,6 +168,18 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/ForbiddenError'
+    ResultSetAttachmentResponse:
+      description: ResultSetAttachment PDF
+      content:
+        application/pdf:
+          schema:
+            $ref: '#/components/schemas/ResultSetAttachment'
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+            description: Used only with `application/pdf` responses
+            example: attachment; filename="name.pdf"
     UnauthorizedResponse:
       description: Unauthorized response
       content:
@@ -196,28 +194,34 @@ components:
                 items:
                   anyOf:
                   - $ref: '#/components/schemas/InvalidAccessTokenError'
-    NotFoundResponse:
-      description: Resource not found
+  requestBodies:
+    ResultSetAttachmentCreate:
       content:
         application/vnd.api+json:
           schema:
             type: object
             required:
-            - errors
+            - data
             properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    ResultSetAttachmentResponse:
-      description: ResultSetAttachment PDF
-      content:
-        application/pdf:
-          schema:
-            $ref: '#/components/schemas/ResultSetAttachment'
-      headers:
-        Content-Disposition:
-          schema:
-            type: string
-            description: Used only with `application/pdf` responses
-            example: attachment; filename="name.pdf"
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: result_set_attachment
+                  attributes:
+                    type: object
+                    required:
+                    - name
+                    - content_type
+                    properties:
+                      name:
+                        description: This will be the name of the generated pdf file
+                        type: string
+                        example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      content_type:
+                        description: Currently application/pdf is the only supported content-type
+                        type: string
+                        example: application/pdf

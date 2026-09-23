@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Orders API API
+  title: Platform API V1 Orders API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -22,6 +22,8 @@ paths:
           $ref: '#/components/responses/OrderResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
+      operationId: postV1Orders
+      x-operation-id-source: derived
     get:
       summary: Fetch Orders
       description: Lists all of your orders
@@ -53,6 +55,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1Orders
+      x-operation-id-source: derived
   /v1/orders/{order_id}/reorder:
     post:
       summary: Create a reorder
@@ -74,6 +78,8 @@ paths:
           $ref: '#/components/responses/OrderResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedResponse'
+      operationId: postV1OrdersByOrderIdReorder
+      x-operation-id-source: derived
   /v1/orders/{order_id}:
     get:
       summary: Fetch an Order
@@ -99,6 +105,8 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1OrdersByOrderId
+      x-operation-id-source: derived
   /v1/orders/{order_id}/tests:
     get:
       summary: Fetch Tests for an Order
@@ -124,6 +132,8 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1OrdersByOrderIdTests
+      x-operation-id-source: derived
   /v1/tests:
     get:
       summary: Fetch Tests
@@ -168,6 +178,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1Tests
+      x-operation-id-source: derived
   /v1/tests/{test_id}:
     get:
       summary: Fetch a Test
@@ -193,6 +205,8 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1TestsByTestId
+      x-operation-id-source: derived
   /v1/fulfillment-orders/{fulfillment_order_id}:
     get:
       summary: Fetch a Fulfillment Order
@@ -218,70 +232,157 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1FulfillmentOrdersByFulfillmentOrderId
+      x-operation-id-source: derived
 components:
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    OrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Order'
+    TestCollectionResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    TestsResponse:
+      description: An array of Tests
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Test'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    TestResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Test'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    FulfillmentOrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/FulfillmentOrder'
+    OrdersResponse:
+      description: An array of Orders
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
   schemas:
-    Sample:
-      type: object
-      required:
-      - type
-      - collection_method
-      properties:
-        type:
-          description: Whether you want the test to be a saliva or blood test
-          type: string
-          enum:
-          - blood
-          - saliva
-          example: blood
-        collection_method:
-          description: Define what type of collection method you would like for the sample type
-          type: string
-          enum:
-          - finger_prick
-          - swab
-          - venous
-          - automatic_capillary
-          example: finger_prick
-    Analysis:
-      description: Requirements for processing a sample
-      type: object
-      required:
-      - required
-      properties:
-        required:
-          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
-          type: boolean
-          example: true
-        lab:
-          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
-          type: string
-          example: PUR1
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
     Meta:
       type: object
       required:
@@ -317,6 +418,203 @@ components:
               type: number
               description: The last page number
               example: 10
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    FulfillmentOrder:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for a fulfillment order
+          type: string
+          example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: fulfillment_order
+        attributes:
+          type: object
+          properties:
+            status:
+              type: string
+              enum:
+              - fulfilling
+              - complete
+              - failed
+            placed_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the Fulfillment Order was placed.
+              example: '2021-06-11T08:00:00Z'
+            dispatched_at:
+              type: string
+              description: The date and time, in ISO 8601 format, at which the Fulfillment Order was dispatched.
+              example: '2021-06-11T08:00:00Z'
+    Sample:
+      type: object
+      required:
+      - type
+      - collection_method
+      properties:
+        type:
+          description: Whether you want the test to be a saliva or blood test
+          type: string
+          enum:
+          - blood
+          - saliva
+          example: blood
+        collection_method:
+          description: Define what type of collection method you would like for the sample type
+          type: string
+          enum:
+          - finger_prick
+          - swab
+          - venous
+          - automatic_capillary
+          example: finger_prick
+    DeliveryAddress:
+      type: object
+      required:
+      - name
+      - line1
+      - city
+      - postcode
+      - country
+      properties:
+        name:
+          description: The name of the recipient at the delivery address
+          type: string
+          example: Mr Joe Blogs
+        company_name:
+          description: The name of the company
+          type: string
+          example: Thriva Ltd
+        line1:
+          description: The first line of the delivery address
+          type: string
+          example: 3rd Floor
+        line2:
+          description: The second line of the delivery address
+          type: string
+          example: White Collar Factory
+        line3:
+          description: The third line of the delivery address
+          type: string
+          example: 1 Old Street Yard
+        city:
+          description: The city for the delivery address
+          type: string
+          example: London
+        state:
+          description: The county or state for the delivery address
+          type: string
+          example: Greater London
+        postcode:
+          description: The postcode for the delivery address
+          type: string
+          example: EC1Y 8AF
+        country:
+          description: The country for the delivery address (ISO 3166-1 alpha-2)
+          type: string
+          example: GB
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    Analysis:
+      description: Requirements for processing a sample
+      type: object
+      required:
+      - required
+      properties:
+        required:
+          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
+          type: boolean
+          example: true
+        lab:
+          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
+          type: string
+          example: PUR1
+    Pagination:
+      type: object
+      required:
+      - self
+      - current
+      properties:
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
     Test:
       type: object
       required:
@@ -436,8 +734,9 @@ components:
               description: If state is 'failed', this field describes the failure cause
               example: 'invalid collection method: venous, for test profile: OEST'
             source_test:
-              type: object
-              nullable: true
+              type:
+              - object
+              - 'null'
               properties:
                 reissue_reason:
                   type: string
@@ -452,8 +751,9 @@ components:
                   type: string
                   example: TST-04BD173A-770D-4C8F-8CEC-3C24FBF81692
             reissued_test:
-              type: object
-              nullable: true
+              type:
+              - object
+              - 'null'
               properties:
                 reissue_reason:
                   type: string
@@ -470,144 +770,6 @@ components:
             bulk_order_id:
               type: string
               description: The ID of the Bulk Order this Test is associated with
-    FulfillmentOrder:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for a fulfillment order
-          type: string
-          example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-        type:
-          type: string
-          example: fulfillment_order
-        attributes:
-          type: object
-          properties:
-            status:
-              type: string
-              enum:
-              - fulfilling
-              - complete
-              - failed
-            placed_at:
-              type: string
-              description: The date and time, in ISO 8601 format, at which the Fulfillment Order was placed.
-              example: '2021-06-11T08:00:00Z'
-            dispatched_at:
-              type: string
-              description: The date and time, in ISO 8601 format, at which the Fulfillment Order was dispatched.
-              example: '2021-06-11T08:00:00Z'
-    UnsupportedMediaTypeError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
-    Pagination:
-      type: object
-      required:
-      - self
-      - current
-      properties:
-        self:
-          type: string
-          description: The link that generated the current response document
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        current:
-          type: string
-          description: The link for the current page
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        first:
-          type: string
-          description: The link to the first page
-          example: http://example.com/articles?page[number]=1&page[size]=1
-        prev:
-          type: string
-          description: The link to the previous page
-          example: http://example.com/articles?page[number]=2&page[size]=1
-        next:
-          type: string
-          description: The link to the next page
-          example: http://example.com/articles?page[number]=4&page[size]=1
-        last:
-          type: string
-          description: The link to the last page
-          example: http://example.com/articles?page[number]=13&page[size]=1
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    DeliveryAddress:
-      type: object
-      required:
-      - name
-      - line1
-      - city
-      - postcode
-      - country
-      properties:
-        name:
-          description: The name of the recipient at the delivery address
-          type: string
-          example: Mr Joe Blogs
-        company_name:
-          description: The name of the company
-          type: string
-          example: Thriva Ltd
-        line1:
-          description: The first line of the delivery address
-          type: string
-          example: 3rd Floor
-        line2:
-          description: The second line of the delivery address
-          type: string
-          example: White Collar Factory
-        line3:
-          description: The third line of the delivery address
-          type: string
-          example: 1 Old Street Yard
-        city:
-          description: The city for the delivery address
-          type: string
-          example: London
-        state:
-          description: The county or state for the delivery address
-          type: string
-          example: Greater London
-        postcode:
-          description: The postcode for the delivery address
-          type: string
-          example: EC1Y 8AF
-        country:
-          description: The country for the delivery address (ISO 3166-1 alpha-2)
-          type: string
-          example: GB
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
     Order:
       type: object
       required:
@@ -655,220 +817,16 @@ components:
               description: The date and time, in ISO 8601 format, at which the Order was dispatched to the subject
               type: string
               example: '2021-06-11T10:00:00Z'
-    BadRequestError:
+    InvalidAccessTokenError:
       type: object
       required:
       - title
-      - detail
-      - source
       properties:
         title:
           type: string
           description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
-  responses:
-    TestsResponse:
-      description: An array of Tests
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Test'
-              links:
-                $ref: '#/components/schemas/Pagination'
-              meta:
-                $ref: '#/components/schemas/Meta'
-    TestCollectionResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Test'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    FulfillmentOrderResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/FulfillmentOrder'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    OrdersResponse:
-      description: An array of Orders
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Order'
-              links:
-                $ref: '#/components/schemas/Pagination'
-              meta:
-                $ref: '#/components/schemas/Meta'
-    OrderResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Order'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    TestResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Test'
+          example: invalid access token
   requestBodies:
-    ReorderCreate:
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: order
-                  attributes:
-                    type: object
-                    properties:
-                      delivery_address:
-                        $ref: '#/components/schemas/DeliveryAddress'
-                      tests:
-                        description: An array of tests to be reissued, each specifying the test ID and the reissue reason.
-                        type: array
-                        items:
-                          type: object
-                          required:
-                          - id
-                          - reissue_reason
-                          properties:
-                            id:
-                              type: string
-                              description: The ID of the test to be reissued.
-                              example: TST-BEE3DE3E-FBB5-49BD-BF1A-C7775AF5DAE0
-                            reissue_reason:
-                              type: string
-                              description: The reason for reissuing the test.
-                              enum:
-                              - failed_analysis
-                              - failed_fulfillment
-                              - failed_sample_collection
-                              - failed_sample_return
-                              example: failed_analysis
     OrderCreate:
       content:
         application/vnd.api+json:
@@ -958,3 +916,63 @@ components:
                               $ref: '#/components/schemas/Sample'
                             analysis:
                               $ref: '#/components/schemas/Analysis'
+    ReorderCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: order
+                  attributes:
+                    type: object
+                    properties:
+                      delivery_address:
+                        $ref: '#/components/schemas/DeliveryAddress'
+                      tests:
+                        description: An array of tests to be reissued, each specifying the test ID and the reissue reason.
+                        type: array
+                        items:
+                          type: object
+                          required:
+                          - id
+                          - reissue_reason
+                          properties:
+                            id:
+                              type: string
+                              description: The ID of the test to be reissued.
+                              example: TST-BEE3DE3E-FBB5-49BD-BF1A-C7775AF5DAE0
+                            reissue_reason:
+                              type: string
+                              description: The reason for reissuing the test.
+                              enum:
+                              - failed_analysis
+                              - failed_fulfillment
+                              - failed_sample_collection
+                              - failed_sample_return
+                              example: failed_analysis
+  parameters:
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false

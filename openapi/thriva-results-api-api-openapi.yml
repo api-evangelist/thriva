@@ -1,6 +1,6 @@
-openapi: 3.0.2
+openapi: 3.2.0
 info:
-  title: Platform API V1 Appointments API Results API API
+  title: Platform API V1 Results API
   version: '1.0'
   description: End-to-end API to send tests kits and process samples
 servers:
@@ -41,6 +41,8 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1ResultSets
+      x-operation-id-source: derived
   /v1/result-sets/{result_set_id}:
     get:
       summary: Fetch a Result
@@ -66,33 +68,146 @@ paths:
           $ref: '#/components/responses/NotFoundResponse'
         '415':
           $ref: '#/components/responses/UnsupportedMediaTypeResponse'
+      operationId: getV1ResultSetsByResultSetId
+      x-operation-id-source: derived
 components:
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    ResultSetIncludes:
-      name: include
-      description: A comma separated list of relationship objects to include in response
-      in: query
-      schema:
-        type: string
-        example: test_profiles,biomarker_results,escalations
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    ResultSetsResponse:
+      description: An array of Result Set
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultSet'
+              links:
+                $ref: '#/components/schemas/Pagination'
+    ResultSetResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/ResultSet'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/BiomarkerResult'
+                  - $ref: '#/components/schemas/TestProfile'
+                  - $ref: '#/components/schemas/Escalation'
   schemas:
-    InvalidAccessTokenError:
+    Report:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Report ID
+          type: string
+          example: REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6
+        type:
+          type: string
+          example: report
+        attributes:
+          type: object
+          properties:
+            report_summary:
+              description: Clinician-authored narrative for the report. Populated once `status` is `complete`.
+              type: string
+              example: Hi John, these results are excellent.
+            status:
+              description: Status of the report
+              type: string
+              enum:
+              - complete
+              example: complete
+        relationships:
+          type: object
+          properties:
+            reporter:
+              $ref: '#/components/schemas/Reporter'
+            biomarker_comments:
+              $ref: '#/components/schemas/BiomarkerComment'
+    ForbiddenError:
       type: object
       required:
       - title
@@ -100,38 +215,7 @@ components:
         title:
           type: string
           description: Title of the error
-          example: invalid access token
-    Reporter:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Reporter
-          type: string
-          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
-        type:
-          type: string
-          example: reporter
-        attributes:
-          type: object
-          properties:
-            title:
-              type: string
-              enum:
-              - Dr Mr Mrs Ms Miss Mx
-              example: Dr
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            email:
-              type: string
-              example: john.doe@example.com
+          example: action not permitted
     ResultSet:
       type: object
       required:
@@ -244,41 +328,33 @@ components:
                     type:
                       type: string
                       example: result_set_attachment
-    Report:
+    BiomarkerComment:
+      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
       type: object
       required:
       - id
       - type
       - attributes
-      - relationships
       properties:
         id:
-          description: Report ID
+          description: Immutable identifier for Biomarker Comment
           type: string
-          example: REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6
+          example: '1286'
         type:
           type: string
-          example: report
+          example: biomarker_comment
         attributes:
           type: object
           properties:
-            report_summary:
-              description: Clinician-authored narrative for the report. Populated once `status` is `complete`.
+            comment:
+              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
               type: string
-              example: Hi John, these results are excellent.
-            status:
-              description: Status of the report
-              type: string
-              enum:
-              - complete
-              example: complete
+              example: Your ferritin levels are low. We would advise following up with your GP.
         relationships:
           type: object
           properties:
-            reporter:
-              $ref: '#/components/schemas/Reporter'
-            biomarker_comments:
-              $ref: '#/components/schemas/BiomarkerComment'
+            biomarker_result:
+              $ref: '#/components/schemas/BiomarkerResult'
     TestProfile:
       type: object
       required:
@@ -339,172 +415,19 @@ components:
                       type:
                         type: string
                         example: biomarker
-    BiomarkerResult:
+    UnsupportedMediaTypeError:
       type: object
       required:
-      - id
-      - type
-      - attributes
-      - relationships
+      - title
+      - detail
       properties:
-        id:
-          description: Unique identifier for Biomarker Result
+        title:
           type: string
-          example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
-        type:
+          description: Title of the error
+          example: unsupported media type
+        detail:
           type: string
-          example: biomarker_result
-        attributes:
-          type: object
-          properties:
-            code:
-              description: Biomarker code for this Biomarker Result
-              type: string
-              example: ALP
-            successful:
-              type: boolean
-              example: true
-            failure_reason:
-              type: string
-              nullable: true
-              enum:
-              - clotted
-              - contaminated
-              - delay
-              - foreign_object
-              - haemolysed
-              - icteric
-              - insufficient
-              - lab_error
-              - lid_swap
-              - lipaemic
-              - mismatch
-              - no_sample_received
-              - sample_leaked
-              - unknown
-              - unlabelled
-            failure_reason_description:
-              type: string
-              nullable: true
-              description: Human-readable description of the failure reason
-            abnormal_flag:
-              type: string
-              nullable: true
-              example: A
-            escalation_level:
-              description: The escalation level for this biomarker result
-              type: string
-              enum:
-              - very_high
-              - high
-              - medium
-              - low
-              - very_low
-              - not_escalated
-            result_type:
-              type: string
-              enum:
-              - numeric
-              - string
-            result_value:
-              type: string
-              example: '1.78'
-            result_unit:
-              type: string
-              example: umol/L
-            result_operator:
-              type: string
-              nullable: true
-              enum:
-              - LESS_THAN
-              - LESS_THAN_OR_EQUAL
-              - GREATER_THAN
-              - GREATER_THAN_OR_EQUAL
-            notes:
-              description: An array of notes returned from the Lab about this biomarker result
-              type: array
-              items:
-                type: string
-                example: Your Creatinine levels are high. Please discuss this with your GP.
-            reference_ranges:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    example: Normal
-                  lower_bound:
-                    type: string
-                    nullable: true
-                    example: '50.0000'
-                  upper_bound:
-                    type: string
-                    nullable: true
-                    example: '250.0000'
-                  operator:
-                    type: string
-                    nullable: true
-                    example: LESS_THAN
-                    enum:
-                    - LESS_THAN
-                    - LESS_THAN_OR_EQUAL
-                    - GREATER_THAN
-                    - GREATER_THAN_OR_EQUAL
-                  severity_level:
-                    type: integer
-                    nullable: false
-                    minimum: 10
-                    maximum: 50
-                    example: 20
-            interpretation:
-              description: Provides interpretation for results. String results will contain a display value and sentiment for the result. Numeric results will contain a display value and matched reference range
-              type: object
-              nullable: true
-              properties:
-                display_value:
-                  description: For numeric results the display_value joins the operator and numeric value together. For string results, the display_value formats the string correctly and can provide a more human understandable interpretation of the result. e.g. For an antibody test, the string_result might be `positive` while the `display_value` would be `immune`.
-                  type: string
-                  example: '100.0'
-                  nullable: true
-                sentiment:
-                  description: The sentiment associated with string result interpretations. Can be used to decide how to display results on the frontend (i.e. positive sentiment might be highlighted in green). Can be positive, negative, or neutral
-                  type: string
-                  example: positive
-                  nullable: true
-                  enum:
-                  - positive
-                  - negative
-                  - neutral
-                matched_reference_range:
-                  description: The reference range that the result value falls within
-                  type: object
-                  nullable: true
-                  properties:
-                    name:
-                      type: string
-                      example: Normal
-                    severity_level:
-                      type: integer
-                      example: 20
-        relationships:
-          type: object
-          properties:
-            test_profiles:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        description: Test Profile ID
-                        type: string
-                        example: AB12
-                      type:
-                        type: string
-                        example: test_profile
+          example: This endpoint only supports application/vnd.api+json
     Escalation:
       type: object
       required:
@@ -540,14 +463,16 @@ components:
               - not_escalated
             acknowledgment_due_by:
               description: When the escalation needs to be acknowledged by
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             acknowledged_at:
               description: When you acknowledged the escalation
-              type: string
+              type:
+              - string
+              - 'null'
               format: date-time
-              nullable: true
             status:
               description: The current status of the escalation
               type: string
@@ -556,7 +481,7 @@ components:
               - awaiting_acknowledgment
               - no_acknowledgment_required
               - archived
-    UnsupportedMediaTypeError:
+    NotFoundError:
       type: object
       required:
       - title
@@ -565,10 +490,38 @@ components:
         title:
           type: string
           description: Title of the error
-          example: unsupported media type
-        detail:
+          example: resource not found
+    Reporter:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Reporter
           type: string
-          example: This endpoint only supports application/vnd.api+json
+          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
+        type:
+          type: string
+          example: reporter
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              enum:
+              - Dr Mr Mrs Ms Miss Mx
+              example: Dr
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            email:
+              type: string
+              example: john.doe@example.com
     Pagination:
       type: object
       required:
@@ -599,52 +552,6 @@ components:
           type: string
           description: The link to the last page
           example: http://example.com/articles?page[number]=13&page[size]=1
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
-    BiomarkerComment:
-      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Biomarker Comment
-          type: string
-          example: '1286'
-        type:
-          type: string
-          example: biomarker_comment
-        attributes:
-          type: object
-          properties:
-            comment:
-              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
-              type: string
-              example: Your ferritin levels are low. We would advise following up with your GP.
-        relationships:
-          type: object
-          properties:
-            biomarker_result:
-              $ref: '#/components/schemas/BiomarkerResult'
     BadRequestError:
       type: object
       required:
@@ -668,103 +575,212 @@ components:
               description: A RFC6901 compliant JSON pointer to the attribute that caused the error
               type: string
               example: /data/field_name/example
-  responses:
-    ResultSetsResponse:
-      description: An array of Result Set
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResultSet'
-              links:
-                $ref: '#/components/schemas/Pagination'
-    ResultSetResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/ResultSet'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/BiomarkerResult'
-                  - $ref: '#/components/schemas/TestProfile'
-                  - $ref: '#/components/schemas/Escalation'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
+    BiomarkerResult:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Unique identifier for Biomarker Result
+          type: string
+          example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
+        type:
+          type: string
+          example: biomarker_result
+        attributes:
+          type: object
+          properties:
+            code:
+              description: Biomarker code for this Biomarker Result
+              type: string
+              example: ALP
+            successful:
+              type: boolean
+              example: true
+            failure_reason:
+              type:
+              - string
+              - 'null'
+              enum:
+              - clotted
+              - contaminated
+              - delay
+              - foreign_object
+              - haemolysed
+              - icteric
+              - insufficient
+              - lab_error
+              - lid_swap
+              - lipaemic
+              - mismatch
+              - no_sample_received
+              - sample_leaked
+              - unknown
+              - unlabelled
+            failure_reason_description:
+              type:
+              - string
+              - 'null'
+              description: Human-readable description of the failure reason
+            abnormal_flag:
+              type:
+              - string
+              - 'null'
+              example: A
+            escalation_level:
+              description: The escalation level for this biomarker result
+              type: string
+              enum:
+              - very_high
+              - high
+              - medium
+              - low
+              - very_low
+              - not_escalated
+            result_type:
+              type: string
+              enum:
+              - numeric
+              - string
+            result_value:
+              type: string
+              example: '1.78'
+            result_unit:
+              type: string
+              example: umol/L
+            result_operator:
+              type:
+              - string
+              - 'null'
+              enum:
+              - LESS_THAN
+              - LESS_THAN_OR_EQUAL
+              - GREATER_THAN
+              - GREATER_THAN_OR_EQUAL
+            notes:
+              description: An array of notes returned from the Lab about this biomarker result
+              type: array
+              items:
+                type: string
+                example: Your Creatinine levels are high. Please discuss this with your GP.
+            reference_ranges:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: Normal
+                  lower_bound:
+                    type:
+                    - string
+                    - 'null'
+                    example: '50.0000'
+                  upper_bound:
+                    type:
+                    - string
+                    - 'null'
+                    example: '250.0000'
+                  operator:
+                    type:
+                    - string
+                    - 'null'
+                    example: LESS_THAN
+                    enum:
+                    - LESS_THAN
+                    - LESS_THAN_OR_EQUAL
+                    - GREATER_THAN
+                    - GREATER_THAN_OR_EQUAL
+                  severity_level:
+                    type: integer
+                    minimum: 10
+                    maximum: 50
+                    example: 20
+            interpretation:
+              description: Provides interpretation for results. String results will contain a display value and sentiment for the result. Numeric results will contain a display value and matched reference range
+              type:
+              - object
+              - 'null'
+              properties:
+                display_value:
+                  description: For numeric results the display_value joins the operator and numeric value together. For string results, the display_value formats the string correctly and can provide a more human understandable interpretation of the result. e.g. For an antibody test, the string_result might be `positive` while the `display_value` would be `immune`.
+                  type:
+                  - string
+                  - 'null'
+                  example: '100.0'
+                sentiment:
+                  description: The sentiment associated with string result interpretations. Can be used to decide how to display results on the frontend (i.e. positive sentiment might be highlighted in green). Can be positive, negative, or neutral
+                  type:
+                  - string
+                  - 'null'
+                  example: positive
+                  enum:
+                  - positive
+                  - negative
+                  - neutral
+                matched_reference_range:
+                  description: The reference range that the result value falls within
+                  type:
+                  - object
+                  - 'null'
+                  properties:
+                    name:
+                      type: string
+                      example: Normal
+                    severity_level:
+                      type: integer
+                      example: 20
+        relationships:
+          type: object
+          properties:
+            test_profiles:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Test Profile ID
+                        type: string
+                        example: AB12
+                      type:
+                        type: string
+                        example: test_profile
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+  parameters:
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
+    ResultSetIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: test_profiles,biomarker_results,escalations
