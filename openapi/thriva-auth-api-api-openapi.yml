@@ -31,7 +31,46 @@ paths:
       operationId: postOauthToken
       x-operation-id-source: derived
 components:
+  responses:
+    OAuthBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthBadRequestError'
+    OAuthUnauthorizedResponse:
+      description: Unauthorized request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthUnauthorizedError'
+    OAuthTokenResponse:
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthToken'
+    OAuthForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthForbiddenError'
   schemas:
+    OAuthBadRequestError:
+      type: object
+      required:
+      - error
+      - error_description
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: invalid_request
+        error_description:
+          type: string
+          description: Error description
+          example: 'Missing required parameter: grant_type'
     OAuthForbiddenError:
       type: object
       required:
@@ -51,20 +90,6 @@ components:
           type: string
           description: URI for the documentation
           example: https://auth0.com/docs/clients/client-grant-types
-    OAuthBadRequestError:
-      type: object
-      required:
-      - error
-      - error_description
-      properties:
-        error:
-          type: string
-          description: Error type
-          example: invalid_request
-        error_description:
-          type: string
-          description: Error description
-          example: 'Missing required parameter: grant_type'
     OAuthUnauthorizedError:
       type: object
       required:
@@ -103,31 +128,6 @@ components:
           description: Description of what type of token this is
           type: string
           example: Bearer
-  responses:
-    OAuthTokenResponse:
-      description: Successful request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthToken'
-    OAuthBadRequestResponse:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthBadRequestError'
-    OAuthForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthForbiddenError'
-    OAuthUnauthorizedResponse:
-      description: Unauthorized request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthUnauthorizedError'
   requestBodies:
     OAuthTokenCreate:
       content:

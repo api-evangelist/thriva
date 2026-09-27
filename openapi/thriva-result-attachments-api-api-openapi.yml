@@ -64,7 +64,79 @@ paths:
       operationId: getV1ResultSetsByResultSetIdAttachmentsByAttachmentId
       x-operation-id-source: derived
 components:
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ResultSetAttachmentResponse:
+      description: ResultSetAttachment PDF
+      content:
+        application/pdf:
+          schema:
+            $ref: '#/components/schemas/ResultSetAttachment'
+      headers:
+        Content-Disposition:
+          schema:
+            type: string
+            description: Used only with `application/pdf` responses
+            example: attachment; filename="name.pdf"
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
   schemas:
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
     ResultSetAttachment:
       type: string
       format: binary
@@ -113,16 +185,6 @@ components:
         /Filter [/FlateDecode /DCTDecode]
 
         >>'
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
     ForbiddenError:
       type: object
       required:
@@ -132,68 +194,6 @@ components:
           type: string
           description: Title of the error
           example: action not permitted
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-  responses:
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    ResultSetAttachmentResponse:
-      description: ResultSetAttachment PDF
-      content:
-        application/pdf:
-          schema:
-            $ref: '#/components/schemas/ResultSetAttachment'
-      headers:
-        Content-Disposition:
-          schema:
-            type: string
-            description: Used only with `application/pdf` responses
-            example: attachment; filename="name.pdf"
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
   requestBodies:
     ResultSetAttachmentCreate:
       content:

@@ -166,62 +166,8 @@ paths:
       operationId: postV1UsersByUserIdInvitations
       x-operation-id-source: derived
 components:
-  responses:
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    UserResponse:
-      description: Successful request
+  requestBodies:
+    UserUpdate:
       content:
         application/vnd.api+json:
           schema:
@@ -230,28 +176,34 @@ components:
             - data
             properties:
               data:
-                $ref: '#/components/schemas/User'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/Address'
-                  - $ref: '#/components/schemas/ContactDetail'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UsersResponse:
-      description: An array of Users
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: user
+                  attributes:
+                    type: object
+                    properties:
+                      contact:
+                        $ref: '#/components/schemas/ContactDetail'
+                      date_of_birth:
+                        description: The date the user was born, in ISO8601 format.
+                        type: string
+                        example: '1953-03-07'
+                      sex:
+                        description: The sex of the user
+                        type: string
+                        enum:
+                        - female
+                        - male
+                        example: female
+                      external_reference:
+                        description: A reference to help identify the user in your system
+                        type: string
+                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+    UserCreate:
       content:
         application/vnd.api+json:
           schema:
@@ -260,14 +212,130 @@ components:
             - data
             properties:
               data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
-              links:
-                $ref: '#/components/schemas/Pagination'
-              meta:
-                $ref: '#/components/schemas/Meta'
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: user
+                  attributes:
+                    type: object
+                    required:
+                    - contact
+                    - date_of_birth
+                    - sex
+                    properties:
+                      address:
+                        $ref: '#/components/schemas/Address'
+                      contact:
+                        $ref: '#/components/schemas/ContactDetail'
+                      date_of_birth:
+                        description: The date the user was born, in ISO8601 format.
+                        type: string
+                        example: '1953-03-07'
+                      sex:
+                        description: The sex of the user
+                        type: string
+                        enum:
+                        - female
+                        - male
+                        example: female
+                      external_reference:
+                        description: A reference to help identify the user in your system
+                        type: string
+                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
   schemas:
+    Meta:
+      type: object
+      required:
+      - pagination
+      properties:
+        pagination:
+          type: object
+          required:
+          - current
+          - records
+          properties:
+            current:
+              type: number
+              description: The current page number of the request
+              example: 5
+            records:
+              type: number
+              description: The total number of records based on current filters
+              example: 100
+            first:
+              type: number
+              description: The first page number
+              example: 1
+            prev:
+              type: number
+              description: The the previous page number
+              example: 4
+            next:
+              type: number
+              description: The next page number
+              example: 6
+            last:
+              type: number
+              description: The last page number
+              example: 10
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
     Address:
       description: The default delivery address for a user
       type: object
@@ -382,41 +450,36 @@ components:
                     type:
                       type: string
                       example: contact_detail
-    Meta:
+    Pagination:
       type: object
       required:
-      - pagination
+      - self
+      - current
       properties:
-        pagination:
-          type: object
-          required:
-          - current
-          - records
-          properties:
-            current:
-              type: number
-              description: The current page number of the request
-              example: 5
-            records:
-              type: number
-              description: The total number of records based on current filters
-              example: 100
-            first:
-              type: number
-              description: The first page number
-              example: 1
-            prev:
-              type: number
-              description: The the previous page number
-              example: 4
-            next:
-              type: number
-              description: The next page number
-              example: 6
-            last:
-              type: number
-              description: The last page number
-              example: 10
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
     ForbiddenError:
       type: object
       required:
@@ -449,93 +512,22 @@ components:
           description: The mobile phone number. Only GB numbers in the format +447123456789. Optional for most organisations, but a valid mobile phone number is required (on both create and update) when Thriva provides clinical governance for your organisation. If it is required and omitted, the request is rejected with a "mobile_phone_number is required" error.
           type: string
           example: '+447123456789'
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-    UnsupportedMediaTypeError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    Pagination:
-      type: object
-      required:
-      - self
-      - current
-      properties:
-        self:
-          type: string
-          description: The link that generated the current response document
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        current:
-          type: string
-          description: The link for the current page
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        first:
-          type: string
-          description: The link to the first page
-          example: http://example.com/articles?page[number]=1&page[size]=1
-        prev:
-          type: string
-          description: The link to the previous page
-          example: http://example.com/articles?page[number]=2&page[size]=1
-        next:
-          type: string
-          description: The link to the next page
-          example: http://example.com/articles?page[number]=4&page[size]=1
-        last:
-          type: string
-          description: The link to the last page
-          example: http://example.com/articles?page[number]=13&page[size]=1
-    BadRequestError:
-      type: object
-      required:
-      - title
-      - detail
-      - source
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
-  requestBodies:
-    UserCreate:
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UserResponse:
+      description: Successful request
       content:
         application/vnd.api+json:
           schema:
@@ -544,40 +536,28 @@ components:
             - data
             properties:
               data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: user
-                  attributes:
-                    type: object
-                    required:
-                    - contact
-                    - date_of_birth
-                    - sex
-                    properties:
-                      address:
-                        $ref: '#/components/schemas/Address'
-                      contact:
-                        $ref: '#/components/schemas/ContactDetail'
-                      date_of_birth:
-                        description: The date the user was born, in ISO8601 format.
-                        type: string
-                        example: '1953-03-07'
-                      sex:
-                        description: The sex of the user
-                        type: string
-                        enum:
-                        - female
-                        - male
-                        example: female
-                      external_reference:
-                        description: A reference to help identify the user in your system
-                        type: string
-                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
-    UserUpdate:
+                $ref: '#/components/schemas/User'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Address'
+                  - $ref: '#/components/schemas/ContactDetail'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    UsersResponse:
+      description: An array of Users
       content:
         application/vnd.api+json:
           schema:
@@ -586,41 +566,61 @@ components:
             - data
             properties:
               data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: user
-                  attributes:
-                    type: object
-                    properties:
-                      contact:
-                        $ref: '#/components/schemas/ContactDetail'
-                      date_of_birth:
-                        description: The date the user was born, in ISO8601 format.
-                        type: string
-                        example: '1953-03-07'
-                      sex:
-                        description: The sex of the user
-                        type: string
-                        enum:
-                        - female
-                        - male
-                        example: female
-                      external_reference:
-                        description: A reference to help identify the user in your system
-                        type: string
-                        example: 28651739-737a-4fb3-9c44-4b5557b2b75f
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
   parameters:
-    UserIncludes:
-      name: include
-      description: A comma separated list of relationship objects to include in response
+    PageNumber:
       in: query
+      name: page[number]
       schema:
-        type: string
-        example: address,contact_detail
+        type: integer
+      description: The page that will be returned
+      required: false
     PageSize:
       in: query
       name: page[size]
@@ -630,10 +630,10 @@ components:
         type: integer
         minimum: 10
         maximum: 100
-    PageNumber:
+    UserIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
       in: query
-      name: page[number]
       schema:
-        type: integer
-      description: The page that will be returned
-      required: false
+        type: string
+        example: address,contact_detail

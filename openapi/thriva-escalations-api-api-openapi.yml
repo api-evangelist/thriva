@@ -71,35 +71,32 @@ paths:
       operationId: postV1EscalationsByEscalationIdAcknowledge
       x-operation-id-source: derived
 components:
+  responses:
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    EscalationResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Escalation'
   schemas:
-    ArchivedEscalationError:
-      type: object
-      required:
-      - code
-      - title
-      - detail
-      - meta
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: ARCHIVED_ESCALATION
-        title:
-          type: string
-          description: Title of the error
-          example: archived escalation
-        detail:
-          type: string
-          example: This escalation is archived. Only an active escalation can be acknowledged.
-        meta:
-          type: object
-          required:
-          - active_escalation_id
-          properties:
-            active_escalation_id:
-              description: The id of the current active escalation.
-              type: string
-              example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
     Escalation:
       type: object
       required:
@@ -153,6 +150,44 @@ components:
               - awaiting_acknowledgment
               - no_acknowledgment_required
               - archived
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    ArchivedEscalationError:
+      type: object
+      required:
+      - code
+      - title
+      - detail
+      - meta
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: ARCHIVED_ESCALATION
+        title:
+          type: string
+          description: Title of the error
+          example: archived escalation
+        detail:
+          type: string
+          example: This escalation is archived. Only an active escalation can be acknowledged.
+        meta:
+          type: object
+          required:
+          - active_escalation_id
+          properties:
+            active_escalation_id:
+              description: The id of the current active escalation.
+              type: string
+              example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
     InvalidEscalationLevelError:
       type: object
       required:
@@ -171,38 +206,3 @@ components:
         detail:
           type: string
           example: The level passed in does not match the current level of the escalation.
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-  responses:
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    EscalationResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Escalation'
