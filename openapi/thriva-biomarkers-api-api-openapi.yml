@@ -39,91 +39,6 @@ paths:
       operationId: getV1TestProfiles
       x-operation-id-source: derived
 components:
-  responses:
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    TestProfileCollectionResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TestProfile'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/Biomarker'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
   schemas:
     InvalidAccessTokenError:
       type: object
@@ -134,6 +49,29 @@ components:
           type: string
           description: Title of the error
           example: invalid access token
+    Biomarker:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Biomarker
+          type: string
+          example: ALP
+        type:
+          type: string
+          example: biomarker
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: Alkaline phosphatase
+            code:
+              type: string
+              example: ALP
     TestProfile:
       type: object
       required:
@@ -194,30 +132,7 @@ components:
                       type:
                         type: string
                         example: biomarker
-    Biomarker:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Biomarker
-          type: string
-          example: ALP
-        type:
-          type: string
-          example: biomarker
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: Alkaline phosphatase
-            code:
-              type: string
-              example: ALP
-    UnsupportedMediaTypeError:
+    NotFoundError:
       type: object
       required:
       - title
@@ -226,10 +141,16 @@ components:
         title:
           type: string
           description: Title of the error
-          example: unsupported media type
-        detail:
+          example: resource not found
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
           type: string
-          example: This endpoint only supports application/vnd.api+json
+          description: Title of the error
+          example: action not permitted
     BadRequestError:
       type: object
       required:
@@ -253,7 +174,7 @@ components:
               description: A RFC6901 compliant JSON pointer to the attribute that caused the error
               type: string
               example: /data/field_name/example
-    NotFoundError:
+    UnsupportedMediaTypeError:
       type: object
       required:
       - title
@@ -262,16 +183,95 @@ components:
         title:
           type: string
           description: Title of the error
-          example: resource not found
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
+          example: unsupported media type
+        detail:
           type: string
-          description: Title of the error
-          example: action not permitted
+          example: This endpoint only supports application/vnd.api+json
+  responses:
+    TestProfileCollectionResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TestProfile'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/Biomarker'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
   parameters:
     TestProfileIncludes:
       name: include

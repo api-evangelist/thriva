@@ -36,6 +36,15 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
     TrackingEvent:
       type: object
       required:
@@ -89,7 +98,7 @@ components:
               description: Human-readable description of the status, suitable for display
               type: string
               example: Your kit is on its way.
-    InvalidAccessTokenError:
+    ForbiddenError:
       type: object
       required:
       - title
@@ -97,7 +106,7 @@ components:
         title:
           type: string
           description: Title of the error
-          example: invalid access token
+          example: action not permitted
     UnsupportedMediaTypeError:
       type: object
       required:
@@ -111,29 +120,7 @@ components:
         detail:
           type: string
           example: This endpoint only supports application/vnd.api+json
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
   responses:
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
     UnsupportedMediaTypeResponse:
       description: Unsupported media type response
       content:
@@ -160,6 +147,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/TrackingEvent'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
     UnauthorizedResponse:
       description: Unauthorized response
       content:

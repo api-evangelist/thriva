@@ -64,6 +64,83 @@ paths:
       operationId: getV1ResultSetsByResultSetIdAttachmentsByAttachmentId
       x-operation-id-source: derived
 components:
+  schemas:
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    ResultSetAttachment:
+      type: string
+      format: binary
+      example: '%PDF-1.5
+
+        %âãÏÓ
+
+        3 0 obj
+
+        <<
+
+        /Producer (PDF-XChange Printer 2012 \(5.5 build 313.1\) [Windows 8 Professional x64 \(Build 9200\)])
+
+        /Title (ASET Pathology report)
+
+        /Subject (Pathology report)
+
+        /Keywords (ASET Pathology)
+
+        /Creator (ASET)
+
+        /CreationDate (D:20220619080645+01''00'')
+
+        >>
+
+        endobj
+
+        5 0 obj
+
+        <<
+
+        /Type /XObject
+
+        /Subtype /Image
+
+        /Width 162
+
+        /Height 92
+
+        /BitsPerComponent 8
+
+        /ColorSpace /DeviceRGB
+
+        /Length 2831
+
+        /Filter [/FlateDecode /DCTDecode]
+
+        >>'
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
   responses:
     NotFoundResponse:
       description: Resource not found
@@ -117,83 +194,6 @@ components:
                 items:
                   anyOf:
                   - $ref: '#/components/schemas/InvalidAccessTokenError'
-  schemas:
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    ResultSetAttachment:
-      type: string
-      format: binary
-      example: '%PDF-1.5
-
-        %âãÏÓ
-
-        3 0 obj
-
-        <<
-
-        /Producer (PDF-XChange Printer 2012 \(5.5 build 313.1\) [Windows 8 Professional x64 \(Build 9200\)])
-
-        /Title (ASET Pathology report)
-
-        /Subject (Pathology report)
-
-        /Keywords (ASET Pathology)
-
-        /Creator (ASET)
-
-        /CreationDate (D:20220619080645+01''00'')
-
-        >>
-
-        endobj
-
-        5 0 obj
-
-        <<
-
-        /Type /XObject
-
-        /Subtype /Image
-
-        /Width 162
-
-        /Height 92
-
-        /BitsPerComponent 8
-
-        /ColorSpace /DeviceRGB
-
-        /Length 2831
-
-        /Filter [/FlateDecode /DCTDecode]
-
-        >>'
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
   requestBodies:
     ResultSetAttachmentCreate:
       content:
