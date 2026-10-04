@@ -129,195 +129,67 @@ paths:
       operationId: postV1BulkOrdersTests
       x-operation-id-source: derived
 components:
-  requestBodies:
-    BulkOrderTestCreate:
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  attributes:
-                    type: object
-                    required:
-                    - sample_reference
-                    properties:
-                      user_id:
-                        type: string
-                        description: The User ID if to associate with a test
-                        example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-                      sample_reference:
-                        description: The identifier for a sample reference
-                        type: string
-                        example: T00240XPA3
-                      test_profiles:
-                        type: array
-                        description: A list of what needs to be tested for the user's sample. Only required if profiles not specified at time of Bulk Order creation.
-                        items:
-                          type: string
-                        example:
-                        - LFT
-                        - LIPP
-    BulkOrderCreate:
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: object
-                required:
-                - attributes
-                properties:
-                  type:
-                    type: string
-                    example: bulk_order
-                  attributes:
-                    type: object
-                    required:
-                    - delivery_address
-                    - kits
-                    properties:
-                      delivery_address:
-                        $ref: '#/components/schemas/DeliveryAddress'
-                      kits:
-                        $ref: '#/components/schemas/Kits'
-  responses:
-    BulkOrdersResponse:
-      description: An array of Bulk Orders
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BulkOrder'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/SampleReference'
-              links:
-                $ref: '#/components/schemas/Pagination'
-              meta:
-                $ref: '#/components/schemas/Meta'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    BulkOrderResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/BulkOrder'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/SampleReference'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    TestResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Test'
-    BulkOrderSampleReferenceResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/SampleReference'
   schemas:
+    SampleReference:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: The identifier for a sample reference
+          type: string
+          example: T00240XPA3
+        type:
+          type: string
+          enum:
+          - bulk_order_sample_reference
+        attributes:
+          type: object
+          properties:
+            kit_expiry:
+              description: The expiry date of the test kit with this sample reference. The sample reference cannot be used to create a Test past this date. The lab will not analyse the sample past this date.
+              type: string
+              format: date
+              example: '2025-10-15'
+            is_expired:
+              description: If the test kit with this sample reference has expired
+              type: boolean
+              example: false
+            is_consumed:
+              description: If the sample reference has been used to create a Test
+              type: boolean
+              example: false
+            sample_collection_method:
+              description: The sample collection method for this sample reference
+              type: string
+              enum:
+              - finger_prick
+              - swab
+              - venous
+              - automatic_capillary
+              example: finger_prick
+            test_profiles:
+              type: array
+              items:
+                type: string
+              example:
+              - LFT
+              - LIPP
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
     Meta:
       type: object
       required:
@@ -353,6 +225,168 @@ components:
               type: number
               description: The last page number
               example: 10
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    DeliveryAddress:
+      type: object
+      required:
+      - name
+      - line1
+      - city
+      - postcode
+      - country
+      properties:
+        name:
+          description: The name of the recipient at the delivery address
+          type: string
+          example: Mr Joe Blogs
+        company_name:
+          description: The name of the company
+          type: string
+          example: Thriva Ltd
+        line1:
+          description: The first line of the delivery address
+          type: string
+          example: 3rd Floor
+        line2:
+          description: The second line of the delivery address
+          type: string
+          example: White Collar Factory
+        line3:
+          description: The third line of the delivery address
+          type: string
+          example: 1 Old Street Yard
+        city:
+          description: The city for the delivery address
+          type: string
+          example: London
+        state:
+          description: The county or state for the delivery address
+          type: string
+          example: Greater London
+        postcode:
+          description: The postcode for the delivery address
+          type: string
+          example: EC1Y 8AF
+        country:
+          description: The country for the delivery address (ISO 3166-1 alpha-2)
+          type: string
+          example: GB
+    Pagination:
+      type: object
+      required:
+      - self
+      - current
+      properties:
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
+    Sample:
+      type: object
+      required:
+      - type
+      - collection_method
+      properties:
+        type:
+          description: Whether you want the test to be a saliva or blood test
+          type: string
+          enum:
+          - blood
+          - saliva
+          example: blood
+        collection_method:
+          description: Define what type of collection method you would like for the sample type
+          type: string
+          enum:
+          - finger_prick
+          - swab
+          - venous
+          - automatic_capillary
+          example: finger_prick
+    Analysis:
+      description: Requirements for processing a sample
+      type: object
+      required:
+      - required
+      properties:
+        required:
+          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
+          type: boolean
+          example: true
+        lab:
+          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
+          type: string
+          example: PUR1
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
     Test:
       type: object
       required:
@@ -508,118 +542,35 @@ components:
             bulk_order_id:
               type: string
               description: The ID of the Bulk Order this Test is associated with
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    BadRequestError:
-      type: object
-      required:
-      - title
-      - detail
-      - source
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
-    Analysis:
-      description: Requirements for processing a sample
-      type: object
-      required:
-      - required
-      properties:
+    Kits:
+      description: The requirements for the kits that should be part of this Order
+      type: array
+      items:
+        description: A Kit object that relates to a physical test kits that will be sent to the delivery address
+        type: object
         required:
-          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
-          type: boolean
-          example: true
-        lab:
-          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
-          type: string
-          example: PUR1
-    Sample:
-      type: object
-      required:
-      - type
-      - collection_method
-      properties:
-        type:
-          description: Whether you want the test to be a saliva or blood test
-          type: string
-          enum:
-          - blood
-          - saliva
-          example: blood
-        collection_method:
-          description: Define what type of collection method you would like for the sample type
-          type: string
-          enum:
-          - finger_prick
-          - swab
-          - venous
-          - automatic_capillary
-          example: finger_prick
-    UnsupportedMediaTypeError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
-    Pagination:
-      type: object
-      required:
-      - self
-      - current
-      properties:
-        self:
-          type: string
-          description: The link that generated the current response document
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        current:
-          type: string
-          description: The link for the current page
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        first:
-          type: string
-          description: The link to the first page
-          example: http://example.com/articles?page[number]=1&page[size]=1
-        prev:
-          type: string
-          description: The link to the previous page
-          example: http://example.com/articles?page[number]=2&page[size]=1
-        next:
-          type: string
-          description: The link to the next page
-          example: http://example.com/articles?page[number]=4&page[size]=1
-        last:
-          type: string
-          description: The link to the last page
-          example: http://example.com/articles?page[number]=13&page[size]=1
+        - count
+        - analysis
+        properties:
+          test_profiles:
+            description: A list of what needs to be tested for the user's sample
+            type: array
+            items:
+              type: string
+            example:
+            - LFT
+            - LIPP
+          count:
+            description: The number of test kits required
+            type: integer
+            enum:
+            - 25
+            - 50
+            example: 25
+          sample:
+            $ref: '#/components/schemas/Sample'
+          analysis:
+            $ref: '#/components/schemas/Analysis'
     BulkOrder:
       type: object
       required:
@@ -711,153 +662,195 @@ components:
                       type:
                         type: string
                         example: bulk_order_sample_reference
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
-    DeliveryAddress:
-      type: object
-      required:
-      - name
-      - line1
-      - city
-      - postcode
-      - country
-      properties:
-        name:
-          description: The name of the recipient at the delivery address
-          type: string
-          example: Mr Joe Blogs
-        company_name:
-          description: The name of the company
-          type: string
-          example: Thriva Ltd
-        line1:
-          description: The first line of the delivery address
-          type: string
-          example: 3rd Floor
-        line2:
-          description: The second line of the delivery address
-          type: string
-          example: White Collar Factory
-        line3:
-          description: The third line of the delivery address
-          type: string
-          example: 1 Old Street Yard
-        city:
-          description: The city for the delivery address
-          type: string
-          example: London
-        state:
-          description: The county or state for the delivery address
-          type: string
-          example: Greater London
-        postcode:
-          description: The postcode for the delivery address
-          type: string
-          example: EC1Y 8AF
-        country:
-          description: The country for the delivery address (ISO 3166-1 alpha-2)
-          type: string
-          example: GB
-    Kits:
-      description: The requirements for the kits that should be part of this Order
-      type: array
-      items:
-        description: A Kit object that relates to a physical test kits that will be sent to the delivery address
-        type: object
-        required:
-        - count
-        - analysis
-        properties:
-          test_profiles:
-            description: A list of what needs to be tested for the user's sample
-            type: array
-            items:
-              type: string
-            example:
-            - LFT
-            - LIPP
-          count:
-            description: The number of test kits required
-            type: integer
-            enum:
-            - 25
-            - 50
-            example: 25
-          sample:
-            $ref: '#/components/schemas/Sample'
-          analysis:
-            $ref: '#/components/schemas/Analysis'
-    SampleReference:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: The identifier for a sample reference
-          type: string
-          example: T00240XPA3
-        type:
-          type: string
-          enum:
-          - bulk_order_sample_reference
-        attributes:
-          type: object
-          properties:
-            kit_expiry:
-              description: The expiry date of the test kit with this sample reference. The sample reference cannot be used to create a Test past this date. The lab will not analyse the sample past this date.
-              type: string
-              format: date
-              example: '2025-10-15'
-            is_expired:
-              description: If the test kit with this sample reference has expired
-              type: boolean
-              example: false
-            is_consumed:
-              description: If the sample reference has been used to create a Test
-              type: boolean
-              example: false
-            sample_collection_method:
-              description: The sample collection method for this sample reference
-              type: string
-              enum:
-              - finger_prick
-              - swab
-              - venous
-              - automatic_capillary
-              example: finger_prick
-            test_profiles:
-              type: array
-              items:
-                type: string
-              example:
-              - LFT
-              - LIPP
+  responses:
+    BulkOrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/BulkOrder'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/SampleReference'
+    BulkOrderSampleReferenceResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/SampleReference'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    TestResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Test'
+    BulkOrdersResponse:
+      description: An array of Bulk Orders
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BulkOrder'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/SampleReference'
+              links:
+                $ref: '#/components/schemas/Pagination'
+              meta:
+                $ref: '#/components/schemas/Meta'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+  requestBodies:
+    BulkOrderCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  type:
+                    type: string
+                    example: bulk_order
+                  attributes:
+                    type: object
+                    required:
+                    - delivery_address
+                    - kits
+                    properties:
+                      delivery_address:
+                        $ref: '#/components/schemas/DeliveryAddress'
+                      kits:
+                        $ref: '#/components/schemas/Kits'
+    BulkOrderTestCreate:
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: object
+                required:
+                - attributes
+                properties:
+                  attributes:
+                    type: object
+                    required:
+                    - sample_reference
+                    properties:
+                      user_id:
+                        type: string
+                        description: The User ID if to associate with a test
+                        example: U-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+                      sample_reference:
+                        description: The identifier for a sample reference
+                        type: string
+                        example: T00240XPA3
+                      test_profiles:
+                        type: array
+                        description: A list of what needs to be tested for the user's sample. Only required if profiles not specified at time of Bulk Order creation.
+                        items:
+                          type: string
+                        example:
+                        - LFT
+                        - LIPP
   parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
     PageSize:
       in: query
       name: page[size]
@@ -867,3 +860,10 @@ components:
         type: integer
         minimum: 10
         maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false

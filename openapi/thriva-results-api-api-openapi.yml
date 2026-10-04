@@ -71,130 +71,6 @@ paths:
       operationId: getV1ResultSetsByResultSetId
       x-operation-id-source: derived
 components:
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
-    ResultSetIncludes:
-      name: include
-      description: A comma separated list of relationship objects to include in response
-      in: query
-      schema:
-        type: string
-        example: test_profiles,biomarker_results,escalations
-  responses:
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    ResultSetResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/ResultSet'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/BiomarkerResult'
-                  - $ref: '#/components/schemas/TestProfile'
-                  - $ref: '#/components/schemas/Escalation'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    ResultSetsResponse:
-      description: An array of Result Set
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResultSet'
-              links:
-                $ref: '#/components/schemas/Pagination'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
   schemas:
     NotFoundError:
       type: object
@@ -206,29 +82,36 @@ components:
           type: string
           description: Title of the error
           example: resource not found
-    BadRequestError:
+    Pagination:
       type: object
       required:
-      - title
-      - detail
-      - source
+      - self
+      - current
       properties:
-        title:
+        self:
           type: string
-          description: Title of the error
-          example: invalid field
-        detail:
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
           type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
     BiomarkerResult:
       type: object
       required:
@@ -405,107 +288,15 @@ components:
                       type:
                         type: string
                         example: test_profile
-    BiomarkerComment:
-      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Biomarker Comment
-          type: string
-          example: '1286'
-        type:
-          type: string
-          example: biomarker_comment
-        attributes:
-          type: object
-          properties:
-            comment:
-              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
-              type: string
-              example: Your ferritin levels are low. We would advise following up with your GP.
-        relationships:
-          type: object
-          properties:
-            biomarker_result:
-              $ref: '#/components/schemas/BiomarkerResult'
-    Reporter:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Reporter
-          type: string
-          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
-        type:
-          type: string
-          example: reporter
-        attributes:
-          type: object
-          properties:
-            title:
-              type: string
-              enum:
-              - Dr Mr Mrs Ms Miss Mx
-              example: Dr
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            email:
-              type: string
-              example: john.doe@example.com
-    Pagination:
-      type: object
-      required:
-      - self
-      - current
-      properties:
-        self:
-          type: string
-          description: The link that generated the current response document
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        current:
-          type: string
-          description: The link for the current page
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        first:
-          type: string
-          description: The link to the first page
-          example: http://example.com/articles?page[number]=1&page[size]=1
-        prev:
-          type: string
-          description: The link to the previous page
-          example: http://example.com/articles?page[number]=2&page[size]=1
-        next:
-          type: string
-          description: The link to the next page
-          example: http://example.com/articles?page[number]=4&page[size]=1
-        last:
-          type: string
-          description: The link to the last page
-          example: http://example.com/articles?page[number]=13&page[size]=1
-    UnsupportedMediaTypeError:
+    InvalidAccessTokenError:
       type: object
       required:
       - title
-      - detail
       properties:
         title:
           type: string
           description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
+          example: invalid access token
     ResultSet:
       type: object
       required:
@@ -618,103 +409,29 @@ components:
                     type:
                       type: string
                       example: result_set_attachment
-    Report:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-      properties:
-        id:
-          description: Report ID
-          type: string
-          example: REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6
-        type:
-          type: string
-          example: report
-        attributes:
-          type: object
-          properties:
-            report_summary:
-              description: Clinician-authored narrative for the report. Populated once `status` is `complete`.
-              type: string
-              example: Hi John, these results are excellent.
-            status:
-              description: Status of the report
-              type: string
-              enum:
-              - complete
-              example: complete
-        relationships:
-          type: object
-          properties:
-            reporter:
-              $ref: '#/components/schemas/Reporter'
-            biomarker_comments:
-              $ref: '#/components/schemas/BiomarkerComment'
-    Escalation:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Escalation ID
-          type: string
-          example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
-        type:
-          type: string
-          example: escalation
-        attributes:
-          type: object
-          required:
-          - level
-          - acknowledgment_due_by
-          - acknowledged_at
-          - status
-          properties:
-            level:
-              description: The level of the escalation
-              type: string
-              example: very_high
-              enum:
-              - very_high
-              - high
-              - medium
-              - low
-              - very_low
-              - not_escalated
-            acknowledgment_due_by:
-              description: When the escalation needs to be acknowledged by
-              type:
-              - string
-              - 'null'
-              format: date-time
-            acknowledged_at:
-              description: When you acknowledged the escalation
-              type:
-              - string
-              - 'null'
-              format: date-time
-            status:
-              description: The current status of the escalation
-              type: string
-              enum:
-              - acknowledged
-              - awaiting_acknowledgment
-              - no_acknowledgment_required
-              - archived
-    InvalidAccessTokenError:
+    BadRequestError:
       type: object
       required:
       - title
+      - detail
+      - source
       properties:
         title:
           type: string
           description: Title of the error
-          example: invalid access token
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
     TestProfile:
       type: object
       required:
@@ -775,6 +492,152 @@ components:
                       type:
                         type: string
                         example: biomarker
+    BiomarkerComment:
+      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Biomarker Comment
+          type: string
+          example: '1286'
+        type:
+          type: string
+          example: biomarker_comment
+        attributes:
+          type: object
+          properties:
+            comment:
+              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
+              type: string
+              example: Your ferritin levels are low. We would advise following up with your GP.
+        relationships:
+          type: object
+          properties:
+            biomarker_result:
+              $ref: '#/components/schemas/BiomarkerResult'
+    Escalation:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Escalation ID
+          type: string
+          example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
+        type:
+          type: string
+          example: escalation
+        attributes:
+          type: object
+          required:
+          - level
+          - acknowledgment_due_by
+          - acknowledged_at
+          - status
+          properties:
+            level:
+              description: The level of the escalation
+              type: string
+              example: very_high
+              enum:
+              - very_high
+              - high
+              - medium
+              - low
+              - very_low
+              - not_escalated
+            acknowledgment_due_by:
+              description: When the escalation needs to be acknowledged by
+              type:
+              - string
+              - 'null'
+              format: date-time
+            acknowledged_at:
+              description: When you acknowledged the escalation
+              type:
+              - string
+              - 'null'
+              format: date-time
+            status:
+              description: The current status of the escalation
+              type: string
+              enum:
+              - acknowledged
+              - awaiting_acknowledgment
+              - no_acknowledgment_required
+              - archived
+    Reporter:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      properties:
+        id:
+          description: Immutable identifier for Reporter
+          type: string
+          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
+        type:
+          type: string
+          example: reporter
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              enum:
+              - Dr Mr Mrs Ms Miss Mx
+              example: Dr
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            email:
+              type: string
+              example: john.doe@example.com
+    Report:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Report ID
+          type: string
+          example: REP-CFD18A5C-4F68-4C45-BFBC-7D9A1C35A4C6
+        type:
+          type: string
+          example: report
+        attributes:
+          type: object
+          properties:
+            report_summary:
+              description: Clinician-authored narrative for the report. Populated once `status` is `complete`.
+              type: string
+              example: Hi John, these results are excellent.
+            status:
+              description: Status of the report
+              type: string
+              enum:
+              - complete
+              example: complete
+        relationships:
+          type: object
+          properties:
+            reporter:
+              $ref: '#/components/schemas/Reporter'
+            biomarker_comments:
+              $ref: '#/components/schemas/BiomarkerComment'
     ForbiddenError:
       type: object
       required:
@@ -784,3 +647,140 @@ components:
           type: string
           description: Title of the error
           example: action not permitted
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+  responses:
+    ResultSetsResponse:
+      description: An array of Result Set
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultSet'
+              links:
+                $ref: '#/components/schemas/Pagination'
+    ResultSetResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/ResultSet'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/BiomarkerResult'
+                  - $ref: '#/components/schemas/TestProfile'
+                  - $ref: '#/components/schemas/Escalation'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+  parameters:
+    ResultSetIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: test_profiles,biomarker_results,escalations
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false

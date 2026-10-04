@@ -46,30 +46,6 @@ components:
           type: string
           description: Error description
           example: 'Missing required parameter: grant_type'
-    OAuthToken:
-      type: object
-      required:
-      - access_token
-      - scope
-      - expires_in
-      - token_type
-      properties:
-        access_token:
-          description: The JWT Token
-          type: string
-          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlUtQ3Brdmtaem9OLXhYeFE1bmpyVSJ9.eyJodHRwczovL3Rocml2YS5pby9vcmdhbml6YXRpb24iOiJ0ZXN0LW9yZ2FuaXNhdGlvbiIsImlzcyI6Imh0dHBzOi8vYXV0aC50aHJpdmEuaW8vIiwic3ViIjoiSzJXYVNPM1NCUkpxM1J6R0o1Y3dDYndJdzg3NFNJam9AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmV1dzIudGhyaXZhLmlvIiwiaWF0IjoxNjU2MzIwODY1LCJleHAiOjE2NTYzMzE2NjUsImF6cCI6IlEyVGFTTzNTQlJVcTNaekdKNWN3R2J3SXc4OMKjU0lqbyIsInNjb3BlIjoib3JkZXI6Y3JlYXRlIG9yZGVyOnJlYWQgdGVzdF9wcm9maWxlOnJlYWQgcmVzdWx0X3NldDpyZWFkIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.ADyC6-FZQu7hb-QTXifoECy3Nhmf58KIu0skAs2G7EGGgNIk3SNeS0QVSY7AOp9qWsfnqb6y3jakobkNHwXUwW_MYNePernmyOYGalXG-pGw0p2v-R0QwHQ_GKfcZCiF4Pzpu1EywHQuuqE68IWy4H8mCox32BsIQZRFTCPp3eaVML2huicrWDgGCFoT5PWwloLSrBpuZkPeP7pZvV6SM_pJoChL26QqdPBJ09pG3_6trJvummyadGptkupV84K4wuxfKXDg0TUSQhKJWJENTYDyj8WG5OlR5a4IQ-u6xRixxahD_Wc4S5Y4LYTSCfWPstRQvrHJxAy4d2sFaF1Ztg
-        scope:
-          description: The permissions of the token
-          type: string
-          example: order:create order:read test_profile:read result_set:read
-        expires_in:
-          description: Length of time in seconds within which the token expires
-          type: integer
-          example: 10800
-        token_type:
-          description: Description of what type of token this is
-          type: string
-          example: Bearer
     OAuthForbiddenError:
       type: object
       required:
@@ -103,6 +79,55 @@ components:
           type: string
           description: Error description
           example: Unauthorized
+    OAuthToken:
+      type: object
+      required:
+      - access_token
+      - scope
+      - expires_in
+      - token_type
+      properties:
+        access_token:
+          description: The JWT Token
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlUtQ3Brdmtaem9OLXhYeFE1bmpyVSJ9.eyJodHRwczovL3Rocml2YS5pby9vcmdhbml6YXRpb24iOiJ0ZXN0LW9yZ2FuaXNhdGlvbiIsImlzcyI6Imh0dHBzOi8vYXV0aC50aHJpdmEuaW8vIiwic3ViIjoiSzJXYVNPM1NCUkpxM1J6R0o1Y3dDYndJdzg3NFNJam9AY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmV1dzIudGhyaXZhLmlvIiwiaWF0IjoxNjU2MzIwODY1LCJleHAiOjE2NTYzMzE2NjUsImF6cCI6IlEyVGFTTzNTQlJVcTNaekdKNWN3R2J3SXc4OMKjU0lqbyIsInNjb3BlIjoib3JkZXI6Y3JlYXRlIG9yZGVyOnJlYWQgdGVzdF9wcm9maWxlOnJlYWQgcmVzdWx0X3NldDpyZWFkIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.ADyC6-FZQu7hb-QTXifoECy3Nhmf58KIu0skAs2G7EGGgNIk3SNeS0QVSY7AOp9qWsfnqb6y3jakobkNHwXUwW_MYNePernmyOYGalXG-pGw0p2v-R0QwHQ_GKfcZCiF4Pzpu1EywHQuuqE68IWy4H8mCox32BsIQZRFTCPp3eaVML2huicrWDgGCFoT5PWwloLSrBpuZkPeP7pZvV6SM_pJoChL26QqdPBJ09pG3_6trJvummyadGptkupV84K4wuxfKXDg0TUSQhKJWJENTYDyj8WG5OlR5a4IQ-u6xRixxahD_Wc4S5Y4LYTSCfWPstRQvrHJxAy4d2sFaF1Ztg
+        scope:
+          description: The permissions of the token
+          type: string
+          example: order:create order:read test_profile:read result_set:read
+        expires_in:
+          description: Length of time in seconds within which the token expires
+          type: integer
+          example: 10800
+        token_type:
+          description: Description of what type of token this is
+          type: string
+          example: Bearer
+  responses:
+    OAuthForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthForbiddenError'
+    OAuthUnauthorizedResponse:
+      description: Unauthorized request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthUnauthorizedError'
+    OAuthBadRequestResponse:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthBadRequestError'
+    OAuthTokenResponse:
+      description: Successful request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthToken'
   requestBodies:
     OAuthTokenCreate:
       content:
@@ -130,28 +155,3 @@ components:
                 description: API URL
                 type: string
                 example: https://api.euw2.thriva.io
-  responses:
-    OAuthForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthForbiddenError'
-    OAuthBadRequestResponse:
-      description: Bad request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthBadRequestError'
-    OAuthUnauthorizedResponse:
-      description: Unauthorized request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthUnauthorizedError'
-    OAuthTokenResponse:
-      description: Successful request
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthToken'

@@ -129,16 +129,47 @@ paths:
       operationId: getV1AppointmentsByAppointmentId
       x-operation-id-source: derived
 components:
+  parameters:
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
   schemas:
-    InvalidAccessTokenError:
+    BadRequestError:
       type: object
       required:
       - title
+      - detail
+      - source
       properties:
         title:
           type: string
           description: Title of the error
-          example: invalid access token
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
     Appointment:
       type: object
       required:
@@ -313,52 +344,6 @@ components:
               type: number
               description: The last page number
               example: 10
-    UnsupportedMediaTypeError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    BadRequestError:
-      type: object
-      required:
-      - title
-      - detail
-      - source
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
     Pagination:
       type: object
       required:
@@ -389,6 +374,38 @@ components:
           type: string
           description: The link to the last page
           example: http://example.com/articles?page[number]=13&page[size]=1
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
   responses:
     UnsupportedMediaTypeResponse:
       description: Unsupported media type response
@@ -403,6 +420,19 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/UnsupportedMediaTypeError'
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
     AppointmentResponse:
       description: Successful request
       content:
@@ -427,32 +457,6 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/NotFoundError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
     AppointmentsResponse:
       description: An array of Appointments
       content:
@@ -484,23 +488,19 @@ components:
                 items:
                   anyOf:
                   - $ref: '#/components/schemas/InvalidAccessTokenError'
-  parameters:
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
   requestBodies:
     AppointmentCreate:
       content:
