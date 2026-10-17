@@ -71,8 +71,229 @@ paths:
       operationId: getV1ResultSetsByResultSetId
       x-operation-id-source: derived
 components:
+  responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    ResultSetsResponse:
+      description: An array of Result Set
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ResultSet'
+              links:
+                $ref: '#/components/schemas/Pagination'
+    ResultSetResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/ResultSet'
+              included:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/BiomarkerResult'
+                  - $ref: '#/components/schemas/TestProfile'
+                  - $ref: '#/components/schemas/Escalation'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
   schemas:
-    NotFoundError:
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    ResultSet:
+      type: object
+      required:
+      - id
+      - type
+      - attributes
+      - relationships
+      properties:
+        id:
+          description: Immutable identifier for Result Set
+          type: string
+          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          type: string
+          example: result_set
+        attributes:
+          type: object
+          properties:
+            result_date:
+              description: DateTime (in ISO8601 format) for when the result has been created
+              type: string
+              example: '2023-02-12T11:00:00Z'
+            sample_taken_at:
+              description: DateTime (in ISO8601 format) for when the sample was received by the lab
+              type: string
+              example: '2023-02-11T08:00:00Z'
+            sample_booked_in_at:
+              description: DateTime (in ISO8601 format) for when the sample was received by the lab and ready to be analysed
+              type: string
+              example: '2023-02-12T10:00:00Z'
+            sample_processed_at:
+              description: DateTime (in ISO8601 format) for when the sample was analysed at the lab, and results have been made available
+              type: string
+              example: '2023-02-12T11:00:00Z'
+            sample_reference:
+              description: The reference number that will appear on the test kit is a unique number assigned to each kit. This reference will also be used by the lab to refer to the test results if a result were to be escalated due to falling outside of the expected ranges
+              type: string
+              example: T123456789
+            status:
+              description: The current status of the Result Set
+              type: string
+              enum:
+              - complete
+              - results_to_follow
+        relationships:
+          type: object
+          properties:
+            test_profiles:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Test Profile ID
+                        type: string
+                        example: AB12
+                      type:
+                        type: string
+                        example: test_profile
+            biomarker_results:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Biomarker Result ID
+                        type: string
+                        example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
+                      type:
+                        type: string
+                        example: biomarker_result
+            escalations:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Escalation ID
+                        type: string
+                        example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
+                      type:
+                        type: string
+                        example: escalation
+            reports:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Report'
+            pdf_result_attachment:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      description: Result Set Attachment ID
+                      type: string
+                      example: F14VHYB35EF7F5O2
+                    type:
+                      type: string
+                      example: result_set_attachment
+    UnsupportedMediaTypeError:
       type: object
       required:
       - title
@@ -81,37 +302,93 @@ components:
         title:
           type: string
           description: Title of the error
-          example: resource not found
-    Pagination:
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    TestProfile:
       type: object
       required:
-      - self
-      - current
+      - id
+      - type
+      - attributes
+      - relationships
       properties:
-        self:
+        id:
+          description: Immutable identifier for Test Profile
           type: string
-          description: The link that generated the current response document
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        current:
+          example: AB12
+        type:
           type: string
-          description: The link for the current page
-          example: http://example.com/articles?page[number]=3&page[size]=1
-        first:
+          example: test_profile
+        attributes:
+          type: object
+          properties:
+            name:
+              type: string
+              example: B12 (Active)
+            code:
+              type: string
+              example: AB12
+            description:
+              type: string
+              example: This is a short description of the test profile, how it affects the human body, and why it is helpful to be monitored.
+            sample_type:
+              type: string
+              enum:
+              - blood
+              - saliva
+            collection_methods:
+              type: array
+              items:
+                example:
+                - finger_prick
+                - venous
+            collection_tube:
+              type: string
+              description: The collection tube needed to test this test profile
+              example: EDTA/Purple tube
+        relationships:
+          type: object
+          properties:
+            biomarkers:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        description: Biomarker ID
+                        type: string
+                        example: ALP
+                      type:
+                        type: string
+                        example: biomarker
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
           type: string
-          description: The link to the first page
-          example: http://example.com/articles?page[number]=1&page[size]=1
-        prev:
+          description: Title of the error
+          example: invalid field
+        detail:
           type: string
-          description: The link to the previous page
-          example: http://example.com/articles?page[number]=2&page[size]=1
-        next:
-          type: string
-          description: The link to the next page
-          example: http://example.com/articles?page[number]=4&page[size]=1
-        last:
-          type: string
-          description: The link to the last page
-          example: http://example.com/articles?page[number]=13&page[size]=1
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
     BiomarkerResult:
       type: object
       required:
@@ -297,228 +574,6 @@ components:
           type: string
           description: Title of the error
           example: invalid access token
-    ResultSet:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-      properties:
-        id:
-          description: Immutable identifier for Result Set
-          type: string
-          example: RS-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-        type:
-          type: string
-          example: result_set
-        attributes:
-          type: object
-          properties:
-            result_date:
-              description: DateTime (in ISO8601 format) for when the result has been created
-              type: string
-              example: '2023-02-12T11:00:00Z'
-            sample_taken_at:
-              description: DateTime (in ISO8601 format) for when the sample was received by the lab
-              type: string
-              example: '2023-02-11T08:00:00Z'
-            sample_booked_in_at:
-              description: DateTime (in ISO8601 format) for when the sample was received by the lab and ready to be analysed
-              type: string
-              example: '2023-02-12T10:00:00Z'
-            sample_processed_at:
-              description: DateTime (in ISO8601 format) for when the sample was analysed at the lab, and results have been made available
-              type: string
-              example: '2023-02-12T11:00:00Z'
-            sample_reference:
-              description: The reference number that will appear on the test kit is a unique number assigned to each kit. This reference will also be used by the lab to refer to the test results if a result were to be escalated due to falling outside of the expected ranges
-              type: string
-              example: T123456789
-            status:
-              description: The current status of the Result Set
-              type: string
-              enum:
-              - complete
-              - results_to_follow
-        relationships:
-          type: object
-          properties:
-            test_profiles:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        description: Test Profile ID
-                        type: string
-                        example: AB12
-                      type:
-                        type: string
-                        example: test_profile
-            biomarker_results:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        description: Biomarker Result ID
-                        type: string
-                        example: BR-7CLGY37N8WLBE0E8AAULAPBCBMF9ATVZFJ70
-                      type:
-                        type: string
-                        example: biomarker_result
-            escalations:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        description: Escalation ID
-                        type: string
-                        example: ESC-0A657293-28A9-47C1-A119-126540BCBB5A
-                      type:
-                        type: string
-                        example: escalation
-            reports:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/Report'
-            pdf_result_attachment:
-              type: object
-              properties:
-                data:
-                  type: object
-                  properties:
-                    id:
-                      description: Result Set Attachment ID
-                      type: string
-                      example: F14VHYB35EF7F5O2
-                    type:
-                      type: string
-                      example: result_set_attachment
-    BadRequestError:
-      type: object
-      required:
-      - title
-      - detail
-      - source
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
-    TestProfile:
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      - relationships
-      properties:
-        id:
-          description: Immutable identifier for Test Profile
-          type: string
-          example: AB12
-        type:
-          type: string
-          example: test_profile
-        attributes:
-          type: object
-          properties:
-            name:
-              type: string
-              example: B12 (Active)
-            code:
-              type: string
-              example: AB12
-            description:
-              type: string
-              example: This is a short description of the test profile, how it affects the human body, and why it is helpful to be monitored.
-            sample_type:
-              type: string
-              enum:
-              - blood
-              - saliva
-            collection_methods:
-              type: array
-              items:
-                example:
-                - finger_prick
-                - venous
-            collection_tube:
-              type: string
-              description: The collection tube needed to test this test profile
-              example: EDTA/Purple tube
-        relationships:
-          type: object
-          properties:
-            biomarkers:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        description: Biomarker ID
-                        type: string
-                        example: ALP
-                      type:
-                        type: string
-                        example: biomarker
-    BiomarkerComment:
-      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
-      type: object
-      required:
-      - id
-      - type
-      - attributes
-      properties:
-        id:
-          description: Immutable identifier for Biomarker Comment
-          type: string
-          example: '1286'
-        type:
-          type: string
-          example: biomarker_comment
-        attributes:
-          type: object
-          properties:
-            comment:
-              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
-              type: string
-              example: Your ferritin levels are low. We would advise following up with your GP.
-        relationships:
-          type: object
-          properties:
-            biomarker_result:
-              $ref: '#/components/schemas/BiomarkerResult'
     Escalation:
       type: object
       required:
@@ -572,7 +627,8 @@ components:
               - awaiting_acknowledgment
               - no_acknowledgment_required
               - archived
-    Reporter:
+    BiomarkerComment:
+      description: Beta feature, disabled by default. When not enabled for your organisation, `report.relationships.biomarker_comments.data` will be an empty array.
       type: object
       required:
       - id
@@ -580,29 +636,54 @@ components:
       - attributes
       properties:
         id:
-          description: Immutable identifier for Reporter
+          description: Immutable identifier for Biomarker Comment
           type: string
-          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
+          example: '1286'
         type:
           type: string
-          example: reporter
+          example: biomarker_comment
         attributes:
           type: object
           properties:
-            title:
+            comment:
+              description: Beta feature, disabled by default. Automated rule-derived annotation for the associated biomarker result, based on the biomarker value, subject sex, and any previous result. Not authored by the clinician; the clinician's narrative is on `report.attributes.report_summary`.
               type: string
-              enum:
-              - Dr Mr Mrs Ms Miss Mx
-              example: Dr
-            first_name:
-              type: string
-              example: John
-            last_name:
-              type: string
-              example: Doe
-            email:
-              type: string
-              example: john.doe@example.com
+              example: Your ferritin levels are low. We would advise following up with your GP.
+        relationships:
+          type: object
+          properties:
+            biomarker_result:
+              $ref: '#/components/schemas/BiomarkerResult'
+    Pagination:
+      type: object
+      required:
+      - self
+      - current
+      properties:
+        self:
+          type: string
+          description: The link that generated the current response document
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        current:
+          type: string
+          description: The link for the current page
+          example: http://example.com/articles?page[number]=3&page[size]=1
+        first:
+          type: string
+          description: The link to the first page
+          example: http://example.com/articles?page[number]=1&page[size]=1
+        prev:
+          type: string
+          description: The link to the previous page
+          example: http://example.com/articles?page[number]=2&page[size]=1
+        next:
+          type: string
+          description: The link to the next page
+          example: http://example.com/articles?page[number]=4&page[size]=1
+        last:
+          type: string
+          description: The link to the last page
+          example: http://example.com/articles?page[number]=13&page[size]=1
     Report:
       type: object
       required:
@@ -638,16 +719,38 @@ components:
               $ref: '#/components/schemas/Reporter'
             biomarker_comments:
               $ref: '#/components/schemas/BiomarkerComment'
-    ForbiddenError:
+    Reporter:
       type: object
       required:
-      - title
+      - id
+      - type
+      - attributes
       properties:
-        title:
+        id:
+          description: Immutable identifier for Reporter
           type: string
-          description: Title of the error
-          example: action not permitted
-    UnsupportedMediaTypeError:
+          example: RPTR-B4D0F0E2-C612-407C-A8FC-F9F31F44F226
+        type:
+          type: string
+          example: reporter
+        attributes:
+          type: object
+          properties:
+            title:
+              type: string
+              enum:
+              - Dr Mr Mrs Ms Miss Mx
+              example: Dr
+            first_name:
+              type: string
+              example: John
+            last_name:
+              type: string
+              example: Doe
+            email:
+              type: string
+              example: john.doe@example.com
+    NotFoundError:
       type: object
       required:
       - title
@@ -656,118 +759,8 @@ components:
         title:
           type: string
           description: Title of the error
-          example: unsupported media type
-        detail:
-          type: string
-          example: This endpoint only supports application/vnd.api+json
-  responses:
-    ResultSetsResponse:
-      description: An array of Result Set
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ResultSet'
-              links:
-                $ref: '#/components/schemas/Pagination'
-    ResultSetResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/ResultSet'
-              included:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/BiomarkerResult'
-                  - $ref: '#/components/schemas/TestProfile'
-                  - $ref: '#/components/schemas/Escalation'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
+          example: resource not found
   parameters:
-    ResultSetIncludes:
-      name: include
-      description: A comma separated list of relationship objects to include in response
-      in: query
-      schema:
-        type: string
-        example: test_profiles,biomarker_results,escalations
     PageSize:
       in: query
       name: page[size]
@@ -777,6 +770,13 @@ components:
         type: integer
         minimum: 10
         maximum: 100
+    ResultSetIncludes:
+      name: include
+      description: A comma separated list of relationship objects to include in response
+      in: query
+      schema:
+        type: string
+        example: test_profiles,biomarker_results,escalations
     PageNumber:
       in: query
       name: page[number]

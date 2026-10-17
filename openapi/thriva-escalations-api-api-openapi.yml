@@ -125,34 +125,6 @@ components:
               - awaiting_acknowledgment
               - no_acknowledgment_required
               - archived
-    InvalidEscalationLevelError:
-      type: object
-      required:
-      - code
-      - title
-      - detail
-      properties:
-        code:
-          type: string
-          description: Error code
-          example: INVALID_ESCALATION_LEVEL
-        title:
-          type: string
-          description: Title of the error
-          example: invalid escalation level
-        detail:
-          type: string
-          example: The level passed in does not match the current level of the escalation.
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
     ArchivedEscalationError:
       type: object
       required:
@@ -181,6 +153,34 @@ components:
               description: The id of the current active escalation.
               type: string
               example: ESC-A7A2A7C5-8FAB-4DE3-8836-513E53BAB194
+    NotFoundError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: resource not found
+    InvalidEscalationLevelError:
+      type: object
+      required:
+      - code
+      - title
+      - detail
+      properties:
+        code:
+          type: string
+          description: Error code
+          example: INVALID_ESCALATION_LEVEL
+        title:
+          type: string
+          description: Title of the error
+          example: invalid escalation level
+        detail:
+          type: string
+          example: The level passed in does not match the current level of the escalation.
   responses:
     NotFoundResponse:
       description: Resource not found

@@ -236,6 +236,141 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    Sample:
+      type: object
+      required:
+      - type
+      - collection_method
+      properties:
+        type:
+          description: Whether you want the test to be a saliva or blood test
+          type: string
+          enum:
+          - blood
+          - saliva
+          example: blood
+        collection_method:
+          description: Define what type of collection method you would like for the sample type
+          type: string
+          enum:
+          - finger_prick
+          - swab
+          - venous
+          - automatic_capillary
+          example: finger_prick
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: action not permitted
+    UnsupportedMediaTypeError:
+      type: object
+      required:
+      - title
+      - detail
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: unsupported media type
+        detail:
+          type: string
+          example: This endpoint only supports application/vnd.api+json
+    DeliveryAddress:
+      type: object
+      required:
+      - name
+      - line1
+      - city
+      - postcode
+      - country
+      properties:
+        name:
+          description: The name of the recipient at the delivery address
+          type: string
+          example: Mr Joe Blogs
+        company_name:
+          description: The name of the company
+          type: string
+          example: Thriva Ltd
+        line1:
+          description: The first line of the delivery address
+          type: string
+          example: 3rd Floor
+        line2:
+          description: The second line of the delivery address
+          type: string
+          example: White Collar Factory
+        line3:
+          description: The third line of the delivery address
+          type: string
+          example: 1 Old Street Yard
+        city:
+          description: The city for the delivery address
+          type: string
+          example: London
+        state:
+          description: The county or state for the delivery address
+          type: string
+          example: Greater London
+        postcode:
+          description: The postcode for the delivery address
+          type: string
+          example: EC1Y 8AF
+        country:
+          description: The country for the delivery address (ISO 3166-1 alpha-2)
+          type: string
+          example: GB
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
+    Analysis:
+      description: Requirements for processing a sample
+      type: object
+      required:
+      - required
+      properties:
+        required:
+          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
+          type: boolean
+          example: true
+        lab:
+          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
+          type: string
+          example: PUR1
+    InvalidAccessTokenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid access token
     FulfillmentOrder:
       type: object
       required:
@@ -302,74 +437,53 @@ components:
               type: number
               description: The last page number
               example: 10
-    UnsupportedMediaTypeError:
+    Order:
       type: object
       required:
-      - title
-      - detail
+      - id
+      - type
+      - attributes
+      - relationships
       properties:
-        title:
+        id:
+          description: Unique identifier for this Order
           type: string
-          description: Title of the error
-          example: unsupported media type
-        detail:
+          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+        type:
+          description: Specifies what type of object this is
           type: string
-          example: This endpoint only supports application/vnd.api+json
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    DeliveryAddress:
-      type: object
-      required:
-      - name
-      - line1
-      - city
-      - postcode
-      - country
-      properties:
-        name:
-          description: The name of the recipient at the delivery address
-          type: string
-          example: Mr Joe Blogs
-        company_name:
-          description: The name of the company
-          type: string
-          example: Thriva Ltd
-        line1:
-          description: The first line of the delivery address
-          type: string
-          example: 3rd Floor
-        line2:
-          description: The second line of the delivery address
-          type: string
-          example: White Collar Factory
-        line3:
-          description: The third line of the delivery address
-          type: string
-          example: 1 Old Street Yard
-        city:
-          description: The city for the delivery address
-          type: string
-          example: London
-        state:
-          description: The county or state for the delivery address
-          type: string
-          example: Greater London
-        postcode:
-          description: The postcode for the delivery address
-          type: string
-          example: EC1Y 8AF
-        country:
-          description: The country for the delivery address (ISO 3166-1 alpha-2)
-          type: string
-          example: GB
+          enum:
+          - order
+          example: order
+        attributes:
+          type: object
+          properties:
+            delivery_address:
+              $ref: '#/components/schemas/DeliveryAddress'
+            fulfillment_orders:
+              description: Array of IDs for the linked Fulfillment Orders linked to this Order
+              type: array
+              items:
+                type: string
+                example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            tests:
+              description: Array of IDs for the linked Tests linked to this Order
+              type: array
+              items:
+                type: string
+                example: T-8719EAF0-6B39-46B5-86DA-AF11155F3B65
+            outbound_tracking_code:
+              description: The tracking code for the outbound delivery to the subject
+              type: string
+              example: 9876543212345A67B8CDE
+            placed_at:
+              description: The date and time, in ISO 8601 format, at which the Order was placed.
+              type: string
+              example: '2021-06-11T08:00:00Z'
+            fulfilled_at:
+              description: The date and time, in ISO 8601 format, at which the Order was dispatched to the subject
+              type: string
+              example: '2021-06-11T10:00:00Z'
     Pagination:
       type: object
       required:
@@ -400,83 +514,6 @@ components:
           type: string
           description: The link to the last page
           example: http://example.com/articles?page[number]=13&page[size]=1
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
-    BadRequestError:
-      type: object
-      required:
-      - title
-      - detail
-      - source
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid field
-        detail:
-          type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
-    Sample:
-      type: object
-      required:
-      - type
-      - collection_method
-      properties:
-        type:
-          description: Whether you want the test to be a saliva or blood test
-          type: string
-          enum:
-          - blood
-          - saliva
-          example: blood
-        collection_method:
-          description: Define what type of collection method you would like for the sample type
-          type: string
-          enum:
-          - finger_prick
-          - swab
-          - venous
-          - automatic_capillary
-          example: finger_prick
-    Analysis:
-      description: Requirements for processing a sample
-      type: object
-      required:
-      - required
-      properties:
-        required:
-          description: Indicates whether a Thriva lab needs to perform analysis on this sample.
-          type: boolean
-          example: true
-        lab:
-          description: The identifier for the lab that should perform analysis on this sample. If one is not provided, one will be assigned based on the analysis requirements.
-          type: string
-          example: PUR1
-    ForbiddenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: action not permitted
     Test:
       type: object
       required:
@@ -632,54 +669,78 @@ components:
             bulk_order_id:
               type: string
               description: The ID of the Bulk Order this Test is associated with
-    Order:
+    NotFoundError:
       type: object
       required:
-      - id
-      - type
-      - attributes
-      - relationships
+      - title
+      - detail
       properties:
-        id:
-          description: Unique identifier for this Order
+        title:
           type: string
-          example: O-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-        type:
-          description: Specifies what type of object this is
-          type: string
-          enum:
-          - order
-          example: order
-        attributes:
-          type: object
-          properties:
-            delivery_address:
-              $ref: '#/components/schemas/DeliveryAddress'
-            fulfillment_orders:
-              description: Array of IDs for the linked Fulfillment Orders linked to this Order
-              type: array
-              items:
-                type: string
-                example: FO-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-            tests:
-              description: Array of IDs for the linked Tests linked to this Order
-              type: array
-              items:
-                type: string
-                example: T-8719EAF0-6B39-46B5-86DA-AF11155F3B65
-            outbound_tracking_code:
-              description: The tracking code for the outbound delivery to the subject
-              type: string
-              example: 9876543212345A67B8CDE
-            placed_at:
-              description: The date and time, in ISO 8601 format, at which the Order was placed.
-              type: string
-              example: '2021-06-11T08:00:00Z'
-            fulfilled_at:
-              description: The date and time, in ISO 8601 format, at which the Order was dispatched to the subject
-              type: string
-              example: '2021-06-11T10:00:00Z'
+          description: Title of the error
+          example: resource not found
   responses:
+    BadRequestResponse:
+      description: Bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BadRequestError'
+    OrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Order'
+    NotFoundResponse:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotFoundError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    FulfillmentOrderResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/FulfillmentOrder'
     OrdersResponse:
       description: An array of Orders
       content:
@@ -697,6 +758,17 @@ components:
                 $ref: '#/components/schemas/Pagination'
               meta:
                 $ref: '#/components/schemas/Meta'
+    TestResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Test'
     TestCollectionResponse:
       description: Successful request
       content:
@@ -710,6 +782,33 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/Test'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
     TestsResponse:
       description: An array of Tests
       content:
@@ -727,105 +826,6 @@ components:
                 $ref: '#/components/schemas/Pagination'
               meta:
                 $ref: '#/components/schemas/Meta'
-    OrderResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Order'
-    FulfillmentOrderResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/FulfillmentOrder'
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
-    BadRequestResponse:
-      description: Bad request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BadRequestError'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    NotFoundResponse:
-      description: Resource not found
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/NotFoundError'
-    TestResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Test'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
   requestBodies:
     ReorderCreate:
       content:

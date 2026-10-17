@@ -129,47 +129,25 @@ paths:
       operationId: getV1AppointmentsByAppointmentId
       x-operation-id-source: derived
 components:
-  parameters:
-    PageSize:
-      in: query
-      name: page[size]
-      description: The amount of items per page
-      required: false
-      schema:
-        type: integer
-        minimum: 10
-        maximum: 100
-    PageNumber:
-      in: query
-      name: page[number]
-      schema:
-        type: integer
-      description: The page that will be returned
-      required: false
   schemas:
-    BadRequestError:
+    InvalidAccessTokenError:
       type: object
       required:
       - title
-      - detail
-      - source
       properties:
         title:
           type: string
           description: Title of the error
-          example: invalid field
-        detail:
+          example: invalid access token
+    ForbiddenError:
+      type: object
+      required:
+      - title
+      properties:
+        title:
           type: string
-          example: field_name.example must be a string
-        source:
-          type: object
-          required:
-          - pointer
-          properties:
-            pointer:
-              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
-              type: string
-              example: /data/field_name/example
+          description: Title of the error
+          example: action not permitted
     Appointment:
       type: object
       required:
@@ -300,15 +278,16 @@ components:
               type: string
               format: date-time
               example: '2026-03-25T10:30:00Z'
-    ForbiddenError:
+    NotFoundError:
       type: object
       required:
       - title
+      - detail
       properties:
         title:
           type: string
           description: Title of the error
-          example: action not permitted
+          example: resource not found
     Meta:
       type: object
       required:
@@ -344,6 +323,29 @@ components:
               type: number
               description: The last page number
               example: 10
+    BadRequestError:
+      type: object
+      required:
+      - title
+      - detail
+      - source
+      properties:
+        title:
+          type: string
+          description: Title of the error
+          example: invalid field
+        detail:
+          type: string
+          example: field_name.example must be a string
+        source:
+          type: object
+          required:
+          - pointer
+          properties:
+            pointer:
+              description: A RFC6901 compliant JSON pointer to the attribute that caused the error
+              type: string
+              example: /data/field_name/example
     Pagination:
       type: object
       required:
@@ -387,39 +389,7 @@ components:
         detail:
           type: string
           example: This endpoint only supports application/vnd.api+json
-    NotFoundError:
-      type: object
-      required:
-      - title
-      - detail
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: resource not found
-    InvalidAccessTokenError:
-      type: object
-      required:
-      - title
-      properties:
-        title:
-          type: string
-          description: Title of the error
-          example: invalid access token
   responses:
-    UnsupportedMediaTypeResponse:
-      description: Unsupported media type response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
     BadRequestResponse:
       description: Bad request
       content:
@@ -433,17 +403,6 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/BadRequestError'
-    AppointmentResponse:
-      description: Successful request
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - data
-            properties:
-              data:
-                $ref: '#/components/schemas/Appointment'
     NotFoundResponse:
       description: Resource not found
       content:
@@ -457,6 +416,57 @@ components:
                 type: array
                 items:
                   $ref: '#/components/schemas/NotFoundError'
+    ForbiddenResponse:
+      description: Action forbidden response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ForbiddenError'
+    AppointmentResponse:
+      description: Successful request
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - data
+            properties:
+              data:
+                $ref: '#/components/schemas/Appointment'
+    UnauthorizedResponse:
+      description: Unauthorized response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  anyOf:
+                  - $ref: '#/components/schemas/InvalidAccessTokenError'
+    UnsupportedMediaTypeResponse:
+      description: Unsupported media type response
+      content:
+        application/vnd.api+json:
+          schema:
+            type: object
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UnsupportedMediaTypeError'
     AppointmentsResponse:
       description: An array of Appointments
       content:
@@ -474,33 +484,23 @@ components:
                 $ref: '#/components/schemas/Pagination'
               meta:
                 $ref: '#/components/schemas/Meta'
-    UnauthorizedResponse:
-      description: Unauthorized response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  anyOf:
-                  - $ref: '#/components/schemas/InvalidAccessTokenError'
-    ForbiddenResponse:
-      description: Action forbidden response
-      content:
-        application/vnd.api+json:
-          schema:
-            type: object
-            required:
-            - errors
-            properties:
-              errors:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ForbiddenError'
+  parameters:
+    PageSize:
+      in: query
+      name: page[size]
+      description: The amount of items per page
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+    PageNumber:
+      in: query
+      name: page[number]
+      schema:
+        type: integer
+      description: The page that will be returned
+      required: false
   requestBodies:
     AppointmentCreate:
       content:
