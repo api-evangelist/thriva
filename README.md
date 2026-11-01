@@ -64,6 +64,147 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Thriva is a company surfaced as a portfolio company of 500-global, seedcamp and added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+Thriva is a UK digital-health company and the UK market leader in at-home consumer diagnostics, tracking 75+ blood biomarkers with doctor-reviewed insights. Alongside its direct-to-consumer service, the Thriva Platform offers partners a white-label at-home blood-testing infrastructure - kit logistics, lab processing, results and clinical escalations - through a RESTful JSON:API Platform API with OAuth2 client-credentials auth, Svix-signed webhooks and a full sandbox environment.
 
-Backed by: 500-global, seedcamp — https://thriva.co
+**Areas:** Company · Healthcare · Diagnostics · Blood Testing · At-Home Testing · Digital Health · Lab Testing · Webhook · United Kingdom
+
+## Thriva on APIs.io
+
+Everything profiled for Thriva is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/thriva/](https://apis.io/providers/thriva/)** — or go straight to one of the APIs or properties below.
+
+### APIs (10)
+
+- [Thriva Appointments API](https://apis.io/apis/thriva/thriva-appointments-api-api/) — The Appointments API API from Thriva — 2 operation(s) for appointments api.
+- [Thriva Auth API](https://apis.io/apis/thriva/thriva-auth-api-api/) — The Auth API API from Thriva — 1 operation(s) for auth api.
+- [Thriva Biomarkers API](https://apis.io/apis/thriva/thriva-biomarkers-api-api/) — The Biomarkers API API from Thriva — 1 operation(s) for biomarkers api.
+- [Thriva Bulk Orders API](https://apis.io/apis/thriva/thriva-bulk-orders-api-api/) — The Bulk Orders API API from Thriva — 4 operation(s) for bulk orders api.
+- [Thriva Escalations API](https://apis.io/apis/thriva/thriva-escalations-api-api/) — The Escalations API API from Thriva — 1 operation(s) for escalations api.
+- [Thriva Orders API](https://apis.io/apis/thriva/thriva-orders-api-api/) — The Orders API API from Thriva — 7 operation(s) for orders api.
+- [Thriva Result attachments API](https://apis.io/apis/thriva/thriva-result-attachments-api-api/) — The Result attachments API API from Thriva — 2 operation(s) for result attachments api.
+- [Thriva Results API](https://apis.io/apis/thriva/thriva-results-api-api/) — The Results API API from Thriva — 2 operation(s) for results api.
+- [Thriva Tracking API](https://apis.io/apis/thriva/thriva-tracking-api-api/) — The Tracking API API from Thriva — 1 operation(s) for tracking api.
+- [Thriva Users API](https://apis.io/apis/thriva/thriva-users-api-api/) — The Users API API from Thriva — 3 operation(s) for users api.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [Thriva Webhooks](https://apis.io/asyncapis/thriva/thriva-webhooks/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [thriva](https://apis.io/servers/thriva/thriva/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Thriva Agentic Access](https://apis.io/agentic-access/thriva/thriva-agentic-access/)
+
+#### JSON Schema (1)
+
+The data models the API reads and writes.
+
+- [Thriva Platform API V1 - component schemas](https://apis.io/schemas/thriva/thriva-platform-api-schemas/)
+
+#### Collections (10)
+
+Postman and Open Collection request collections.
+
+- [Platform API V1 Appointments API API](https://apis.io/collections/thriva/open-thriva-appointments-api-api/)
+- [Platform API V1 Appointments API Auth API API](https://apis.io/collections/thriva/open-thriva-auth-api-api/)
+- [Platform API V1 Appointments API Biomarkers API API](https://apis.io/collections/thriva/open-thriva-biomarkers-api-api/)
+- [Platform API V1 Appointments API Bulk Orders API API](https://apis.io/collections/thriva/open-thriva-bulk-orders-api-api/)
+- [Platform API V1 Appointments API Escalations API API](https://apis.io/collections/thriva/open-thriva-escalations-api-api/)
+- [Platform API V1 Appointments API Orders API API](https://apis.io/collections/thriva/open-thriva-orders-api-api/)
+- [Platform API V1 Appointments API Result attachments API API](https://apis.io/collections/thriva/open-thriva-result-attachments-api-api/)
+- [Platform API V1 Appointments API Results API API](https://apis.io/collections/thriva/open-thriva-results-api-api/)
+- [Platform API V1 Appointments API Tracking API API](https://apis.io/collections/thriva/open-thriva-tracking-api-api/)
+- [Platform API V1 Appointments API Users API API](https://apis.io/collections/thriva/open-thriva-users-api-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Thriva Platform Api Overlay](https://apis.io/overlays/thriva/thriva-platform-api-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Thriva Authentication](https://apis.io/security/thriva/thriva-authentication/)
+- [Thriva Domain Security](https://apis.io/security/thriva/thriva-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://thriva.co)
+- [Documentation](https://docs.thriva.io/docs/getting-started)
+- [Getting started](https://docs.thriva.io/docs/getting-started)
+- [API reference](https://docs.thriva.io/reference)
+- [Support](https://intercom.help/thrivahelpcenter/en/)
+- [Blog](https://thriva.co/hub)
+- [Terms of service](https://s3-eu-west-1.amazonaws.com/thriva/legal/Website+Terms.pdf)
+- [Privacy policy](https://thriva.co/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 40.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 54.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 47.0 |
+| Access clarity | 27.6 |
+
+**Agent readiness 40.0** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | — |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | partial |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 23.4** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/thriva/](https://apis.io/providers/thriva/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Thriva: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/thriva/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
